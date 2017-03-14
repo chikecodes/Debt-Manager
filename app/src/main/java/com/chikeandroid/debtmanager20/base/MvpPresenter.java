@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
  * indicating the MvpView type that wants to be attached with.
  */
 
-public interface Presenter<V extends MvpView> {
+public interface MvpPresenter<V extends MvpView> {
 
     void attachView(V mvpView);
 

@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
  * Created by Kornet-Mac-4 on 19/10/2016.
  */
 
-public class BasePresenter<T extends MvpView> implements Presenter<T>  {
+public class BasePresenter<T extends MvpView> implements MvpPresenter<T> {
 
     private T mMvpView;
 

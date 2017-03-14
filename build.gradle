@@ -41,5 +41,6 @@ ext {
     runnerVersion = '0.5'
     rulesVersion = '0.5'
     espressoVersion = '2.2.2'
+    circleImageVersion = "2.1.0"
 
 }

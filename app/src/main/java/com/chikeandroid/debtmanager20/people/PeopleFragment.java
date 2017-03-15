@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.chikeandroid.debtmanager20.IOwe.IOweFragment;
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.data.Person;
 
@@ -37,7 +36,7 @@ public class PeopleFragment extends Fragment implements PeopleContract.View {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View view = inflater.inflate(R.layout.fragment_page, container, false);
+        View view = inflater.inflate(R.layout.fragment_page_3, container, false);
 
         return view;
     }

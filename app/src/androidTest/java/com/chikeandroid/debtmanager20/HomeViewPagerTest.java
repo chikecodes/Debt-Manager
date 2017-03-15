@@ -32,7 +32,7 @@ public class HomeViewPagerTest {
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void testSwipeBetweenFirstSecondAndThirdPage() {
+    public void shouldBeAbleToSwipeBetweenFirstSecondAndThirdPage() {
 
         onView(withText("Fragment 1")).check(matches(isDisplayed()));
         onView(withId(R.id.view_pager_main)).perform(swipeLeft());
@@ -42,10 +42,25 @@ public class HomeViewPagerTest {
     }
 
     @Test
-    public void testSwipeToTheEnd() {
+    public void shouldBeAbleTotestSwipeToTheEnd() {
         onView(withText("Fragment 1")).check(matches(isDisplayed()));
         onView(withId(R.id.view_pager_main)).perform(swipeLeft()).perform(swipeLeft()).perform(swipeLeft());
         onView(withText("Fragment 3")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void checkIfFabIsDisplayed() {
+        onView(withId(R.id.fab_main)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void checkIfFabIsDisplayedInAllFragments() {
+        onView(withId(R.id.fab_main)).check(matches(isDisplayed()));
+        onView(withId(R.id.view_pager_main)).perform(swipeLeft());
+        onView(withId(R.id.fab_main)).check(matches(isDisplayed()));
+        onView(withId(R.id.view_pager_main)).perform(swipeLeft());
+        onView(withId(R.id.fab_main)).check(matches(isDisplayed()));
+
     }
 
 }

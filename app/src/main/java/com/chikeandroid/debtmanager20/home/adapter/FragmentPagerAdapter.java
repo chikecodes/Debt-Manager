@@ -4,8 +4,8 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
-import com.chikeandroid.debtmanager20.IOwe.IOweFragment;
-import com.chikeandroid.debtmanager20.OweMe.OweMeFragment;
+import com.chikeandroid.debtmanager20.iowe.IOweFragment;
+import com.chikeandroid.debtmanager20.oweme.OweMeFragment;
 import com.chikeandroid.debtmanager20.people.PeopleFragment;
 
 /**

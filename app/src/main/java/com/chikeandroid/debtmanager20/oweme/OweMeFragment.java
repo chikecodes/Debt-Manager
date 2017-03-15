@@ -1,4 +1,4 @@
-package com.chikeandroid.debtmanager20.OweMe;
+package com.chikeandroid.debtmanager20.oweme;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

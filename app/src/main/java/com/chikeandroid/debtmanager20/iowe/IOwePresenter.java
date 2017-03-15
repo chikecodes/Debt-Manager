@@ -1,4 +1,4 @@
-package com.chikeandroid.debtmanager20.IOwe;
+package com.chikeandroid.debtmanager20.iowe;
 
 import android.support.annotation.NonNull;
 

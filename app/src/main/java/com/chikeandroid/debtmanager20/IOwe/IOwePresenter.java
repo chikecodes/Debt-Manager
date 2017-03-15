@@ -1,4 +1,4 @@
-package com.chikeandroid.debtmanager20.OweMe;
+package com.chikeandroid.debtmanager20.IOwe;
 
 import android.support.annotation.NonNull;
 
@@ -6,10 +6,11 @@ import com.chikeandroid.debtmanager20.base.BasePresenter;
 import com.chikeandroid.debtmanager20.data.Debt;
 
 /**
- * Created by Chike on 3/13/2017.
+ * Created by Chike on 3/14/2017.
  */
 
-public class OweMePresenter<V extends OweMeContract.View> extends BasePresenter<V> implements OweMeContract.Presenter<V> {
+public class IOwePresenter<V extends IOweContract.View> extends BasePresenter<V> implements IOweContract.Presenter<V> {
+
 
     @Override
     public void loadDebts(boolean forceUpdate) {

@@ -1,4 +1,4 @@
-package com.chikeandroid.debtmanager20.OweMe;
+package com.chikeandroid.debtmanager20.IOwe;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,18 +13,17 @@ import com.chikeandroid.debtmanager20.data.Debt;
 import java.util.List;
 
 /**
- * Created by Chike on 3/13/2017.
+ * Created by Chike on 3/14/2017.
  */
 
-public class OweMeFragment extends Fragment implements OweMeContract.View {
+public class IOweFragment extends Fragment implements IOweContract.View {
 
-
-    public OweMeFragment() {
+    public IOweFragment() {
 
     }
 
-    public static OweMeFragment newInstance() {
-        return new OweMeFragment();
+    public static IOweFragment newInstance() {
+        return new IOweFragment();
     }
 
     @Override
@@ -41,6 +40,7 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
 
         return view;
     }
+
 
     @Override
     public void showDebts(List<Debt> debts) {

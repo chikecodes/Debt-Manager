@@ -24,7 +24,7 @@ public final class Debt {
     private final String mNote;
 
     @NonNull
-    private final String mName;
+    private final String mPersonId;
 
     @NonNull
     private final long mCreatedDate;
@@ -35,12 +35,6 @@ public final class Debt {
     @NonNull
     private final int mDebtType;
 
-    @Nullable
-    private final String mPhoneNumber;
-
-    @Nullable
-    private final String mEmail;
-
     @NonNull
     private final int mStatus;
 
@@ -48,7 +42,7 @@ public final class Debt {
 
         // Required parameters
         private final String mId;
-        private final String mName;
+        private final String mPersonId;
         private final long mCreatedDate;
         private final int mDebtType;
         private final int mStatus;
@@ -58,13 +52,11 @@ public final class Debt {
         private String mItemName = "";
         private String mNote = "";
         private long mDueDate = 0;
-        private String mPhoneNumber = "";
-        private String mEmail = "";
 
-        public Builder(String name, long createdDate,int debtType, int status) {
+        public Builder(String personId, long createdDate,int debtType, int status) {
             this.mId = UUID.randomUUID().toString();
             this.mCreatedDate = createdDate;
-            this.mName = name;
+            this.mPersonId = personId;
             this.mDebtType = debtType;
             this.mStatus = status;
         }
@@ -89,16 +81,6 @@ public final class Debt {
             return this;
         }
 
-        public Builder phoneNumber(String phoneNumber) {
-            mPhoneNumber = phoneNumber;
-            return this;
-        }
-
-        public Builder email(String email) {
-            mEmail = email;
-            return this;
-        }
-
         public Debt build() {
             return new Debt(this);
         }
@@ -108,7 +90,7 @@ public final class Debt {
     private Debt(Builder builder) {
 
         mId = builder.mId;
-        mName = builder.mName;
+        mPersonId = builder.mPersonId;
         mCreatedDate = builder.mCreatedDate;
         mDebtType = builder.mDebtType;
         mStatus = builder.mStatus;
@@ -116,8 +98,6 @@ public final class Debt {
         mItemName = builder.mItemName;
         mNote = builder.mNote;
         mDueDate = builder.mDueDate;
-        mPhoneNumber = builder.mPhoneNumber;
-        mEmail = builder.mEmail;
     }
 
     @Override
@@ -133,11 +113,10 @@ public final class Debt {
         if (mDebtType != debt.mDebtType) return false;
         if (mStatus != debt.mStatus) return false;
         if (!mId.equals(debt.mId)) return false;
-        if (!mItemName.equals(debt.mItemName)) return false;
-        if (!mNote.equals(debt.mNote)) return false;
-        if (!mName.equals(debt.mName)) return false;
-        if (!mPhoneNumber.equals(debt.mPhoneNumber)) return false;
-        return mEmail.equals(debt.mEmail);
+        if (mItemName != null ? !mItemName.equals(debt.mItemName) : debt.mItemName != null)
+            return false;
+        if (mNote != null ? !mNote.equals(debt.mNote) : debt.mNote != null) return false;
+        return mPersonId.equals(debt.mPersonId);
 
     }
 
@@ -148,14 +127,12 @@ public final class Debt {
         result = mId.hashCode();
         temp = Double.doubleToLongBits(mAmount);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + mItemName.hashCode();
-        result = 31 * result + mNote.hashCode();
-        result = 31 * result + mName.hashCode();
+        result = 31 * result + (mItemName != null ? mItemName.hashCode() : 0);
+        result = 31 * result + (mNote != null ? mNote.hashCode() : 0);
+        result = 31 * result + mPersonId.hashCode();
         result = 31 * result + (int) (mCreatedDate ^ (mCreatedDate >>> 32));
         result = 31 * result + (int) (mDueDate ^ (mDueDate >>> 32));
         result = 31 * result + mDebtType;
-        result = 31 * result + mPhoneNumber.hashCode();
-        result = 31 * result + mEmail.hashCode();
         result = 31 * result + mStatus;
         return result;
     }

@@ -27,7 +27,7 @@ public interface OweMeContract {
         boolean isActive();
     }
 
-    interface Presenter<V extends View> extends MvpPresenter {
+    interface Presenter<V extends View> extends MvpPresenter<V> {
 
         void loadDebts(boolean forceUpdate);
 

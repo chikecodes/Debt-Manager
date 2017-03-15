@@ -1,4 +1,4 @@
-package com.chikeandroid.debtmanager20.OweMe;
+package com.chikeandroid.debtmanager20.people;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,24 +7,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chikeandroid.debtmanager20.IOwe.IOweFragment;
 import com.chikeandroid.debtmanager20.R;
-import com.chikeandroid.debtmanager20.data.Debt;
+import com.chikeandroid.debtmanager20.data.Person;
 
 import java.util.List;
 
 /**
- * Created by Chike on 3/13/2017.
+ * Created by Chike on 3/14/2017.
  */
 
-public class OweMeFragment extends Fragment implements OweMeContract.View {
+public class PeopleFragment extends Fragment implements PeopleContract.View {
 
-
-    public OweMeFragment() {
+    public PeopleFragment() {
 
     }
 
-    public static OweMeFragment newInstance() {
-        return new OweMeFragment();
+    public static PeopleFragment newInstance() {
+        return new PeopleFragment();
     }
 
     @Override
@@ -43,22 +43,22 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
     }
 
     @Override
-    public void showDebts(List<Debt> debts) {
+    public void showPeople(List<Person> persons) {
 
     }
 
     @Override
-    public void showDebtDetailsUi(String debtId) {
+    public void showPersonDebtDetailsUi(String personId) {
 
     }
 
     @Override
-    public void showNoDebts() {
+    public void showNoPerson() {
 
     }
 
     @Override
-    public void showLoadingDebtsError() {
+    public void showLoadingPersonError() {
 
     }
 

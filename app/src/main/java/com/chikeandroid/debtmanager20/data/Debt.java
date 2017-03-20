@@ -18,9 +18,6 @@ public final class Debt {
     private final double mAmount;
 
     @Nullable
-    private final String mItemName;
-
-    @Nullable
     private final String mNote;
 
     @NonNull
@@ -49,7 +46,6 @@ public final class Debt {
 
         // Optional parameters
         private double mAmount = 0;
-        private String mItemName = "";
         private String mNote = "";
         private long mDueDate = 0;
 
@@ -66,10 +62,6 @@ public final class Debt {
             return this;
         }
 
-        public Builder itemName(String name) {
-            mItemName = name;
-            return this;
-        }
 
         public Builder note(String note) {
             mNote = note;
@@ -95,7 +87,6 @@ public final class Debt {
         mDebtType = builder.mDebtType;
         mStatus = builder.mStatus;
         mAmount = builder.mAmount;
-        mItemName = builder.mItemName;
         mNote = builder.mNote;
         mDueDate = builder.mDueDate;
     }
@@ -113,8 +104,6 @@ public final class Debt {
         if (mDebtType != debt.mDebtType) return false;
         if (mStatus != debt.mStatus) return false;
         if (!mId.equals(debt.mId)) return false;
-        if (mItemName != null ? !mItemName.equals(debt.mItemName) : debt.mItemName != null)
-            return false;
         if (mNote != null ? !mNote.equals(debt.mNote) : debt.mNote != null) return false;
         return mPersonId.equals(debt.mPersonId);
 
@@ -127,7 +116,6 @@ public final class Debt {
         result = mId.hashCode();
         temp = Double.doubleToLongBits(mAmount);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (mItemName != null ? mItemName.hashCode() : 0);
         result = 31 * result + (mNote != null ? mNote.hashCode() : 0);
         result = 31 * result + mPersonId.hashCode();
         result = 31 * result + (int) (mCreatedDate ^ (mCreatedDate >>> 32));

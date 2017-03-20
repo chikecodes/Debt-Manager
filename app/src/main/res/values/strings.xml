@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">DebtManager2.0</string>
+    <string name="action_owed_by_me">Owed By Me</string>
+    <string name="owed_to_me">Owed To Me</string>
+    <string name="action_owed_to_me">Owed To Me</string>
+    <string name="hint_amount">Amount</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_comment">Comment (50 characters or less)</string>
+    <string name="hint_phone_number">Phone number</string>
 </resources>

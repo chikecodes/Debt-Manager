@@ -17,15 +17,11 @@ public final class Person {
     @Nullable
     private final String mPhoneNumber;
 
-    @Nullable
-    private final String mEmail;
-
     private ArrayList<Debt> mDebts;
 
-    public Person(@NonNull String fullname, @Nullable String phoneNumber, @Nullable String email) {
+    public Person(@NonNull String fullname, @Nullable String phoneNumber) {
         mFullname = fullname;
         mPhoneNumber = phoneNumber;
-        mEmail = email;
     }
 
     @NonNull
@@ -36,11 +32,6 @@ public final class Person {
     @Nullable
     public String getPhoneNumber() {
         return mPhoneNumber;
-    }
-
-    @Nullable
-    public String getEmail() {
-        return mEmail;
     }
 
     public ArrayList<Debt> getDebts() {
@@ -61,7 +52,6 @@ public final class Person {
         if (!mFullname.equals(person.mFullname)) return false;
         if (mPhoneNumber != null ? !mPhoneNumber.equals(person.mPhoneNumber) : person.mPhoneNumber != null)
             return false;
-        if (mEmail != null ? !mEmail.equals(person.mEmail) : person.mEmail != null) return false;
         return mDebts != null ? mDebts.equals(person.mDebts) : person.mDebts == null;
 
     }
@@ -70,7 +60,6 @@ public final class Person {
     public int hashCode() {
         int result = mFullname.hashCode();
         result = 31 * result + (mPhoneNumber != null ? mPhoneNumber.hashCode() : 0);
-        result = 31 * result + (mEmail != null ? mEmail.hashCode() : 0);
         result = 31 * result + (mDebts != null ? mDebts.hashCode() : 0);
         return result;
     }

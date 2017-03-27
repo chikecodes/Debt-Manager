@@ -35,6 +35,46 @@ public final class Debt {
     @NonNull
     private final int mStatus;
 
+    @NonNull
+    public String getId() {
+        return mId;
+    }
+
+    @Nullable
+    public double getAmount() {
+        return mAmount;
+    }
+
+    @Nullable
+    public String getNote() {
+        return mNote;
+    }
+
+    @NonNull
+    public String getPersonId() {
+        return mPersonId;
+    }
+
+    @NonNull
+    public long getCreatedDate() {
+        return mCreatedDate;
+    }
+
+    @Nullable
+    public long getDueDate() {
+        return mDueDate;
+    }
+
+    @NonNull
+    public int getDebtType() {
+        return mDebtType;
+    }
+
+    @NonNull
+    public int getStatus() {
+        return mStatus;
+    }
+
     public static class Builder {
 
         // Required parameters
@@ -124,4 +164,6 @@ public final class Debt {
         result = 31 * result + mStatus;
         return result;
     }
+
+
 }

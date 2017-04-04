@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -21,7 +20,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
  * Created by Chike on 3/15/2017.
  */
 @RunWith(AndroidJUnit4.class)
-public class HomeViewPagerTest {
+public class AddDebtTest {
 
     /**
      * {@link ActivityTestRule} is a JUnit {@link Rule @Rule} to launch your activity under test.
@@ -61,14 +60,6 @@ public class HomeViewPagerTest {
         onView(withId(R.id.fab_main)).check(matches(isDisplayed()));
         onView(withId(R.id.view_pager_main)).perform(swipeLeft());
         onView(withId(R.id.fab_main)).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void fabShouldOpenAddDebtUIWhenClick() {
-
-        onView(withId(R.id.fab_main)).perform(click());
-
-        onView(withId(R.id.et_full_name)).check(matches(isDisplayed()));
 
     }
 

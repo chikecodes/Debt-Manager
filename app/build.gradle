@@ -88,6 +88,9 @@ dependencies {
     compile "com.google.dagger:dagger:$rootProject.daggerVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 
+    // Toasty
+    compile "com.github.GrenderG:Toasty:$rootProject.toastyVersion"
+
    /* // Dependencies for local unit tests
     testCompile "junit:junit:$rootProject.ext.junitVersion"
     testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"

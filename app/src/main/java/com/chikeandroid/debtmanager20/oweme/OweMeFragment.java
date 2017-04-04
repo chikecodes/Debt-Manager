@@ -66,4 +66,9 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
     public boolean isActive() {
         return isAdded();
     }
+
+    @Override
+    public void setPresenter(OweMeContract.Presenter presenter) {
+
+    }
 }

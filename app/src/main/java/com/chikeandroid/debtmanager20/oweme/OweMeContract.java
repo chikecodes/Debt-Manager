@@ -2,8 +2,8 @@ package com.chikeandroid.debtmanager20.oweme;
 
 import android.support.annotation.NonNull;
 
-import com.chikeandroid.debtmanager20.base.MvpPresenter;
-import com.chikeandroid.debtmanager20.base.MvpView;
+import com.chikeandroid.debtmanager20.base.BasePresenter;
+import com.chikeandroid.debtmanager20.base.BaseView;
 import com.chikeandroid.debtmanager20.data.Debt;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface OweMeContract {
 
-    interface View extends MvpView {
+    interface View extends BaseView<Presenter> {
 
         void showDebts(List<Debt> debts);
 
@@ -27,7 +27,7 @@ public interface OweMeContract {
         boolean isActive();
     }
 
-    interface Presenter<V extends View> extends MvpPresenter<V> {
+    interface Presenter extends BasePresenter {
 
         void loadDebts(boolean forceUpdate);
 

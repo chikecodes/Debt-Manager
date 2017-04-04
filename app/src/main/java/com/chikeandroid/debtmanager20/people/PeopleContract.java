@@ -2,8 +2,8 @@ package com.chikeandroid.debtmanager20.people;
 
 import android.support.annotation.NonNull;
 
-import com.chikeandroid.debtmanager20.base.MvpPresenter;
-import com.chikeandroid.debtmanager20.base.MvpView;
+import com.chikeandroid.debtmanager20.base.BasePresenter;
+import com.chikeandroid.debtmanager20.base.BaseView;
 import com.chikeandroid.debtmanager20.data.Person;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface PeopleContract {
 
-    interface View extends MvpView {
+    interface View extends BaseView<Presenter> {
 
         void showPeople(List<Person> persons);
 
@@ -27,7 +27,7 @@ public interface PeopleContract {
         boolean isActive();
     }
 
-    interface Presenter<V extends View> extends MvpPresenter<V> {
+    interface Presenter extends BasePresenter {
 
         void loadPersons(boolean forceUpdate);
 

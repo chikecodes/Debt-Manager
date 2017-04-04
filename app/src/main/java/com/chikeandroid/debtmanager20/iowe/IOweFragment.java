@@ -66,4 +66,9 @@ public class IOweFragment extends Fragment implements IOweContract.View {
     public boolean isActive() {
         return isAdded();
     }
+
+    @Override
+    public void setPresenter(IOweContract.Presenter presenter) {
+
+    }
 }

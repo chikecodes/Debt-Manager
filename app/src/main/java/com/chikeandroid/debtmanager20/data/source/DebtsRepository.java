@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -17,11 +19,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class DebtsRepository implements DebtsDataSource {
 
-    private static DebtsRepository INSTANCE = null;
-
     private final DebtsDataSource mDebtsLocalDataSource;
 
-    private final DebtsDataSource mDebtsRemoteDataSource;
+    // private final DebtsDataSource mDebtsRemoteDataSource;
 
     private List<DebtsRepositoryObserver> mObservers = new ArrayList<>();
 
@@ -36,22 +36,8 @@ public class DebtsRepository implements DebtsDataSource {
      */
     boolean mCacheIsDirty;
 
-    public static DebtsRepository getInstance(DebtsDataSource debtsRemoteDataSource, DebtsDataSource debtsLocalDataSource) {
-
-        if(INSTANCE == null) {
-            INSTANCE = new DebtsRepository(debtsRemoteDataSource, debtsLocalDataSource);
-        }
-        return INSTANCE;
-    }
-
-    public static void destroyInstance() {
-        INSTANCE = null;
-    }
-
-    // prevent direct instantiation
-    private DebtsRepository(@NonNull DebtsDataSource debtsRemoteDataSource, @NonNull DebtsDataSource debtsLocalDataSource) {
-
-        mDebtsRemoteDataSource = debtsRemoteDataSource;
+    @Inject
+    public DebtsRepository(@Local DebtsDataSource debtsLocalDataSource) {
         mDebtsLocalDataSource = debtsLocalDataSource;
     }
 

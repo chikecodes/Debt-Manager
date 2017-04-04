@@ -1,7 +1,7 @@
 package com.chikeandroid.debtmanager20.adddebt;
 
-import com.chikeandroid.debtmanager20.base.MvpPresenter;
-import com.chikeandroid.debtmanager20.base.MvpView;
+import com.chikeandroid.debtmanager20.base.BasePresenter;
+import com.chikeandroid.debtmanager20.base.BaseView;
 
 /**
  * Created by Chike on 3/16/2017.
@@ -9,7 +9,7 @@ import com.chikeandroid.debtmanager20.base.MvpView;
 
 public interface AddDebtContract {
 
-    interface View extends MvpView {
+    interface View extends BaseView<Presenter> {
 
         boolean isActive();
 
@@ -17,9 +17,11 @@ public interface AddDebtContract {
 
     }
 
-    interface Presenter<V extends MvpView> extends MvpPresenter<V> {
+    interface Presenter extends BasePresenter {
 
-        void save
+        void saveDebt(String name, String phoneNumber, double amount, String note, long createdDate,
+                      long dueDate, int debtType, int status);
+
 
     }
 }

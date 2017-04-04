@@ -65,4 +65,9 @@ public class PeopleFragment extends Fragment implements PeopleContract.View {
     public boolean isActive() {
         return isAdded();
     }
+
+    @Override
+    public void setPresenter(PeopleContract.Presenter presenter) {
+
+    }
 }

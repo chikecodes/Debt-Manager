@@ -35,7 +35,7 @@ public class DebtsDbHelper extends SQLiteOpenHelper{
                     DebtsEntry.COLUMN_STATUS + BOOLEAN_TYPE + COMMA_SEP +
                     DebtsEntry.COLUMN_NOTE + TEXT_TYPE + COMMA_SEP +
                     DebtsEntry.COLUMN_TYPE + BOOLEAN_TYPE +
-                    " FOREIGN KEY (" + DebtsEntry.COLUMN_PERSON_ID + ") REFERENCES " +
+                    ", FOREIGN KEY (" + DebtsEntry.COLUMN_PERSON_ID + ") REFERENCES " +
                     PersonsEntry.TABLE_NAME + " (" + PersonsEntry._ID + ")" +
                     " )";
 
@@ -44,7 +44,7 @@ public class DebtsDbHelper extends SQLiteOpenHelper{
                     PersonsEntry._ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT," +
                     PersonsEntry.COLUMN_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
                     PersonsEntry.COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
-                    PersonsEntry.COLUMN_PHONE_NO + TEXT_TYPE + COMMA_SEP +
+                    PersonsEntry.COLUMN_PHONE_NO + TEXT_TYPE +
                     " )";
 
     public DebtsDbHelper(Context context) {
@@ -53,8 +53,8 @@ public class DebtsDbHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(SQL_CREATE_DEBTS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_PERSONS_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_DEBTS_TABLE);
     }
 
     @Override

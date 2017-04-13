@@ -1,5 +1,7 @@
 package com.chikeandroid.debtmanager20.data;
 
+import com.google.common.base.Strings;
+
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -10,6 +12,11 @@ import java.util.UUID;
  * Immutable model class for a Debt
  */
 public final class Debt {
+
+    public static final int DEBT_TYPE_i_OWE = 100;
+    public static final int DEBT_TYPE_OWED = 200;
+    public static final int DEBT_STATUS_PARTIAL = 101;
+    public static final int DEBT_STATUS_ACTIVE = 102;
 
     @NonNull
     private final String mId;
@@ -83,25 +90,20 @@ public final class Debt {
         private final long mCreatedDate;
         private final int mDebtType;
         private final int mStatus;
+        private double mAmount;
 
         // Optional parameters
-        private double mAmount = 0;
         private String mNote = "";
         private long mDueDate = 0;
 
-        public Builder(String personId, long createdDate,int debtType, int status) {
-            this.mId = UUID.randomUUID().toString();
-            this.mCreatedDate = createdDate;
-            this.mPersonId = personId;
-            this.mDebtType = debtType;
-            this.mStatus = status;
-        }
-
-        public Builder amount(double amount) {
+        public Builder(String personId, Double amount, long createdDate,int debtType, int status) {
+            mId = UUID.randomUUID().toString();
             mAmount = amount;
-            return this;
+            mCreatedDate = createdDate;
+            mPersonId = personId;
+            mDebtType = debtType;
+            mStatus = status;
         }
-
 
         public Builder note(String note) {
             mNote = note;
@@ -129,6 +131,11 @@ public final class Debt {
         mAmount = builder.mAmount;
         mNote = builder.mNote;
         mDueDate = builder.mDueDate;
+    }
+
+    public boolean isEmpty() {
+        return Strings.isNullOrEmpty(mPersonId)
+                && Strings.isNullOrEmpty(String.valueOf(mAmount));
     }
 
     @Override

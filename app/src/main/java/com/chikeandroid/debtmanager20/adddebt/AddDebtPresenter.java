@@ -1,8 +1,9 @@
 package com.chikeandroid.debtmanager20.adddebt;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
+import com.chikeandroid.debtmanager20.data.Debt;
+import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.data.source.DebtsDataSource;
 import com.chikeandroid.debtmanager20.data.source.DebtsRepository;
 
@@ -24,13 +25,11 @@ public class AddDebtPresenter implements AddDebtContract.Presenter {
     AddDebtPresenter(DebtsRepository debtsRepository, AddDebtContract.View view) {
         mDebtsRepository = debtsRepository;
         mAddDebtsView = view;
-        Log.d("kolo", "presenter created");
     }
 
     @Inject
     void setUpListeners() {
         mAddDebtsView.setPresenter(this);
-        Log.d("kolo", "presenter setupListener");
 
     }
 
@@ -38,6 +37,23 @@ public class AddDebtPresenter implements AddDebtContract.Presenter {
     public void saveDebt(String name, String phoneNumber, double amount, String note,
                          long createdDate, long dueDate, int debtType, int status) {
 
+        createDebt(name, phoneNumber, amount, note, createdDate, dueDate, debtType, status);
+    }
+
+    private void createDebt(String name, String phoneNumber, double amount, String note,
+                            long createdAt, long dateDue, int debtType, int status) {
+
+        Person person = new Person(name, phoneNumber);
+        Debt debt = new Debt.Builder(person.getId(), amount, createdAt, debtType, status)
+                .dueDate(dateDue)
+                .note(note)
+                .build();
+
+        if(debt.isEmpty()) {
+            // mAddDebtsView.showEmptyDebtError();
+        } else {
+            mDebtsRepository.saveDebt(debt, person);
+        }
     }
 
     @Override

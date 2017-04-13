@@ -7,4 +7,12 @@
     <string name="hint_name">Name</string>
     <string name="hint_comment">Comment (50 characters or less)</string>
     <string name="hint_phone_number">Phone number</string>
+    <string name="contacts_activity_placeholder">This a placeholder Activity for a contacts screen.
+        This activity is never opened and does not contain any real contact data for
+        keeping this sample simple and focused.
+    </string>
+    <string name="due_date">Date due: %1$s</string>
+    <string name="created_date">Created on: %1$s</string>
+    <string name="required_field">%1$s is required</string>
+    <string name="msg_empty_debt">Cannot save empty debt</string>
 </resources>

@@ -6,6 +6,7 @@ import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.Person;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -98,11 +99,11 @@ public class DebtsRepository implements DebtsDataSource {
         checkNotNull(person);
         mDebtsLocalDataSource.saveDebt(debt, person);
 
-//        // Do in memory cache update to keep the app UI up to date
-//        if(mCachedTasks == null) {
-//            mCachedTasks = new LinkedHashMap<>();
-//        }
-//        mCachedTasks.put()
+        // Do in memory cache update to keep the app UI up to date
+        if(mCachedTasks == null) {
+            mCachedTasks = new LinkedHashMap<>();
+        }
+        mCachedTasks.put(debt.getId(), debt);
 
         // update the UI
        // notifyContentObserver();

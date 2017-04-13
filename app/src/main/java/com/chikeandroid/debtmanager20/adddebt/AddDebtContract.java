@@ -15,6 +15,8 @@ public interface AddDebtContract {
 
         void showErroSavingDebt();
 
+        void showEmptyDebtError();
+
     }
 
     interface Presenter extends BasePresenter {

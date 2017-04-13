@@ -43,7 +43,8 @@
                             android:id="@+id/rb_owed_to_me"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/action_owed_to_me"/>
+                            android:text="@string/action_owed_to_me"
+                            android:checked="true"/>
 
                     <RadioButton
                             android:id="@+id/rb_owed_by_me"
@@ -85,13 +86,14 @@
                             android:paddingRight="@dimen/spacing_large">
 
                         <ImageButton
+                                android:id="@+id/ib_contacts"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="6dp"
                                 android:layout_alignParentBottom="true"
                                 android:layout_alignParentRight="true"
                                 android:background="@drawable/ic_person_add"
-                                android:id="@+id/imageButton"/>
+                               />
 
                     </RelativeLayout>
 
@@ -144,7 +146,6 @@
                             android:id="@+id/et_comment"
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:inputType="numberDecimal"
                             android:hint="@string/hint_comment"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
@@ -162,6 +163,11 @@
                         android:text="Date Due: Friday, March 29th 2017"
                         android:textColor="@color/white"
                         android:textSize="14sp"/>
+
+                <TextView
+                        android:id="@+id/dummy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
                 <Button
                         android:id="@+id/btn_date_created"

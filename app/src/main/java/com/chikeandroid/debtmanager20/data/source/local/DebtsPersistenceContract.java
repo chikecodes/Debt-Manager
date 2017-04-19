@@ -26,7 +26,8 @@ public class DebtsPersistenceContract {
 
         // returns all columns as array
         public static String[] getAllColumns() {
-            String[] columns = {
+
+            return new String[]{
                     COLUMN_ENTRY_ID,
                     COLUMN_PERSON_ID,
                     COLUMN_STATUS,
@@ -36,8 +37,6 @@ public class DebtsPersistenceContract {
                     COLUMN_NOTE,
                     COLUMN_TYPE
             };
-
-            return columns;
         }
     }
 

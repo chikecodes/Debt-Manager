@@ -13,11 +13,12 @@
         android:theme="@style/AppTheme" >
         <activity android:name=".home.MainActivity"
                   android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".adddebt.AddDebtActivity"
                   android:theme="@style/AppTheme.NoActionBar">

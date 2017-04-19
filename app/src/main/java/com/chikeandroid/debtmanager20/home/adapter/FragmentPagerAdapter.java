@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.chikeandroid.debtmanager20.iowe.IOweFragment;
-import com.chikeandroid.debtmanager20.oweme.OweMeFragment;
+import com.chikeandroid.debtmanager20.oweme.OweMeDebtsFragment;
 import com.chikeandroid.debtmanager20.people.PeopleFragment;
 
 /**
@@ -28,7 +28,7 @@ public class FragmentPagerAdapter extends android.support.v4.app.FragmentPagerAd
         Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = OweMeFragment.newInstance();
+                fragment = OweMeDebtsFragment.newInstance();
                 break;
             case 1:
                 fragment = IOweFragment.newInstance();

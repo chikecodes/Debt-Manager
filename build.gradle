@@ -41,7 +41,6 @@ ext {
     espressoVersion = '2.2.2'
     circleImageVersion = "2.1.0"
     daggerVersion = '2.2'
-    toastyVersion = '1.1.4'
     stethoVersion = '1.4.2'
 
 }

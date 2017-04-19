@@ -1,6 +1,9 @@
 package com.chikeandroid.debtmanager20.util;
 
 import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -44,6 +47,10 @@ public class TimeUtil {
         return getCurrentDay(dayOfWeek - 1) + ", " +
                 getMonthForInt(month) + " " +
                 dayOfMonth + getDayOfMonthSuffix(dayOfMonth);
+    }
+
+    public static String millis2String(long millis, String pattern) {
+        return new SimpleDateFormat(pattern, Locale.getDefault()).format(new Date(millis));
     }
 
 }

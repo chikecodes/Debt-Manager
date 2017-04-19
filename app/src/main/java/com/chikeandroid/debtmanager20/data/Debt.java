@@ -5,8 +5,6 @@ import com.google.common.base.Strings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import java.util.UUID;
-
 /**
  * Created by Chike on 3/14/2017.
  * Immutable model class for a Debt
@@ -96,8 +94,8 @@ public final class Debt {
         private String mNote = "";
         private long mDueDate = 0;
 
-        public Builder(String personId, Double amount, long createdDate,int debtType, int status) {
-            mId = UUID.randomUUID().toString();
+        public Builder(String id, String personId, Double amount, long createdDate,int debtType, int status) {
+            mId = id;
             mAmount = amount;
             mCreatedDate = createdDate;
             mPersonId = personId;
@@ -171,6 +169,4 @@ public final class Debt {
         result = 31 * result + mStatus;
         return result;
     }
-
-
 }

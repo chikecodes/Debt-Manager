@@ -15,4 +15,5 @@
     <string name="created_date">Created on: %1$s</string>
     <string name="required_field">%1$s is required</string>
     <string name="msg_empty_debt">Cannot save empty debt</string>
+    <string name="msg_loading_debts_error">Error loading debts</string>
 </resources>

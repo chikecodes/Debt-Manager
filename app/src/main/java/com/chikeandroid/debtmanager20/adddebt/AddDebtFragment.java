@@ -37,8 +37,6 @@ import com.chikeandroid.debtmanager20.util.validator.EditTextPhoneNumberValidato
 
 import java.util.Calendar;
 
-import es.dmoral.toasty.Toasty;
-
 /**
  * Created by Chike on 3/16/2017.
  */
@@ -162,10 +160,9 @@ public class AddDebtFragment extends Fragment implements AddDebtContract.View {
                     new EditTextIntegerValidator(mEditTextAmount, getActivity())
                     )) {
 
-                Toasty.success(getActivity(), "invalid", Toast.LENGTH_LONG, true).show();
-            }else {
-                Toasty.success(getActivity(), "valid", Toast.LENGTH_LONG, true).show();
+                Toast.makeText(getActivity(), "Invalid", Toast.LENGTH_LONG).show();
 
+            }else {
                 mPresenter.saveDebt(mEditTextName.getText().toString(),
                         mEditTextPhoneNumber.getText().toString(), Double.valueOf(mEditTextAmount.getText().toString()), mEditTextComment.getText().toString(),
                         mDebtCreatedAt, mDebtDue, mDebtType, Debt.DEBT_STATUS_ACTIVE);
@@ -183,6 +180,12 @@ public class AddDebtFragment extends Fragment implements AddDebtContract.View {
     @Override
     public void showErroSavingDebt() {
 
+    }
+
+    @Override
+    public void showDebts() {
+        getActivity().setResult(Activity.RESULT_OK);
+        getActivity().finish();
     }
 
     @Override

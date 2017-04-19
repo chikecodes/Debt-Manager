@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  * Created by Chike on 3/14/2017.
@@ -23,8 +22,8 @@ public final class Person {
 
     private ArrayList<Debt> mDebts;
 
-    public Person(@NonNull String fullname, @Nullable String phoneNumber) {
-        mId = UUID.randomUUID().toString();
+    public Person(@NonNull String id, @NonNull String fullname, @Nullable String phoneNumber) {
+        mId = id;
         mFullname = fullname;
         mPhoneNumber = phoneNumber;
     }

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.chikeandroid.debtmanager20.base.BasePresenter;
 import com.chikeandroid.debtmanager20.base.BaseView;
 import com.chikeandroid.debtmanager20.data.Debt;
+import com.chikeandroid.debtmanager20.data.PersonDebt;
 
 import java.util.List;
 
@@ -12,15 +13,17 @@ import java.util.List;
  * Created by Chike on 3/13/2017.
  */
 
-public interface OweMeContract {
+public interface OweMeDebtsContract {
 
     interface View extends BaseView<Presenter> {
 
-        void showDebts(List<Debt> debts);
+        void showDebts(List<PersonDebt> debts);
 
         void showDebtDetailsUi(String debtId);
 
-        void showNoDebts();
+        void showEmptyView();
+
+        void showAddDebtUI();
 
         void showLoadingDebtsError();
 
@@ -28,8 +31,6 @@ public interface OweMeContract {
     }
 
     interface Presenter extends BasePresenter {
-
-        void loadDebts(boolean forceUpdate);
 
         void openDebtDetails(@NonNull Debt debt);
     }

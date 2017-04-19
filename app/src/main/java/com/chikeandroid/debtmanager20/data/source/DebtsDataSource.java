@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.Person;
+import com.chikeandroid.debtmanager20.data.PersonDebt;
 
 import java.util.List;
 
@@ -13,27 +14,11 @@ import java.util.List;
 
 public interface DebtsDataSource {
 
-    interface LoadDebtsCallback {
+    PersonDebt getDebt(@NonNull String debtId);
 
-        void onDebtsLoaded(List<Debt> debts);
+    List<PersonDebt> getAllDebts();
 
-        void onDataNotAvailable();
-    }
-
-    interface GetDebtCallback {
-
-        void onDebtLoaded(Debt debt);
-
-        void onDataNotAvailable();
-    }
-
-    void getDebts(@NonNull LoadDebtsCallback callback);
-
-    void getDebt(@NonNull String debtId, @NonNull GetDebtCallback callback);
-
-    void getIOwedDebts(@NonNull LoadDebtsCallback callback);
-
-    void getOwedDebts(@NonNull LoadDebtsCallback callback);
+    List<PersonDebt> getAllDebtsByType(@NonNull int debtType);
 
     void saveDebt(@NonNull Debt debt, @NonNull Person person);
 
@@ -43,5 +28,6 @@ public interface DebtsDataSource {
 
     void deleteDebt(@NonNull String debtId);
 
+    void deleteAllDebtsByType(@NonNull int debtType);
 
 }

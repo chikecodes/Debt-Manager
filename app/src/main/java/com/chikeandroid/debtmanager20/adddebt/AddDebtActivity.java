@@ -13,6 +13,8 @@ import javax.inject.Inject;
 
 public class AddDebtActivity extends SingleFragmentActivity {
 
+        public static final int REQUEST_ADD_DEBT = 1;
+
     @Inject
     AddDebtPresenter mAddDebtPresenter;
 

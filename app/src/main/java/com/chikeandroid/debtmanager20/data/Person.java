@@ -1,5 +1,7 @@
 package com.chikeandroid.debtmanager20.data;
 
+import com.google.common.base.Strings;
+
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -26,6 +28,11 @@ public final class Person {
         mId = id;
         mFullname = fullname;
         mPhoneNumber = phoneNumber;
+    }
+
+    public boolean isEmpty() {
+        return Strings.isNullOrEmpty(mPhoneNumber)
+                && Strings.isNullOrEmpty(String.valueOf(mFullname));
     }
 
     @NonNull

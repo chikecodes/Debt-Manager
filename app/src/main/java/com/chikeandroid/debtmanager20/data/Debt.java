@@ -1,7 +1,5 @@
 package com.chikeandroid.debtmanager20.data;
 
-import com.google.common.base.Strings;
-
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -131,11 +129,6 @@ public final class Debt {
         mDueDate = builder.mDueDate;
     }
 
-    public boolean isEmpty() {
-        return Strings.isNullOrEmpty(mPersonId)
-                && Strings.isNullOrEmpty(String.valueOf(mAmount));
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -152,6 +145,10 @@ public final class Debt {
         if (mNote != null ? !mNote.equals(debt.mNote) : debt.mNote != null) return false;
         return mPersonId.equals(debt.mPersonId);
 
+    }
+
+    public boolean isEmpty() {
+        return mAmount == 0;
     }
 
     @Override

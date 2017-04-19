@@ -51,8 +51,8 @@ public class AddDebtPresenter implements AddDebtContract.Presenter {
                 .note(note)
                 .build();
 
-        if(debt.isEmpty()) {
-            // mAddDebtsView.showEmptyDebtError();
+        if(person.isEmpty() && debt.isEmpty()) {
+            mAddDebtsView.showEmptyDebtError();
         } else {
             mDebtsRepository.saveDebt(debt, person);
             mAddDebtsView.showDebts();

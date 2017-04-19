@@ -15,6 +15,7 @@ import static org.mockito.Mockito.when;
 
 /**
  * Created by Chike on 4/12/2017.
+ * Unit tests for the implementation of {@link AddDebtPresenter}.
  */
 
 public class AddDebtPresenterTest {
@@ -28,12 +29,14 @@ public class AddDebtPresenterTest {
     private AddDebtPresenter mAddDebtPresenter;
 
     @Before
-    public void setUpMocksAndView() {
+    public void setUp() {
 
         MockitoAnnotations.initMocks(this);
 
         // The presenter wont't update the view unless it's active.
         when(mAddDebtView.isActive()).thenReturn(true);
+
+        mAddDebtPresenter = new AddDebtPresenter(mDebtsRepository, mAddDebtView);
     }
 
     @Test
@@ -46,5 +49,14 @@ public class AddDebtPresenterTest {
                 Debt.DEBT_TYPE_OWED, Debt.DEBT_STATUS_ACTIVE);
 
         verify(mDebtsRepository).saveDebt(any(Debt.class), any(Person.class));
+        verify(mAddDebtView).showDebts();
+    }
+
+    @Test
+    public void shouldShowEmptyDebtErrorUiWhenDebtSaved() {
+
+        mAddDebtPresenter.saveDebt("", "", 0, "", 0, 0, Debt.DEBT_TYPE_OWED, 0);
+
+        verify(mAddDebtView).showEmptyDebtError();
     }
 }

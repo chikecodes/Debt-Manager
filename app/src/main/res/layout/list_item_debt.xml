@@ -10,6 +10,8 @@
                 type="com.chikeandroid.debtmanager20.data.PersonDebt"/>
 
         <import type="com.chikeandroid.debtmanager20.util.TimeUtil"/>
+
+        <import type="com.chikeandroid.debtmanager20.util.StringUtil"/>
     </data>
 
     <LinearLayout
@@ -43,7 +45,7 @@
 
                 <TextView
                         android:id="@+id/tv_amount"
-                        android:text='@{String.valueOf(PersonDebt.debt.amount)}'
+                        android:text='@{StringUtil.commaNumber(PersonDebt.debt.amount)}'
                         android:textColor="@color/black"
                         tools:text="$20000"
                         android:layout_width="wrap_content"

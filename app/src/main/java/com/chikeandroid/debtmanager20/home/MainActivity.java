@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.chikeandroid.debtmanager20.R;
-import com.chikeandroid.debtmanager20.adddebt.AddDebtActivity;
+import com.chikeandroid.debtmanager20.adddebt.AddEditDebtActivity;
 import com.chikeandroid.debtmanager20.databinding.ActivityMainBinding;
 import com.chikeandroid.debtmanager20.home.adapter.FragmentPagerAdapter;
 
@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(MainActivity.this, AddDebtActivity.class);
-                startActivityForResult(intent, AddDebtActivity.REQUEST_ADD_DEBT);
+                Intent intent = new Intent(MainActivity.this, AddEditDebtActivity.class);
+                startActivityForResult(intent, AddEditDebtActivity.REQUEST_ADD_DEBT);
             }
         });
 
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (AddDebtActivity.REQUEST_ADD_DEBT == requestCode && Activity.RESULT_OK == resultCode) {
+        if (AddEditDebtActivity.REQUEST_ADD_DEBT == requestCode && Activity.RESULT_OK == resultCode) {
             Toast.makeText(this, "Debt saved successfully", Toast.LENGTH_LONG).show();
 
         }

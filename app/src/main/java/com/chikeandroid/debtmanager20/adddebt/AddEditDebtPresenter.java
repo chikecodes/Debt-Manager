@@ -15,16 +15,16 @@ import javax.inject.Inject;
  * Created by Chike on 3/16/2017.
  */
 
-public class AddDebtPresenter implements AddDebtContract.Presenter {
+public class AddEditDebtPresenter implements AddEditDebtContract.Presenter {
 
     @NonNull
     private final DebtsDataSource mDebtsRepository;
 
     @NonNull
-    private final AddDebtContract.View mAddDebtsView;
+    private final AddEditDebtContract.View mAddDebtsView;
 
     @Inject
-    AddDebtPresenter(DebtsRepository debtsRepository, AddDebtContract.View view) {
+    AddEditDebtPresenter(DebtsRepository debtsRepository, AddEditDebtContract.View view) {
         mDebtsRepository = debtsRepository;
         mAddDebtsView = view;
     }

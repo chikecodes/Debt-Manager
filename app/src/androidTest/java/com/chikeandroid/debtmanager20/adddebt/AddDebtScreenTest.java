@@ -32,8 +32,8 @@ public class AddDebtScreenTest {
     private final static String PHONE_NUMBER = "07038111534";
 
     @Rule
-    public ActivityTestRule<AddDebtActivity> activityRule =
-            new ActivityTestRule<>(AddDebtActivity.class);
+    public ActivityTestRule<AddEditDebtActivity> activityRule =
+            new ActivityTestRule<>(AddEditDebtActivity.class);
 
    /* @Before
     public void stubContactIntent() {

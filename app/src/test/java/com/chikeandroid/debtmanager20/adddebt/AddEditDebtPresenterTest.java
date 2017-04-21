@@ -15,18 +15,18 @@ import static org.mockito.Mockito.when;
 
 /**
  * Created by Chike on 4/12/2017.
- * Unit tests for the implementation of {@link AddDebtPresenter}.
+ * Unit tests for the implementation of {@link AddEditDebtPresenter}.
  */
 
-public class AddDebtPresenterTest {
+public class AddEditDebtPresenterTest {
 
     @Mock
     private DebtsRepository mDebtsRepository;
 
     @Mock
-    private AddDebtContract.View mAddDebtView;
+    private AddEditDebtContract.View mAddDebtView;
 
-    private AddDebtPresenter mAddDebtPresenter;
+    private AddEditDebtPresenter mAddEditDebtPresenter;
 
     @Before
     public void setUp() {
@@ -36,15 +36,15 @@ public class AddDebtPresenterTest {
         // The presenter wont't update the view unless it's active.
         when(mAddDebtView.isActive()).thenReturn(true);
 
-        mAddDebtPresenter = new AddDebtPresenter(mDebtsRepository, mAddDebtView);
+        mAddEditDebtPresenter = new AddEditDebtPresenter(mDebtsRepository, mAddDebtView);
     }
 
     @Test
     public void shouldSaveDebtToRepository() {
 
-        mAddDebtPresenter = new AddDebtPresenter(mDebtsRepository, mAddDebtView);
+        mAddEditDebtPresenter = new AddEditDebtPresenter(mDebtsRepository, mAddDebtView);
 
-        mAddDebtPresenter.saveDebt("Chike Mgbemena", "07038111534", 5045.34, "my note",
+        mAddEditDebtPresenter.saveDebt("Chike Mgbemena", "07038111534", 5045.34, "my note",
                 System.currentTimeMillis(), System.currentTimeMillis(),
                 Debt.DEBT_TYPE_OWED, Debt.DEBT_STATUS_ACTIVE);
 
@@ -55,7 +55,7 @@ public class AddDebtPresenterTest {
     @Test
     public void shouldShowEmptyDebtErrorUiWhenDebtSaved() {
 
-        mAddDebtPresenter.saveDebt("", "", 0, "", 0, 0, Debt.DEBT_TYPE_OWED, 0);
+        mAddEditDebtPresenter.saveDebt("", "", 0, "", 0, 0, Debt.DEBT_TYPE_OWED, 0);
 
         verify(mAddDebtView).showEmptyDebtError();
     }

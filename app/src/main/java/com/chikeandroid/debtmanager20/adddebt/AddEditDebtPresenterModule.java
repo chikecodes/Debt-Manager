@@ -6,19 +6,19 @@ import dagger.Provides;
 /**
  * Created by Chike on 3/25/2017.
  * This is a Dagger module. We use this to pass in the View dependency to the
- * {@link AddDebtPresenter}.
+ * {@link AddEditDebtPresenter}.
  */
 @Module
-public class AddDebtPresenterModule {
+public class AddEditDebtPresenterModule {
 
-    private final AddDebtContract.View mView;
+    private final AddEditDebtContract.View mView;
 
-    public AddDebtPresenterModule(AddDebtContract.View view) {
+    public AddEditDebtPresenterModule(AddEditDebtContract.View view) {
         mView = view;
     }
 
     @Provides
-    AddDebtContract.View providesAddDebtContractView() {
+    AddEditDebtContract.View providesAddDebtContractView() {
         return mView;
     }
 

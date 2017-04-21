@@ -7,7 +7,7 @@ import com.chikeandroid.debtmanager20.base.BaseView;
  * Created by Chike on 3/16/2017.
  */
 
-public interface AddDebtContract {
+public interface AddEditDebtContract {
 
     interface View extends BaseView<Presenter> {
 

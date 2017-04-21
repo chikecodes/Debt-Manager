@@ -11,6 +11,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.data.Debt;
+import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.FragmentAddDebtBinding;
 import com.chikeandroid.debtmanager20.util.TimeUtil;
 import com.chikeandroid.debtmanager20.util.ValidationUtil;
@@ -37,11 +39,15 @@ import com.chikeandroid.debtmanager20.util.validator.EditTextPhoneNumberValidato
 
 import java.util.Calendar;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by Chike on 3/16/2017.
  */
 
-public class AddDebtFragment extends Fragment implements AddDebtContract.View {
+public class AddEditDebtFragment extends Fragment implements AddEditDebtContract.View {
+
+    public static final String ARGUMENT_EDIT_DEBT = "com.chikeandroid.debtmanager20.debtdetail.DebtDetailFragment.EDIT_DEBT";
 
     private EditText mEditTextAmount;
     private EditText mEditTextName;
@@ -55,13 +61,15 @@ public class AddDebtFragment extends Fragment implements AddDebtContract.View {
     private long mDebtCreatedAt;
     private long mDebtDue;
 
-    private AddDebtContract.Presenter mPresenter;
+    private AddEditDebtContract.Presenter mPresenter;
 
-    public static AddDebtFragment newInstance() {
-        return new AddDebtFragment();
+    public static AddEditDebtFragment newInstance(Bundle bundle) {
+        AddEditDebtFragment addEditDebtFragment = new AddEditDebtFragment();
+        addEditDebtFragment.setArguments(bundle);
+        return addEditDebtFragment;
     }
 
-    public AddDebtFragment() {
+    public AddEditDebtFragment() {
 
     }
 
@@ -71,17 +79,43 @@ public class AddDebtFragment extends Fragment implements AddDebtContract.View {
         mPresenter.start();
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         FragmentAddDebtBinding fragmentAddDebtBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_debt, container, false);
 
+        String actionBarTitle = "Add Debt";
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            PersonDebt personDebt = bundle.getParcelable(ARGUMENT_EDIT_DEBT);
+            checkNotNull(personDebt);
+            fragmentAddDebtBinding.setPersonDebt(personDebt);
+            actionBarTitle = "Edit Debt";
+
+            if(personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_OWED) {
+                fragmentAddDebtBinding.rbOwedToMe.setChecked(true);
+                fragmentAddDebtBinding.rbOwedByMe.setChecked(false);
+            }else if(personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_i_OWE) {
+                fragmentAddDebtBinding.rbOwedToMe.setChecked(false);
+                fragmentAddDebtBinding.rbOwedByMe.setChecked(true);
+            }
+        }
+
         Toolbar toolbar = fragmentAddDebtBinding.toolbar;
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Add Debt");
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(actionBarTitle);
+        }
 
         mCalendar = Calendar.getInstance();
 
@@ -153,20 +187,24 @@ public class AddDebtFragment extends Fragment implements AddDebtContract.View {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int itemId = item.getItemId();
-        if(itemId == R.id.menu_save_debt) {
+        switch (itemId) {
+            case android.R.id.home:
+                getActivity().finish();
+                break;
+            case R.id.action_save_debt:
+                if(ValidationUtil.isInValid(new EditTextFullNameValidator(mEditTextName, getActivity()),
+                        new EditTextPhoneNumberValidator(mEditTextPhoneNumber, getActivity()),
+                        new EditTextIntegerValidator(mEditTextAmount, getActivity())
+                )) {
 
-            if(ValidationUtil.isInValid(new EditTextFullNameValidator(mEditTextName, getActivity()),
-                    new EditTextPhoneNumberValidator(mEditTextPhoneNumber, getActivity()),
-                    new EditTextIntegerValidator(mEditTextAmount, getActivity())
-                    )) {
+                    Toast.makeText(getActivity(), "Invalid", Toast.LENGTH_LONG).show();
 
-                Toast.makeText(getActivity(), "Invalid", Toast.LENGTH_LONG).show();
-
-            }else {
-                mPresenter.saveDebt(mEditTextName.getText().toString(),
-                        mEditTextPhoneNumber.getText().toString(), Double.valueOf(mEditTextAmount.getText().toString()), mEditTextComment.getText().toString(),
-                        mDebtCreatedAt, mDebtDue, mDebtType, Debt.DEBT_STATUS_ACTIVE);
-            }
+                }else {
+                    mPresenter.saveDebt(mEditTextName.getText().toString(),
+                            mEditTextPhoneNumber.getText().toString(), Double.valueOf(mEditTextAmount.getText().toString()), mEditTextComment.getText().toString(),
+                            mDebtCreatedAt, mDebtDue, mDebtType, Debt.DEBT_STATUS_ACTIVE);
+                }
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -194,7 +232,7 @@ public class AddDebtFragment extends Fragment implements AddDebtContract.View {
     }
 
     @Override
-    public void setPresenter(AddDebtContract.Presenter presenter) {
+    public void setPresenter(AddEditDebtContract.Presenter presenter) {
         mPresenter = presenter;
     }
 

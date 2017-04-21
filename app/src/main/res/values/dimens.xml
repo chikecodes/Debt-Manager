@@ -8,7 +8,7 @@
     <dimen name="spacing_large">16dp</dimen>
     <dimen name="spacing_mlarge">20dp</dimen>
     <dimen name="spacing_xlarge">32dp</dimen>
-
+    <dimen name="fab_margin">16dp</dimen>
     <dimen name="font_large">16sp</dimen>
 
     <integer name="scroll_delay">300</integer>

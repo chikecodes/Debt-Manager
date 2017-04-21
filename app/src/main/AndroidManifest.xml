@@ -20,8 +20,14 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".adddebt.AddDebtActivity"
-                  android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".adddebt.AddEditDebtActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".home.MainActivity" />
+        </activity>
+        <activity
+                android:name=".debtdetail.DebtDetailActivity"
+                android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".home.MainActivity" />

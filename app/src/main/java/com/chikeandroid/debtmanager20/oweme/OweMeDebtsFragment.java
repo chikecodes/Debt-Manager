@@ -17,10 +17,12 @@ import android.widget.Toast;
 
 import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.R;
-import com.chikeandroid.debtmanager20.adddebt.AddDebtActivity;
+import com.chikeandroid.debtmanager20.adddebt.AddEditDebtActivity;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.ListItemDebtBinding;
 import com.chikeandroid.debtmanager20.databinding.OweMeFragmentBinding;
+import com.chikeandroid.debtmanager20.debtdetail.DebtDetailActivity;
+import com.chikeandroid.debtmanager20.debtdetail.DebtDetailFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,8 +95,8 @@ public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.V
 
     @Override
     public void showAddDebtUI() {
-        Intent intent = new Intent(getContext(), AddDebtActivity.class);
-        startActivityForResult(intent, AddDebtActivity.REQUEST_ADD_DEBT);
+        Intent intent = new Intent(getContext(), AddEditDebtActivity.class);
+        startActivityForResult(intent, AddEditDebtActivity.REQUEST_ADD_DEBT);
     }
 
     @Nullable
@@ -204,17 +206,27 @@ public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.V
             return mPersonDebts.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
             private final ListItemDebtBinding mListItemDebtBinding;
+            PersonDebt mPersonDebt;
 
             public ViewHolder(ListItemDebtBinding binding) {
                 super(binding.getRoot());
                 mListItemDebtBinding = binding;
+                itemView.setOnClickListener(this);
             }
 
             public void bind(PersonDebt personDebt) {
+                mPersonDebt = personDebt;
                 mListItemDebtBinding.setPersonDebt(personDebt);
+            }
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), DebtDetailActivity.class);
+                intent.putExtra(DebtDetailFragment.EXTRA_PERSON_DEBT, mPersonDebt);
+                startActivity(intent);
             }
         }
     }

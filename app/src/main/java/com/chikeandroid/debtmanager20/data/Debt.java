@@ -1,5 +1,7 @@
 package com.chikeandroid.debtmanager20.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -7,7 +9,7 @@ import android.support.annotation.Nullable;
  * Created by Chike on 3/14/2017.
  * Immutable model class for a Debt
  */
-public final class Debt {
+public final class Debt implements Parcelable {
 
     public static final int DEBT_TYPE_i_OWE = 100;
     public static final int DEBT_TYPE_OWED = 200;
@@ -166,4 +168,45 @@ public final class Debt {
         result = 31 * result + mStatus;
         return result;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mId);
+        dest.writeDouble(this.mAmount);
+        dest.writeString(this.mNote);
+        dest.writeString(this.mPersonId);
+        dest.writeLong(this.mCreatedDate);
+        dest.writeLong(this.mDueDate);
+        dest.writeInt(this.mDebtType);
+        dest.writeInt(this.mStatus);
+    }
+
+    protected Debt(Parcel in) {
+        this.mId = in.readString();
+        this.mAmount = in.readDouble();
+        this.mNote = in.readString();
+        this.mPersonId = in.readString();
+        this.mCreatedDate = in.readLong();
+        this.mDueDate = in.readLong();
+        this.mDebtType = in.readInt();
+        this.mStatus = in.readInt();
+    }
+
+    public static final Parcelable.Creator<Debt> CREATOR = new Parcelable.Creator<Debt>() {
+        @Override
+        public Debt createFromParcel(Parcel source) {
+            return new Debt(source);
+        }
+
+        @Override
+        public Debt[] newArray(int size) {
+            return new Debt[size];
+        }
+    };
 }

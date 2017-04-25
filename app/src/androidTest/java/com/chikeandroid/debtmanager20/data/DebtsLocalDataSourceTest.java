@@ -6,6 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 import com.chikeandroid.debtmanager20.data.source.DebtsDataSource;
 import com.chikeandroid.debtmanager20.data.source.local.DebtsDbHelper;
 import com.chikeandroid.debtmanager20.data.source.local.DebtsLocalDataSource;
+import com.chikeandroid.debtmanager20.util.TestUtil;
 
 import org.junit.After;
 import org.junit.Before;
@@ -13,7 +14,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
-import java.util.UUID;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
@@ -50,13 +50,10 @@ public class DebtsLocalDataSourceTest {
     @Test
     public void shouldBeAbleToSaveDebtAndThenRetrieveIt() {
 
-        Person person = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534");
-        Debt debt = new Debt.Builder(UUID.randomUUID().toString(), person.getId(), 5000.87,
-                System.currentTimeMillis(), Debt.DEBT_TYPE_OWED,
-                Debt.DEBT_STATUS_PARTIAL)
-                .dueDate(System.currentTimeMillis())
-                .note("school fees")
-                .build();
+        Person person = TestUtil.createPerson("Chike Mgbemena", "07038111534");
+        Debt debt = TestUtil.createDebt(person.getId(), 5000.34, Debt.DEBT_TYPE_OWED,
+                Debt.DEBT_STATUS_ACTIVE, "food money");
+
         mDebtsLocalDataSource.saveDebt(debt, person);
         PersonDebt personDebt1 = new PersonDebt(person, debt);
 
@@ -67,24 +64,15 @@ public class DebtsLocalDataSourceTest {
     @Test
     public void shouldBeAbleToGetAllDebtsSaved() {
 
-        Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534");
-        Debt debt1 = new Debt.Builder(UUID.randomUUID().toString(), person1.getId(), 5000.87,
-                System.currentTimeMillis(), Debt.DEBT_TYPE_OWED,
-                Debt.DEBT_STATUS_PARTIAL)
-                .dueDate(System.currentTimeMillis())
-                .note("school fees")
-                .build();
+        Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
+        Debt debt1 = TestUtil.createDebt(person1.getId(), 564744, Debt.DEBT_TYPE_OWED,
+                Debt.DEBT_STATUS_ACTIVE, "textbook money");
         PersonDebt personDebt1 = new PersonDebt(person1, debt1);
         mDebtsLocalDataSource.saveDebt(debt1, person1);
 
-        Person person2 = new Person(UUID.randomUUID().toString(), "Mary Jane", "080145236987");
-        Debt debt2 = new Debt.Builder(UUID.randomUUID().toString(), person2.getId(), 474514.154,
-                System.currentTimeMillis(), Debt.DEBT_TYPE_i_OWE,
-                Debt.DEBT_STATUS_PARTIAL)
-                .dueDate(System.currentTimeMillis())
-                .note("food money")
-                .build();
-
+        Person person2 = TestUtil.createPerson("Mary Jane", "080145236987");
+        Debt debt2 = TestUtil.createDebt(person2.getId(), 445444, Debt.DEBT_TYPE_i_OWE,
+                Debt.DEBT_STATUS_ACTIVE, "Hair money");
         PersonDebt personDebt2 = new PersonDebt(person2, debt2);
         mDebtsLocalDataSource.saveDebt(debt2, person2);
 
@@ -110,14 +98,15 @@ public class DebtsLocalDataSourceTest {
     @Test
     public void shouldBeAbleToDeleteAllDebts() {
 
-        Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534");
-        Debt debt1 = new Debt.Builder(UUID.randomUUID().toString(), person1.getId(), 5000.87,
-                System.currentTimeMillis(), Debt.DEBT_TYPE_OWED,
-                Debt.DEBT_STATUS_PARTIAL)
-                .dueDate(System.currentTimeMillis())
-                .note("school fees")
-                .build();
+        Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
+        Debt debt1 = TestUtil.createDebt(person1.getId(), 564744, Debt.DEBT_TYPE_OWED,
+                Debt.DEBT_STATUS_ACTIVE, "textbook money");
         mDebtsLocalDataSource.saveDebt(debt1, person1);
+
+        Person person2 = TestUtil.createPerson("Mary Jane", "080145236987");
+        Debt debt2 = TestUtil.createDebt(person2.getId(), 445444, Debt.DEBT_TYPE_i_OWE,
+                Debt.DEBT_STATUS_ACTIVE, "Hair money");
+        mDebtsLocalDataSource.saveDebt(debt2, person2);
 
         mDebtsLocalDataSource.deleteAllDebts();
 
@@ -128,13 +117,9 @@ public class DebtsLocalDataSourceTest {
     @Test
     public void shouldBeAbleToDeleteDebt() {
 
-        Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534");
-        Debt debt1 = new Debt.Builder(UUID.randomUUID().toString(), person1.getId(), 5000.87,
-                System.currentTimeMillis(), Debt.DEBT_TYPE_OWED,
-                Debt.DEBT_STATUS_PARTIAL)
-                .dueDate(System.currentTimeMillis())
-                .note("school fees")
-                .build();
+        Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
+        Debt debt1 = TestUtil.createDebt(person1.getId(), 564744, Debt.DEBT_TYPE_OWED,
+                Debt.DEBT_STATUS_ACTIVE, "textbook money");
         mDebtsLocalDataSource.saveDebt(debt1, person1);
 
         mDebtsLocalDataSource.deleteDebt(debt1.getId());
@@ -145,25 +130,15 @@ public class DebtsLocalDataSourceTest {
     @Test
     public void shouldBeAbleToGetAllDebtsByType() {
 
-        Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534");
-        Debt debt1 = new Debt.Builder(UUID.randomUUID().toString(), person1.getId(), 5000.87,
-                System.currentTimeMillis(), Debt.DEBT_TYPE_OWED,
-                Debt.DEBT_STATUS_PARTIAL)
-                .dueDate(System.currentTimeMillis())
-                .note("school fees")
-                .build();
-
+        Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
+        Debt debt1 = TestUtil.createDebt(person1.getId(), 564744, Debt.DEBT_TYPE_OWED,
+                Debt.DEBT_STATUS_ACTIVE, "textbook money");
         PersonDebt personDebt1 = new PersonDebt(person1, debt1);
         mDebtsLocalDataSource.saveDebt(debt1, person1);
 
-        Person person2 = new Person(UUID.randomUUID().toString(), "Mary Jane", "05014578496");
-        Debt debt2 = new Debt.Builder(UUID.randomUUID().toString(), person2.getId(), 784574.5698,
-                System.currentTimeMillis(), Debt.DEBT_TYPE_OWED,
-                Debt.DEBT_STATUS_PARTIAL)
-                .dueDate(System.currentTimeMillis())
-                .note("hair salon")
-                .build();
-
+        Person person2 = TestUtil.createPerson("Mary Jane", "080145236987");
+        Debt debt2 = TestUtil.createDebt(person2.getId(), 445444, Debt.DEBT_TYPE_OWED,
+                Debt.DEBT_STATUS_ACTIVE, "Hair money");
         PersonDebt personDebt2 = new PersonDebt(person2, debt2);
         mDebtsLocalDataSource.saveDebt(debt2, person2);
 
@@ -188,22 +163,14 @@ public class DebtsLocalDataSourceTest {
     @Test
     public void shouldBeAbleToDeleteAllDebtsByType() {
 
-        Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534");
-        Debt debt1 = new Debt.Builder(UUID.randomUUID().toString(), person1.getId(), 5000.87,
-                System.currentTimeMillis(), Debt.DEBT_TYPE_i_OWE,
-                Debt.DEBT_STATUS_PARTIAL)
-                .dueDate(System.currentTimeMillis())
-                .note("school fees")
-                .build();
+        Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
+        Debt debt1 = TestUtil.createDebt(person1.getId(), 564744, Debt.DEBT_TYPE_i_OWE,
+                Debt.DEBT_STATUS_ACTIVE, "textbook money");
         mDebtsLocalDataSource.saveDebt(debt1, person1);
 
-        Person person2 = new Person(UUID.randomUUID().toString(), "Mary Jane", "05014578496");
-        Debt debt2 = new Debt.Builder(UUID.randomUUID().toString(), person2.getId(), 784574.5698,
-                System.currentTimeMillis(), Debt.DEBT_TYPE_i_OWE,
-                Debt.DEBT_STATUS_PARTIAL)
-                .dueDate(System.currentTimeMillis())
-                .note("hair salon")
-                .build();
+        Person person2 = TestUtil.createPerson("Mary Jane", "080145236987");
+        Debt debt2 = TestUtil.createDebt(person2.getId(), 445444, Debt.DEBT_TYPE_i_OWE,
+                Debt.DEBT_STATUS_ACTIVE, "Hair money");
         mDebtsLocalDataSource.saveDebt(debt2, person2);
 
         mDebtsLocalDataSource.deleteAllDebtsByType(Debt.DEBT_TYPE_i_OWE);
@@ -215,14 +182,9 @@ public class DebtsLocalDataSourceTest {
     @Test
     public void shouldBeAbleToUpdateDebtWithOutPhoneNumber() {
 
-        Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534");
-        Debt debt1 = new Debt.Builder(UUID.randomUUID().toString(), person1.getId(), 5000.87,
-                System.currentTimeMillis(), Debt.DEBT_TYPE_i_OWE,
-                Debt.DEBT_STATUS_PARTIAL)
-                .dueDate(System.currentTimeMillis())
-                .note("school fees")
-                .build();
-
+        Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
+        Debt debt1 = TestUtil.createDebt(person1.getId(), 564744, Debt.DEBT_TYPE_i_OWE,
+                Debt.DEBT_STATUS_ACTIVE, "textbook money");
         mDebtsLocalDataSource.saveDebt(debt1, person1);
 
         PersonDebt personDebt = mDebtsLocalDataSource.getDebt(debt1.getId());
@@ -242,19 +204,15 @@ public class DebtsLocalDataSourceTest {
     @Test
     public void shouldCreateNewUserOnUpdateWithPhoneNumberIfNotAlreadyInDatabase() {
 
-        Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534");
-        Debt debt1 = new Debt.Builder(UUID.randomUUID().toString(), person1.getId(), 5000.87,
-                System.currentTimeMillis(), Debt.DEBT_TYPE_i_OWE,
-                Debt.DEBT_STATUS_PARTIAL)
-                .dueDate(System.currentTimeMillis())
-                .note("school fees")
-                .build();
-
+        Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
+        Debt debt1 = TestUtil.createDebt(person1.getId(), 564744, Debt.DEBT_TYPE_i_OWE,
+                Debt.DEBT_STATUS_ACTIVE, "textbook money");
         mDebtsLocalDataSource.saveDebt(debt1, person1);
 
         PersonDebt personDebt = mDebtsLocalDataSource.getDebt(debt1.getId());
 
         personDebt.getPerson().setFullname("Emeka Onu");
+        // changed phone number, so new user is created
         personDebt.getPerson().setPhoneNumber("4190");
 
         mDebtsLocalDataSource.updateDebt(personDebt);

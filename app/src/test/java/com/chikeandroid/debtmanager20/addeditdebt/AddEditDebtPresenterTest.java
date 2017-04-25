@@ -1,7 +1,8 @@
-package com.chikeandroid.debtmanager20.adddebt;
+package com.chikeandroid.debtmanager20.addeditdebt;
 
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.Person;
+import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.data.source.DebtsRepository;
 
 import org.junit.Before;
@@ -36,13 +37,11 @@ public class AddEditDebtPresenterTest {
         // The presenter wont't update the view unless it's active.
         when(mAddDebtView.isActive()).thenReturn(true);
 
-        mAddEditDebtPresenter = new AddEditDebtPresenter(mDebtsRepository, mAddDebtView);
+        mAddEditDebtPresenter = new AddEditDebtPresenter(mDebtsRepository, mAddDebtView, null, null);
     }
 
     @Test
     public void shouldSaveDebtToRepository() {
-
-        mAddEditDebtPresenter = new AddEditDebtPresenter(mDebtsRepository, mAddDebtView);
 
         mAddEditDebtPresenter.saveDebt("Chike Mgbemena", "07038111534", 5045.34, "my note",
                 System.currentTimeMillis(), System.currentTimeMillis(),
@@ -58,5 +57,21 @@ public class AddEditDebtPresenterTest {
         mAddEditDebtPresenter.saveDebt("", "", 0, "", 0, 0, Debt.DEBT_TYPE_OWED, 0);
 
         verify(mAddDebtView).showEmptyDebtError();
+    }
+
+    @Test
+    public void shouldUpdateDebtInRepository() {
+
+        String debtId = "1234";
+        String personId = "4567";
+
+        mAddEditDebtPresenter = new AddEditDebtPresenter(mDebtsRepository, mAddDebtView, debtId, personId);
+
+        mAddEditDebtPresenter.saveDebt("Chike Mgbemena", "07038111534", 5045.34, "my note",
+                System.currentTimeMillis(), System.currentTimeMillis(),
+                Debt.DEBT_TYPE_OWED, Debt.DEBT_STATUS_ACTIVE);
+
+        verify(mDebtsRepository).updateDebt(any(PersonDebt.class));
+        verify(mAddDebtView).showDebts();
     }
 }

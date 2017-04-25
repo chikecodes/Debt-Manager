@@ -20,6 +20,7 @@ import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 
 /**
@@ -60,7 +61,6 @@ public class DebtsLocalDataSourceTest {
         PersonDebt personDebt1 = new PersonDebt(person, debt);
 
         PersonDebt personDebt2 = mDebtsLocalDataSource.getDebt(debt.getId());
-
         assertThat(personDebt1, is(personDebt2));
     }
 
@@ -210,5 +210,59 @@ public class DebtsLocalDataSourceTest {
 
         List<PersonDebt> personDebts = mDebtsLocalDataSource.getAllDebtsByType(Debt.DEBT_TYPE_i_OWE);
         assertEquals(personDebts.size(), 0);
+    }
+
+    @Test
+    public void shouldBeAbleToUpdateDebtWithOutPhoneNumber() {
+
+        Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534");
+        Debt debt1 = new Debt.Builder(UUID.randomUUID().toString(), person1.getId(), 5000.87,
+                System.currentTimeMillis(), Debt.DEBT_TYPE_i_OWE,
+                Debt.DEBT_STATUS_PARTIAL)
+                .dueDate(System.currentTimeMillis())
+                .note("school fees")
+                .build();
+
+        mDebtsLocalDataSource.saveDebt(debt1, person1);
+
+        PersonDebt personDebt = mDebtsLocalDataSource.getDebt(debt1.getId());
+
+        // a new phone number will create a new Person
+        personDebt.getPerson().setFullname("Emeka Onu");
+        personDebt.getDebt().setAmount(500);
+        personDebt.getDebt().setNote("meat money");
+
+        mDebtsLocalDataSource.updateDebt(personDebt);
+
+        PersonDebt personDebt1 = mDebtsLocalDataSource.getDebt(debt1.getId());
+
+        assertThat(personDebt, is(personDebt1));
+    }
+
+    @Test
+    public void shouldCreateNewUserOnUpdateWithPhoneNumberIfNotAlreadyInDatabase() {
+
+        Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534");
+        Debt debt1 = new Debt.Builder(UUID.randomUUID().toString(), person1.getId(), 5000.87,
+                System.currentTimeMillis(), Debt.DEBT_TYPE_i_OWE,
+                Debt.DEBT_STATUS_PARTIAL)
+                .dueDate(System.currentTimeMillis())
+                .note("school fees")
+                .build();
+
+        mDebtsLocalDataSource.saveDebt(debt1, person1);
+
+        PersonDebt personDebt = mDebtsLocalDataSource.getDebt(debt1.getId());
+
+        personDebt.getPerson().setFullname("Emeka Onu");
+        personDebt.getPerson().setPhoneNumber("4190");
+
+        mDebtsLocalDataSource.updateDebt(personDebt);
+
+        // it should create a new user
+        PersonDebt personDebt1 = mDebtsLocalDataSource.getDebt(debt1.getId());
+
+        // means that a new person was created
+        assertThat(personDebt, is(not(personDebt1)));
     }
 }

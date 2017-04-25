@@ -109,7 +109,7 @@ public class AddDebtScreenTest {
        onView(withId(R.id.et_full_name)).perform(clearText());
        onView(withId(R.id.et_phone_number)).perform(clearText());
        onView(withId(R.id.et_amount)).perform(clearText());
-       onView(withId(R.id.menu_save_debt)).perform(click());
+       onView(withId(R.id.action_save_debt)).perform(click());
 
        onView(withId(R.id.et_comment)).check(matches(isDisplayed()));
    }

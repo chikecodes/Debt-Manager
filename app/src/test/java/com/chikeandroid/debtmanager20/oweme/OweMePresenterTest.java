@@ -6,7 +6,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
 import com.chikeandroid.debtmanager20.data.Debt;
-import com.chikeandroid.debtmanager20.data.DebtsLoader;
+import com.chikeandroid.debtmanager20.data.loaders.DebtsLoader;
 import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.data.source.DebtsRepository;

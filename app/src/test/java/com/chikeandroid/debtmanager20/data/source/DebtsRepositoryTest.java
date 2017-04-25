@@ -14,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.UUID;
 
+import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
@@ -203,5 +204,32 @@ public class DebtsRepositoryTest {
         verify(mDebtsLocalDataSource).deleteAllDebtsByType(eq(Debt.DEBT_TYPE_OWED));
 
         assertTrue(mDebtsRepository.getAllDebtsByType(Debt.DEBT_TYPE_OWED).size() == 0);
+    }
+
+    @Test
+    public void shouldBeAbleToUpdateDebtFromLocalDataSource() {
+
+        Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534");
+        Debt debt1 = new Debt.Builder(UUID.randomUUID().toString(), person1.getId(), 5000.87,
+                System.currentTimeMillis(), Debt.DEBT_TYPE_OWED,
+                Debt.DEBT_STATUS_PARTIAL)
+                .dueDate(System.currentTimeMillis())
+                .note("school fees")
+                .build();
+
+        mDebtsRepository.saveDebt(debt1, person1);
+
+        PersonDebt personDebt = mDebtsRepository.getDebt(debt1.getId());
+
+        personDebt.getPerson().setFullname("Emeka Onu");
+        personDebt.getDebt().setAmount(300);
+
+        mDebtsRepository.updateDebt(personDebt);
+
+        verify(mDebtsLocalDataSource).updateDebt(eq(personDebt));
+
+        PersonDebt personDebt1 = mDebtsRepository.getDebt(debt1.getId());
+
+        assertEquals(personDebt1, personDebt);
     }
 }

@@ -30,4 +30,7 @@ public interface DebtsDataSource {
 
     void deleteAllDebtsByType(@NonNull int debtType);
 
+    void updateDebt(@NonNull PersonDebt personDebt);
+
+    String saveNewPerson(@NonNull Person person) ;
 }

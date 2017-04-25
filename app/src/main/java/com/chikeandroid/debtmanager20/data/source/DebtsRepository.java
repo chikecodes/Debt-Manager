@@ -73,6 +73,10 @@ public class DebtsRepository implements DebtsDataSource {
         return mCachedDebts == null ? null : new ArrayList<>(mCachedDebts.values());
     }
 
+    public PersonDebt getCachedDebt(String debtId) {
+        return mCachedDebts.get(debtId);
+    }
+
     @Override
     public PersonDebt getDebt(@NonNull String debtId) {
         checkNotNull(debtId);
@@ -220,6 +224,26 @@ public class DebtsRepository implements DebtsDataSource {
         mDebtsLocalDataSource.deleteAllDebtsByType(debtType);
 
         removeDebtTypeFromCache(debtType);
+    }
+
+    @Override
+    public void updateDebt(@NonNull PersonDebt personDebt) {
+
+        checkNotNull(personDebt);
+        mDebtsLocalDataSource.updateDebt(personDebt);
+
+        Debt debt = personDebt.getDebt();
+        mCachedDebts.remove(debt.getId());
+        mCachedDebts.put(debt.getId(), personDebt);
+
+        //update the UI
+        notifyContentObserver();
+
+    }
+
+    @Override
+    public String saveNewPerson(@NonNull Person person) {
+        return null;
     }
 
     private void removeDebtTypeFromCache(@NonNull int debtType) {

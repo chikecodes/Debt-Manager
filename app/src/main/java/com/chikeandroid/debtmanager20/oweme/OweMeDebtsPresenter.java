@@ -9,7 +9,7 @@ import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.data.source.DebtsDataSource;
 import com.chikeandroid.debtmanager20.data.source.DebtsRepository;
-import com.chikeandroid.debtmanager20.data.DebtsLoader;
+import com.chikeandroid.debtmanager20.data.loaders.DebtsLoader;
 
 import java.util.ArrayList;
 import java.util.List;

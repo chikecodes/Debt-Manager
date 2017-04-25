@@ -16,6 +16,7 @@ import com.chikeandroid.debtmanager20.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Singleton;
 
@@ -55,7 +56,7 @@ public class DebtsLocalDataSource implements DebtsDataSource {
                 String personId = cursor.getString(cursor.getColumnIndexOrThrow(DebtsEntry.COLUMN_PERSON_ID));
                 int status = cursor.getInt(cursor.getColumnIndexOrThrow(DebtsEntry.COLUMN_STATUS));
                 int debtType1 = cursor.getInt(cursor.getColumnIndexOrThrow(DebtsEntry.COLUMN_TYPE));
-                String entryId = cursor.getString(cursor.getColumnIndexOrThrow(DebtsEntry.COLUMN_ENTRY_ID));
+                String entryId = cursor.getString(cursor.getColumnIndexOrThrow(DebtsEntry.ALIAS_DEBT_ID));
 
                 Debt debt = new Debt.Builder(entryId, personId, amount, dateEntered, debtType1, status)
                         .dueDate(dateDue)
@@ -64,7 +65,7 @@ public class DebtsLocalDataSource implements DebtsDataSource {
 
                 String personName = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_NAME));
                 String personPhoneNo = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_PHONE_NO));
-                String personEntryId = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_ENTRY_ID));
+                String personEntryId = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.ALIAS_PERSON_ID));
 
                 Person person = new Person(personEntryId, personName, personPhoneNo);
 
@@ -93,7 +94,7 @@ public class DebtsLocalDataSource implements DebtsDataSource {
         List<PersonDebt> personDebts = new ArrayList<>();
         SQLiteDatabase db = mDebtsDbHelper.getReadableDatabase();
 
-        String sql = buildGetDebtsQueryByWhere(DebtsEntry.COLUMN_TYPE);
+        String sql = buildGetDebtsQueryByWhere(DebtsEntry.TABLE_NAME + "." + DebtsEntry.COLUMN_TYPE);
         Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(debtType)});
 
         if(cursor != null && cursor.getCount() > 0) {
@@ -106,7 +107,7 @@ public class DebtsLocalDataSource implements DebtsDataSource {
                 String personId = cursor.getString(cursor.getColumnIndexOrThrow(DebtsEntry.COLUMN_PERSON_ID));
                 int status = cursor.getInt(cursor.getColumnIndexOrThrow(DebtsEntry.COLUMN_STATUS));
                 int debtType1 = cursor.getInt(cursor.getColumnIndexOrThrow(DebtsEntry.COLUMN_TYPE));
-                String entryId = cursor.getString(cursor.getColumnIndexOrThrow(DebtsEntry.COLUMN_ENTRY_ID));
+                String entryId = cursor.getString(cursor.getColumnIndexOrThrow(DebtsEntry.ALIAS_DEBT_ID));
 
                 Debt debt = new Debt.Builder(entryId, personId, amount, dateEntered, debtType1, status)
                         .dueDate(dateDue)
@@ -115,7 +116,7 @@ public class DebtsLocalDataSource implements DebtsDataSource {
 
                 String personName = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_NAME));
                 String personPhoneNo = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_PHONE_NO));
-                String personEntryId = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_ENTRY_ID));
+                String personEntryId = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.ALIAS_PERSON_ID));
 
                 Person person = new Person(personEntryId, personName, personPhoneNo);
 
@@ -144,7 +145,7 @@ public class DebtsLocalDataSource implements DebtsDataSource {
 
         SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();
 
-        String sql = buildGetDebtsQueryByWhere(DebtsEntry.COLUMN_ENTRY_ID);
+        String sql = buildGetDebtsQueryByWhere(DebtsEntry.TABLE_NAME + "." + DebtsEntry.COLUMN_ENTRY_ID);
         Cursor c = db.rawQuery(sql, new String[]{String.valueOf(debtId)});
 
         Debt debt = null;
@@ -160,7 +161,7 @@ public class DebtsLocalDataSource implements DebtsDataSource {
             long dateEntered = c.getLong(c.getColumnIndexOrThrow(DebtsEntry.COLUMN_DATE_ENTERED));
             String note = c.getString(c.getColumnIndexOrThrow(DebtsEntry.COLUMN_NOTE));
             int type = c.getInt(c.getColumnIndexOrThrow(DebtsEntry.COLUMN_TYPE));
-            String entryId = c.getString(c.getColumnIndexOrThrow(DebtsEntry.COLUMN_ENTRY_ID));
+            String entryId = c.getString(c.getColumnIndexOrThrow(DebtsEntry.ALIAS_DEBT_ID));
 
             debt = new Debt.Builder(entryId, personId, amount, dateEntered, type, status)
                     .dueDate(dateDue)
@@ -169,7 +170,7 @@ public class DebtsLocalDataSource implements DebtsDataSource {
 
             String personName = c.getString(c.getColumnIndexOrThrow(PersonsEntry.COLUMN_NAME));
             String personPhoneNo = c.getString(c.getColumnIndexOrThrow(PersonsEntry.COLUMN_PHONE_NO));
-            String personEntryId = c.getString(c.getColumnIndexOrThrow(PersonsEntry.COLUMN_ENTRY_ID));
+            String personEntryId = c.getString(c.getColumnIndexOrThrow(PersonsEntry.ALIAS_PERSON_ID));
 
             Person person = new Person(personEntryId, personName, personPhoneNo);
 
@@ -188,11 +189,14 @@ public class DebtsLocalDataSource implements DebtsDataSource {
     public String buildGetDebtsQueryByWhere(String where) {
 
         String COMMA_SEP = ", ";
+        String ALIAS = " AS ";
         StringBuilder sqlStringBuilder = new StringBuilder();
         sqlStringBuilder.append("SELECT ");
         sqlStringBuilder.append(DebtsEntry.COLUMN_PERSON_ID);
         sqlStringBuilder.append(COMMA_SEP);
-        sqlStringBuilder.append(DebtsEntry.COLUMN_ENTRY_ID);
+        sqlStringBuilder.append(DebtsEntry.TABLE_NAME + "." + DebtsEntry.COLUMN_ENTRY_ID);
+        sqlStringBuilder.append(ALIAS);
+        sqlStringBuilder.append(DebtsEntry.ALIAS_DEBT_ID);
         sqlStringBuilder.append(COMMA_SEP);
         sqlStringBuilder.append(DebtsEntry.COLUMN_AMOUNT);
         sqlStringBuilder.append(COMMA_SEP);
@@ -208,7 +212,9 @@ public class DebtsLocalDataSource implements DebtsDataSource {
         sqlStringBuilder.append(COMMA_SEP);
         sqlStringBuilder.append(PersonsEntry.COLUMN_NAME);
         sqlStringBuilder.append(COMMA_SEP);
-        sqlStringBuilder.append(PersonsEntry.COLUMN_ENTRY_ID);
+        sqlStringBuilder.append(PersonsEntry.TABLE_NAME + "." + PersonsEntry.COLUMN_ENTRY_ID);
+        sqlStringBuilder.append(ALIAS);
+        sqlStringBuilder.append(PersonsEntry.ALIAS_PERSON_ID);
         sqlStringBuilder.append(COMMA_SEP);
         sqlStringBuilder.append(PersonsEntry.COLUMN_PHONE_NO);
         sqlStringBuilder.append(" FROM ");
@@ -242,7 +248,6 @@ public class DebtsLocalDataSource implements DebtsDataSource {
             personValues.put(PersonsEntry.COLUMN_ENTRY_ID, person.getId());
             personValues.put(PersonsEntry.COLUMN_NAME, person.getFullname());
             personValues.put(PersonsEntry.COLUMN_PHONE_NO, person.getPhoneNumber());
-
             db.insert(PersonsEntry.TABLE_NAME, null, personValues);
 
         } else {
@@ -304,13 +309,63 @@ public class DebtsLocalDataSource implements DebtsDataSource {
         db.close();
     }
 
+    @Override
+    public void updateDebt(@NonNull PersonDebt personDebt) {
+
+        checkNotNull(personDebt);
+        SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();
+
+        ContentValues personContentValues = new ContentValues();
+        Person person = personDebt.getPerson();
+        personContentValues.put(PersonsEntry.COLUMN_PHONE_NO, person.getPhoneNumber());
+        personContentValues.put(PersonsEntry.COLUMN_NAME, person.getFullname());
+
+        Debt debt = personDebt.getDebt();
+        String personId;
+        if (!personAlreadyExist(person.getPhoneNumber())) {
+
+            personId = saveNewPerson(person);
+
+        } else {
+
+            personId = getPersonIdIfAlreadyExist(person.getPhoneNumber());
+            db.update(PersonsEntry.TABLE_NAME, personContentValues, PersonsEntry.COLUMN_ENTRY_ID + " = ?", new String[]{personId});
+        }
+
+        ContentValues debtContentValues = new ContentValues();
+        debtContentValues.put(DebtsEntry.COLUMN_DATE_ENTERED, debt.getCreatedDate());
+        debtContentValues.put(DebtsEntry.COLUMN_PERSON_ID, personId);
+        debtContentValues.put(DebtsEntry.COLUMN_DATE_DUE, debt.getDueDate());
+        debtContentValues.put(DebtsEntry.COLUMN_NOTE, debt.getNote());
+        debtContentValues.put(DebtsEntry.COLUMN_AMOUNT, debt.getAmount());
+        debtContentValues.put(DebtsEntry.COLUMN_TYPE, debt.getDebtType());
+        debtContentValues.put(DebtsEntry.COLUMN_STATUS, debt.getStatus());
+
+        db.update(DebtsEntry.TABLE_NAME, debtContentValues, DebtsEntry.COLUMN_ENTRY_ID + " = ?", new String[]{debt.getId()});
+    }
+
+    @Override
+    public String saveNewPerson(@NonNull Person person) {
+
+        SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();
+
+        String personId = UUID.randomUUID().toString();
+        ContentValues personValues = new ContentValues();
+        personValues.put(PersonsEntry.COLUMN_ENTRY_ID, personId);
+        personValues.put(PersonsEntry.COLUMN_NAME, person.getFullname());
+        personValues.put(PersonsEntry.COLUMN_PHONE_NO, person.getPhoneNumber());
+        db.insert(PersonsEntry.TABLE_NAME, null, personValues);
+
+        return personId;
+    }
+
     private String getPersonIdIfAlreadyExist(String phoneNumber) {
 
         if (!StringUtil.isEmpty(phoneNumber)) {
             SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();
 
-            Cursor cursor = db.rawQuery("SELECT entryid FROM " + PersonsEntry.TABLE_NAME +
-                    " WHERE phone_no = ?", new String[]{String.valueOf(phoneNumber)});
+            Cursor cursor = db.rawQuery("SELECT " + PersonsEntry.COLUMN_ENTRY_ID + " FROM " + PersonsEntry.TABLE_NAME +
+                    " WHERE " + PersonsEntry.COLUMN_PHONE_NO + " = ?", new String[]{String.valueOf(phoneNumber)});
             String id = "";
             if (cursor.moveToFirst()) {
                 id = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_ENTRY_ID));
@@ -326,8 +381,8 @@ public class DebtsLocalDataSource implements DebtsDataSource {
         if (!StringUtil.isEmpty(phoneNumber)) {
             SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();
 
-            Cursor cursor = db.rawQuery("SELECT phone_no FROM " + PersonsEntry.TABLE_NAME +
-                    " WHERE phone_no = ?", new String[]{String.valueOf(phoneNumber)});
+            Cursor cursor = db.rawQuery("SELECT " + PersonsEntry.COLUMN_PHONE_NO + " FROM " + PersonsEntry.TABLE_NAME +
+                    " WHERE " + PersonsEntry.COLUMN_PHONE_NO  + " = ?", new String[]{String.valueOf(phoneNumber)});
             if (cursor.moveToFirst()) {
                 return true;
             }

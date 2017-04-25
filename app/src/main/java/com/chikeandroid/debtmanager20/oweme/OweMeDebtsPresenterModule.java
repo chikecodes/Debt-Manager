@@ -1,11 +1,11 @@
 package com.chikeandroid.debtmanager20.oweme;
 
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 
-import com.chikeandroid.debtmanager20.data.DebtsLoader;
 import com.chikeandroid.debtmanager20.data.source.DebtsRepository;
+import com.chikeandroid.debtmanager20.data.loaders.DebtsLoader;
 
 import dagger.Module;
 import dagger.Provides;
@@ -19,11 +19,11 @@ import dagger.Provides;
 public class OweMeDebtsPresenterModule {
 
     private final OweMeDebtsContract.View mView;
-    private final FragmentActivity mContext;
+    private final Fragment mContext;
 
-    public OweMeDebtsPresenterModule(OweMeDebtsContract.View view, FragmentActivity context) {
+    public OweMeDebtsPresenterModule(OweMeDebtsContract.View view) {
         mView = view;
-        mContext = context;
+        mContext = (Fragment) view;
     }
 
     @Provides
@@ -33,7 +33,7 @@ public class OweMeDebtsPresenterModule {
 
     @Provides
     LoaderManager providesLoaderManager() {
-        return mContext.getSupportLoaderManager();
+        return mContext.getLoaderManager();
     }
 
     @Provides

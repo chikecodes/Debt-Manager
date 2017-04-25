@@ -88,7 +88,7 @@ public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.V
         super.onActivityCreated(savedInstanceState);
         Log.d(TAG, "onActivityCreated()");
         DaggerOweMeDebtsComponent.builder()
-                .oweMeDebtsPresenterModule(new OweMeDebtsPresenterModule(this, getActivity()))
+                .oweMeDebtsPresenterModule(new OweMeDebtsPresenterModule(this))
                 .applicationComponent(((DebtManagerApplication) getActivity().getApplication()).getComponent()).build()
                 .inject(this);
     }
@@ -209,7 +209,7 @@ public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.V
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
             private final ListItemDebtBinding mListItemDebtBinding;
-            PersonDebt mPersonDebt;
+            String mDebtId;
 
             public ViewHolder(ListItemDebtBinding binding) {
                 super(binding.getRoot());
@@ -218,14 +218,14 @@ public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.V
             }
 
             public void bind(PersonDebt personDebt) {
-                mPersonDebt = personDebt;
+                mDebtId = personDebt.getDebt().getId();
                 mListItemDebtBinding.setPersonDebt(personDebt);
             }
 
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), DebtDetailActivity.class);
-                intent.putExtra(DebtDetailFragment.EXTRA_PERSON_DEBT, mPersonDebt);
+                intent.putExtra(DebtDetailFragment.EXTRA_DEBT_ID, mDebtId);
                 startActivity(intent);
             }
         }

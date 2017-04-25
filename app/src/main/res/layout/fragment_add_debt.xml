@@ -4,17 +4,6 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-                name="PersonDebt"
-                type="com.chikeandroid.debtmanager20.data.PersonDebt"/>
-        <variable
-                name="Debt"
-                type="com.chikeandroid.debtmanager20.data.Debt"/>
-
-        <import type="com.chikeandroid.debtmanager20.util.TimeUtil"/>
-    </data>
-
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -86,7 +75,6 @@
                                 android:layout_width="match_parent"
                                 android:inputType="textPersonName"
                                 android:hint="@string/hint_name"
-                                android:text="@{PersonDebt.person.fullname}"
                                 android:layout_centerHorizontal="true"
                                 android:layout_centerVertical="true"/>
 
@@ -124,7 +112,6 @@
                             android:layout_width="match_parent"
                             android:inputType="phone"
                             android:hint="@string/hint_phone_number"
-                            android:text="@{PersonDebt.person.phoneNumber}"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"/>
 
@@ -142,7 +129,6 @@
                             android:layout_width="match_parent"
                             android:inputType="numberDecimal"
                             android:hint="@string/hint_amount"
-                            android:text="@{String.valueOf(PersonDebt.debt.amount)}"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"/>
 
@@ -162,7 +148,6 @@
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
                             android:hint="@string/hint_comment"
-                            android:text="@{PersonDebt.debt.note}"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true"
                             android:maxLength="50"/>
@@ -176,7 +161,6 @@
                         android:layout_marginTop="@dimen/spacing_small"
                         android:backgroundTint="#4CAF50"
                         android:padding="@dimen/spacing_large"
-                        android:text='@{"Date Due: " + TimeUtil.millis2String(PersonDebt.debt.dueDate, "MMM d, yyyy")}'
                         tools:text="Date Due: Friday, March 29th 2017"
                         android:textColor="@color/white"
                         android:textSize="14sp"/>
@@ -193,7 +177,6 @@
                         android:layout_marginTop="@dimen/spacing_small"
                         android:backgroundTint="#4CAF50"
                         android:padding="@dimen/spacing_large"
-                        android:text='@{"Created on: " + TimeUtil.millis2String(PersonDebt.debt.createdDate, "MMM d, yyyy")}'
                         tools:text="Created on: Friday, March 29th 2017"
                         android:textColor="@color/white"
                         android:textSize="14sp"/>

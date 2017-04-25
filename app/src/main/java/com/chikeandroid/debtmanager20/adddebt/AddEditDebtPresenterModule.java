@@ -1,5 +1,9 @@
 package com.chikeandroid.debtmanager20.adddebt;
 
+import android.support.annotation.Nullable;
+
+import javax.inject.Named;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -12,9 +16,13 @@ import dagger.Provides;
 public class AddEditDebtPresenterModule {
 
     private final AddEditDebtContract.View mView;
+    private String mDebtId;
+    private String mPersonId;
 
-    public AddEditDebtPresenterModule(AddEditDebtContract.View view) {
+    public AddEditDebtPresenterModule(AddEditDebtContract.View view, @Nullable String debtId, @Nullable String personId) {
         mView = view;
+        mDebtId = debtId;
+       mPersonId = personId;
     }
 
     @Provides
@@ -22,4 +30,17 @@ public class AddEditDebtPresenterModule {
         return mView;
     }
 
+    @Provides
+    @Nullable
+    @Named("debt_id")
+    String providesDebtId() {
+        return mDebtId;
+    }
+
+    @Provides
+    @Nullable
+    @Named("person_id")
+    String providesPersonId() {
+        return mPersonId;
+    }
 }

@@ -15,6 +15,7 @@ public class DebtsPersistenceContract {
 
         public static final String TABLE_NAME = "debts";
 
+        public static final String ALIAS_DEBT_ID = "debt_id";
         public static final String COLUMN_ENTRY_ID = "entry_id";
         public static final String COLUMN_PERSON_ID = "person_id";
         public static final String COLUMN_STATUS = "status";
@@ -44,8 +45,9 @@ public class DebtsPersistenceContract {
 
         public static final String TABLE_NAME = "persons";
 
+        public static final String ALIAS_PERSON_ID = "person_id";
         public static final String COLUMN_NAME = "name";
-        public static final String COLUMN_ENTRY_ID = "entryid";
+        public static final String COLUMN_ENTRY_ID = "entry_id";
         public static final String COLUMN_PHONE_NO = "phone_no";
 
         // returns all columns as array

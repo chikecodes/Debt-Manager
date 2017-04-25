@@ -20,22 +20,22 @@ public final class Debt implements Parcelable {
     private final String mId;
 
     @Nullable
-    private final double mAmount;
+    private double mAmount;
 
     @Nullable
-    private final String mNote;
+    private String mNote;
 
     @NonNull
     private final String mPersonId;
 
     @NonNull
-    private final long mCreatedDate;
+    private long mCreatedDate;
 
     @Nullable
-    private final long mDueDate;
+    private long mDueDate;
 
     @NonNull
-    private final int mDebtType;
+    private int mDebtType;
 
     @NonNull
     private final int mStatus;
@@ -78,6 +78,26 @@ public final class Debt implements Parcelable {
     @NonNull
     public int getStatus() {
         return mStatus;
+    }
+
+    public void setAmount(@Nullable double amount) {
+        mAmount = amount;
+    }
+
+    public void setNote(@Nullable String note) {
+        mNote = note;
+    }
+
+    public void setCreatedDate(@NonNull long createdDate) {
+        mCreatedDate = createdDate;
+    }
+
+    public void setDueDate(@Nullable long dueDate) {
+        mDueDate = dueDate;
+    }
+
+    public void setDebtType(@NonNull int debtType) {
+        mDebtType = debtType;
     }
 
     public static class Builder {

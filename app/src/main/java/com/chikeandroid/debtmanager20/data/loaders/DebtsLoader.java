@@ -1,9 +1,10 @@
-package com.chikeandroid.debtmanager20.data;
+package com.chikeandroid.debtmanager20.data.loaders;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.content.AsyncTaskLoader;
 
+import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.data.source.DebtsRepository;
 
 import java.util.List;

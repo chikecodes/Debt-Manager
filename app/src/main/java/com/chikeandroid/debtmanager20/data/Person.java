@@ -19,10 +19,10 @@ public final class Person implements Parcelable {
     private final String mId;
 
     @NonNull
-    private final String mFullname;
+    private String mFullname;
 
     @Nullable
-    private final String mPhoneNumber;
+    private String mPhoneNumber;
 
     private ArrayList<Debt> mDebts;
 
@@ -53,6 +53,14 @@ public final class Person implements Parcelable {
 
     public void setDebts(ArrayList<Debt> debts) {
         mDebts = debts;
+    }
+
+    public void setFullname(@NonNull String fullname) {
+        mFullname = fullname;
+    }
+
+    public void setPhoneNumber(@Nullable String phoneNumber) {
+        mPhoneNumber = phoneNumber;
     }
 
     @NonNull

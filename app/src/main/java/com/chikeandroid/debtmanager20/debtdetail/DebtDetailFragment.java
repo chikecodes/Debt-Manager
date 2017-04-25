@@ -3,7 +3,9 @@ package com.chikeandroid.debtmanager20.debtdetail;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -16,12 +18,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.adddebt.AddEditDebtActivity;
 import com.chikeandroid.debtmanager20.adddebt.AddEditDebtFragment;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.FragmentDebtDetailBinding;
 import com.chikeandroid.debtmanager20.util.StringUtil;
+
+import javax.inject.Inject;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -31,13 +36,27 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class DebtDetailFragment extends Fragment implements DebtDetailContract.View {
 
-    public static final String EXTRA_PERSON_DEBT = "com.chikeandroid.debtmanager20.debtdetail.DebtDetailFragment.extra_person_debt";
+    public static final String EXTRA_DEBT_ID = "com.chikeandroid.debtmanager20.debtdetail.DebtDetailFragment.extra_debt_id";
+    public static final String ARG_DEBT_ID = "com.chikeandroid.debtmanager20.debtdetail.DebtDetailFragment.argument_debt_id";
 
     private PersonDebt mPersonDebt;
+    private FragmentDebtDetailBinding mFragmentDebtDetailBinding;
+    private ActionBar mActionBar;
+    private String mDebtId;
+    private View mView;
+    private Toolbar mToolbar;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
 
-    public static DebtDetailFragment newInstance(Bundle bundle) {
+    @Inject
+    DebtDetailPresenter mDebtDetailPresenter;
+
+    private DebtDetailContract.Presenter mPresenter;
+
+    public static DebtDetailFragment newInstance(String debtId) {
+        Bundle args = new Bundle();
+        args.putString(ARG_DEBT_ID, debtId);
         DebtDetailFragment debtDetailFragment = new DebtDetailFragment();
-        debtDetailFragment.setArguments(bundle);
+        debtDetailFragment.setArguments(args);
         return debtDetailFragment;
     }
 
@@ -45,33 +64,42 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        if (getArguments() != null) {
+            mDebtId = getArguments().getString(ARG_DEBT_ID);
+        }
+        DaggerDebtDetailComponent.builder()
+                .debtDetailPresenterModule(new DebtDetailPresenterModule(this, mDebtId))
+                .applicationComponent(((DebtManagerApplication) getActivity().getApplication()).getComponent()).build()
+                .inject(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.start();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        FragmentDebtDetailBinding fragmentDebtDetailBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_debt_detail, container, false);
+        mFragmentDebtDetailBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_debt_detail, container, false);
 
-        Bundle bundle = getArguments();
-        PersonDebt personDebt = bundle.getParcelable(EXTRA_PERSON_DEBT);
-        checkNotNull(personDebt);
-        mPersonDebt = personDebt;
-        fragmentDebtDetailBinding.setPersonDebt(personDebt);
+        FloatingActionButton fab = mFragmentDebtDetailBinding.fabScrolling;
+        mCollapsingToolbarLayout = mFragmentDebtDetailBinding.collapsingToolbar;
 
-        Toolbar toolbar = fragmentDebtDetailBinding.toolbar;
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(StringUtil.commaNumber(personDebt.getDebt().getAmount()));
+        mCollapsingToolbarLayout.setTitle("");
+        mView = mFragmentDebtDetailBinding.getRoot();
+
+        mToolbar = mFragmentDebtDetailBinding.toolbar;
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (mActionBar != null) {
+            mActionBar.setDisplayHomeAsUpEnabled(true);
+            mActionBar.setDisplayShowTitleEnabled(false);
         }
 
-
-        FloatingActionButton fab = fragmentDebtDetailBinding.fabScrolling;
-
-        return fragmentDebtDetailBinding.getRoot();
+        return mView;
     }
 
     @Override
@@ -97,7 +125,8 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
 
     @Override
     public void setPresenter(DebtDetailContract.Presenter presenter) {
-
+        checkNotNull(presenter);
+        mPresenter = presenter;
     }
 
     @Override
@@ -122,6 +151,20 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
 
     @Override
     public void addPartialPayment() {
+
+    }
+
+    @Override
+    public void showDebt(@NonNull PersonDebt personDebt) {
+        checkNotNull(personDebt);
+        mPersonDebt = personDebt;
+
+        mFragmentDebtDetailBinding.setPersonDebt(mPersonDebt);
+        mCollapsingToolbarLayout.setTitle(StringUtil.commaNumber(mPersonDebt.getDebt().getAmount()));
+    }
+
+    @Override
+    public void showMissingDebt() {
 
     }
 }

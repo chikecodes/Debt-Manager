@@ -60,6 +60,7 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
     private Calendar mCalendar;
     private long mDebtCreatedAt;
     private long mDebtDue;
+    private PersonDebt mPersonDebt;
 
     private AddEditDebtContract.Presenter mPresenter;
 
@@ -91,18 +92,59 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
 
         FragmentAddDebtBinding fragmentAddDebtBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_debt, container, false);
 
+        mCalendar = Calendar.getInstance();
+
+        mDebtCreatedAt = System.currentTimeMillis();
+        mDebtDue = System.currentTimeMillis();
+
+        mButtonDateCreated = fragmentAddDebtBinding.btnDateCreated;
+        mButtonDateCreated.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePickerDialog(mButtonDateCreated.getId(), mDebtCreatedAt);
+            }
+        });
+
+        mEditTextComment = fragmentAddDebtBinding.etComment;
+        mEditTextAmount = fragmentAddDebtBinding.etAmount;
+        mEditTextName = fragmentAddDebtBinding.etFullName;
+        mEditTextPhoneNumber = fragmentAddDebtBinding.etPhoneNumber;
+        mButtonDateDue = fragmentAddDebtBinding.btnDateDue;
+        mButtonDateDue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePickerDialog(mButtonDateDue.getId(), mDebtDue);
+            }
+        });
+
+        String currentDateString = TimeUtil.millis2String(System.currentTimeMillis(), "MMM d, yyyy");
+
+        mButtonDateCreated.setText(String.format(getString(R.string.created_date),currentDateString));
+        mButtonDateDue.setText(String.format(getString(R.string.due_date), currentDateString));
+
         String actionBarTitle = "Add Debt";
         Bundle bundle = getArguments();
         if(bundle != null) {
-            PersonDebt personDebt = bundle.getParcelable(ARGUMENT_EDIT_DEBT);
-            checkNotNull(personDebt);
-            fragmentAddDebtBinding.setPersonDebt(personDebt);
+            mPersonDebt = bundle.getParcelable(ARGUMENT_EDIT_DEBT);
+            checkNotNull(mPersonDebt);
+            mDebtDue = mPersonDebt.getDebt().getDueDate();
+            mDebtCreatedAt = mPersonDebt.getDebt().getCreatedDate();
+            mEditTextName.setText(mPersonDebt.getPerson().getFullname());
+            mEditTextPhoneNumber.setText(mPersonDebt.getPerson().getPhoneNumber());
+            mEditTextAmount.setText(String.valueOf(mPersonDebt.getDebt().getAmount()));
+            mEditTextComment.setText(mPersonDebt.getDebt().getNote());
+            String dueDateString = String.format(getString(R.string.due_date),
+                    TimeUtil.millis2String(mPersonDebt.getDebt().getDueDate(), "MMM d, yyyy"));
+            mButtonDateDue.setText(dueDateString);
+            String createdDateString = String.format(getString(R.string.created_date),
+                    TimeUtil.millis2String(mPersonDebt.getDebt().getCreatedDate(), "MMM d, yyyy"));
+            mButtonDateCreated.setText(createdDateString);
             actionBarTitle = "Edit Debt";
 
-            if(personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_OWED) {
+            if(mPersonDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_OWED) {
                 fragmentAddDebtBinding.rbOwedToMe.setChecked(true);
                 fragmentAddDebtBinding.rbOwedByMe.setChecked(false);
-            }else if(personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_i_OWE) {
+            }else if(mPersonDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_i_OWE) {
                 fragmentAddDebtBinding.rbOwedToMe.setChecked(false);
                 fragmentAddDebtBinding.rbOwedByMe.setChecked(true);
             }
@@ -116,33 +158,6 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle(actionBarTitle);
         }
-
-        mCalendar = Calendar.getInstance();
-
-        String currentDateString = TimeUtil.formatDateToString(mCalendar.get(Calendar.DAY_OF_WEEK),
-                mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH)) + " " + mCalendar.get(Calendar.YEAR);
-
-        mEditTextComment = fragmentAddDebtBinding.etComment;
-        mEditTextAmount = fragmentAddDebtBinding.etAmount;
-        mEditTextName = fragmentAddDebtBinding.etFullName;
-        mEditTextPhoneNumber = fragmentAddDebtBinding.etPhoneNumber;
-        mButtonDateDue = fragmentAddDebtBinding.btnDateDue;
-        mButtonDateDue.setText(String.format(getString(R.string.due_date), currentDateString));
-        mButtonDateDue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDatePickerDialog(mButtonDateDue.getId());
-            }
-        });
-
-        mButtonDateCreated = fragmentAddDebtBinding.btnDateCreated;
-        mButtonDateCreated.setText(String.format(getString(R.string.created_date),currentDateString));
-        mButtonDateCreated.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDatePickerDialog(mButtonDateCreated.getId());
-            }
-        });
 
         RadioGroup radioGroupDebtType = fragmentAddDebtBinding.rgDebtType;
         mDebtType = Debt.DEBT_TYPE_OWED;
@@ -166,9 +181,6 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
                 startActivityForResult(pickContactIntent, REQUEST_CONTACT);
             }
         });
-
-        mDebtCreatedAt = System.currentTimeMillis();
-        mDebtDue = System.currentTimeMillis();
 
         setHasOptionsMenu(true);
         setRetainInstance(true);
@@ -256,7 +268,12 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
         }
     }
 
-    private void showDatePickerDialog(final int buttonId) {
+    private void showDatePickerDialog(final int buttonId, long dateTimeStamp) {
+
+        mCalendar.setTimeInMillis(dateTimeStamp);
+        int year = mCalendar.get(Calendar.YEAR);
+        int month = mCalendar.get(Calendar.MONTH);
+        int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -265,9 +282,7 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
                 mCalendar.set(Calendar.MONTH, monthOfYear);
                 mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                int dayOfWeek = mCalendar.get(Calendar.DAY_OF_WEEK);
-
-                String dateString = TimeUtil.formatDateToString(dayOfWeek, monthOfYear, dayOfMonth) + " " + year;
+                String dateString = TimeUtil.millis2String(mCalendar.getTimeInMillis(), "MMM d, yyyy");
 
                 if(buttonId == mButtonDateDue.getId()) {
                     mButtonDateDue.setText(String.format(getString(R.string.due_date), dateString));
@@ -279,7 +294,7 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
                 }
 
             }
-        }, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
+        }, year, month, dayOfMonth);
 
         datePickerDialog.show();
     }

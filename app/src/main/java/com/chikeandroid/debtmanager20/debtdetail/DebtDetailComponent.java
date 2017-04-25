@@ -18,6 +18,6 @@ import dagger.Component;
 @Component(dependencies = ApplicationComponent.class, modules = DebtDetailPresenterModule.class)
 public interface DebtDetailComponent {
 
-    void inject(DebtDetailActivity debtDetailActivity);
+    void inject(DebtDetailFragment debtDetailFragment);
 }
 

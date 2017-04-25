@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.R;
-import com.chikeandroid.debtmanager20.adddebt.AddEditDebtActivity;
+import com.chikeandroid.debtmanager20.addeditdebt.AddEditDebtActivity;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.ListItemDebtBinding;
 import com.chikeandroid.debtmanager20.databinding.OweMeFragmentBinding;

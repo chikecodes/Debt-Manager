@@ -1,4 +1,4 @@
-package com.chikeandroid.debtmanager20.adddebt;
+package com.chikeandroid.debtmanager20.addeditdebt;
 
 import android.support.v4.app.Fragment;
 
@@ -15,6 +15,7 @@ import javax.inject.Inject;
 public class AddEditDebtActivity extends SingleFragmentActivity {
 
     public static final int REQUEST_ADD_DEBT = 1;
+    public static final int REQUEST_EDIT_DEBT = 2;
 
     @Inject
     AddEditDebtPresenter mAddEditDebtPresenter;

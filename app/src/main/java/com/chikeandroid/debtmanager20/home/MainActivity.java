@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.chikeandroid.debtmanager20.R;
-import com.chikeandroid.debtmanager20.adddebt.AddEditDebtActivity;
+import com.chikeandroid.debtmanager20.addeditdebt.AddEditDebtActivity;
 import com.chikeandroid.debtmanager20.databinding.ActivityMainBinding;
 import com.chikeandroid.debtmanager20.home.adapter.FragmentPagerAdapter;
 

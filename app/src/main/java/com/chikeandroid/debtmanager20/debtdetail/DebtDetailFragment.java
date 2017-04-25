@@ -1,5 +1,6 @@
 package com.chikeandroid.debtmanager20.debtdetail;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -17,11 +18,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.R;
-import com.chikeandroid.debtmanager20.adddebt.AddEditDebtActivity;
-import com.chikeandroid.debtmanager20.adddebt.AddEditDebtFragment;
+import com.chikeandroid.debtmanager20.addeditdebt.AddEditDebtActivity;
+import com.chikeandroid.debtmanager20.addeditdebt.AddEditDebtFragment;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.FragmentDebtDetailBinding;
 import com.chikeandroid.debtmanager20.util.StringUtil;
@@ -117,10 +119,17 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
             case R.id.action_edit:
                 Intent intent = new Intent(getActivity(), AddEditDebtActivity.class);
                 intent.putExtra(AddEditDebtFragment.ARGUMENT_EDIT_DEBT, mPersonDebt);
-                startActivity(intent);
+                startActivityForResult(intent, AddEditDebtActivity.REQUEST_EDIT_DEBT);
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (AddEditDebtActivity.REQUEST_EDIT_DEBT == requestCode && Activity.RESULT_OK == resultCode) {
+            Toast.makeText(getActivity(), "Debt edited successfully", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

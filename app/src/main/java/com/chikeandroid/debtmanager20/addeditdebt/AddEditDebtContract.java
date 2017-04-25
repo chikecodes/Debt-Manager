@@ -1,4 +1,4 @@
-package com.chikeandroid.debtmanager20.adddebt;
+package com.chikeandroid.debtmanager20.addeditdebt;
 
 import com.chikeandroid.debtmanager20.base.BasePresenter;
 import com.chikeandroid.debtmanager20.base.BaseView;

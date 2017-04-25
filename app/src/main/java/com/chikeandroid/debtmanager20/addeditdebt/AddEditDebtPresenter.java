@@ -1,4 +1,4 @@
-package com.chikeandroid.debtmanager20.adddebt;
+package com.chikeandroid.debtmanager20.addeditdebt;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -70,7 +70,6 @@ public class AddEditDebtPresenter implements AddEditDebtContract.Presenter {
         PersonDebt personDebt = new PersonDebt(person, debt);
         mDebtsRepository.updateDebt(personDebt);
         mAddDebtsView.showDebts();
-
     }
 
     private void createDebt(String name, String phoneNumber, double amount, String note,

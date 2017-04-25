@@ -1,4 +1,4 @@
-package com.chikeandroid.debtmanager20.adddebt;
+package com.chikeandroid.debtmanager20.addeditdebt;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -54,27 +54,27 @@ public class DebtsRepositoryTest {
         Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
         Debt debt1 = TestUtil.createDebt(person1.getId(), 4000, Debt.DEBT_TYPE_OWED,
                 Debt.DEBT_STATUS_ACTIVE, "note 123");
-        mDebtsRepository.saveDebt(debt1, person1);
+        mDebtsRepository.savePersonDebt(debt1, person1);
 
-        verify(mDebtsLocalDataSource).saveDebt(debt1, person1);
+        verify(mDebtsLocalDataSource).savePersonDebt(debt1, person1);
         assertThat(mDebtsRepository.getCachedDebts().size(), is(1));
 
         // save i owe debt
         Person person2 = TestUtil.createPerson("Mary Jane", "08023021782");
         Debt debt2 = TestUtil.createDebt(person2.getId(), 60000, Debt.DEBT_TYPE_i_OWE,
                 Debt.DEBT_STATUS_ACTIVE, "note 4345");
-        mDebtsRepository.saveDebt(debt2, person2);
+        mDebtsRepository.savePersonDebt(debt2, person2);
 
-        verify(mDebtsLocalDataSource).saveDebt(debt2, person2);
+        verify(mDebtsLocalDataSource).savePersonDebt(debt2, person2);
         assertThat(mDebtsRepository.getCachedDebts().size(), is(2));
     }
 
     @Test
     public void shouldBeAbleToGetAllDebtsFromLocalDataSource() {
 
-        mDebtsRepository.getAllDebts();
+        mDebtsRepository.getAllPersonDebts();
 
-        verify(mDebtsLocalDataSource).getAllDebts();
+        verify(mDebtsLocalDataSource).getAllPersonDebts();
     }
 
     @Test
@@ -82,7 +82,7 @@ public class DebtsRepositoryTest {
 
         setOweMeDebtsNotAvailable(mDebtsLocalDataSource);
 
-        List<PersonDebt> returnedDebts = mDebtsRepository.getAllDebts();
+        List<PersonDebt> returnedDebts = mDebtsRepository.getAllPersonDebts();
 
         assertNull(returnedDebts);
     }
@@ -90,7 +90,7 @@ public class DebtsRepositoryTest {
     public void setOweMeDebtsNotAvailable(DebtsDataSource dataSource) {
 
         // owe me debts
-        when(dataSource.getAllDebts()).thenReturn(null);
+        when(dataSource.getAllPersonDebts()).thenReturn(null);
     }
 
     @Test
@@ -99,18 +99,18 @@ public class DebtsRepositoryTest {
         Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
         Debt debt1 = TestUtil.createDebt(person1.getId(), 4000, Debt.DEBT_TYPE_OWED,
                 Debt.DEBT_STATUS_ACTIVE, "note 123");
-        mDebtsRepository.saveDebt(debt1, person1);
-        verify(mDebtsLocalDataSource).saveDebt(debt1, person1);
+        mDebtsRepository.savePersonDebt(debt1, person1);
+        verify(mDebtsLocalDataSource).savePersonDebt(debt1, person1);
 
         Person person2 = TestUtil.createPerson("Mary Jane", "08023021782");
         Debt debt2 = TestUtil.createDebt(person2.getId(), 60000, Debt.DEBT_TYPE_i_OWE,
                 Debt.DEBT_STATUS_ACTIVE, "note 4345");
-        mDebtsRepository.saveDebt(debt2, person2);
-        verify(mDebtsLocalDataSource).saveDebt(debt2, person2);
+        mDebtsRepository.savePersonDebt(debt2, person2);
+        verify(mDebtsLocalDataSource).savePersonDebt(debt2, person2);
 
-        mDebtsRepository.deleteAllDebts();
+        mDebtsRepository.deleteAllPersonDebts();
 
-        verify(mDebtsLocalDataSource).deleteAllDebts();
+        verify(mDebtsLocalDataSource).deleteAllPersonDebts();
 
         assertTrue(mDebtsRepository.mCachedDebts.size() == 0);
     }
@@ -119,9 +119,9 @@ public class DebtsRepositoryTest {
     public void shouldBeAbleToGetDebtFromLocalDataSource() {
 
         String id = "1234";
-        mDebtsRepository.getDebt(id);
+        mDebtsRepository.getPersonDebt(id);
 
-        verify(mDebtsLocalDataSource).getDebt(eq(id));
+        verify(mDebtsLocalDataSource).getPersonDebt(eq(id));
     }
 
     @Test
@@ -131,11 +131,11 @@ public class DebtsRepositoryTest {
         Debt debt1 = TestUtil.createDebt(person1.getId(), 60000, Debt.DEBT_TYPE_i_OWE,
                 Debt.DEBT_STATUS_ACTIVE, "note 4345");
 
-        mDebtsRepository.saveDebt(debt1, person1);
+        mDebtsRepository.savePersonDebt(debt1, person1);
 
-        mDebtsRepository.deleteDebt(debt1.getId());
+        mDebtsRepository.deletePersonDebt(debt1.getId());
 
-        verify(mDebtsLocalDataSource).deleteDebt(eq(debt1.getId()));
+        verify(mDebtsLocalDataSource).deletePersonDebt(eq(debt1.getId()));
 
         assertTrue(mDebtsRepository.mCachedDebts.size() == 0);
     }
@@ -143,9 +143,9 @@ public class DebtsRepositoryTest {
     @Test
     public void shouldBeAbleToGetAllDebtsByTypeFromLocalDataSource() {
 
-        mDebtsRepository.getAllDebtsByType(Debt.DEBT_TYPE_i_OWE);
+        mDebtsRepository.getAllPersonDebtsByType(Debt.DEBT_TYPE_i_OWE);
 
-        verify(mDebtsLocalDataSource).getAllDebtsByType(eq(Debt.DEBT_TYPE_i_OWE));
+        verify(mDebtsLocalDataSource).getAllPersonDebtsByType(eq(Debt.DEBT_TYPE_i_OWE));
     }
 
     @Test
@@ -154,18 +154,18 @@ public class DebtsRepositoryTest {
         Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
         Debt debt1 = TestUtil.createDebt(person1.getId(), 4000, Debt.DEBT_TYPE_OWED,
                 Debt.DEBT_STATUS_ACTIVE, "note 123");
-        mDebtsRepository.saveDebt(debt1, person1);
+        mDebtsRepository.savePersonDebt(debt1, person1);
 
         Person person2 = TestUtil.createPerson("Mary Jane", "08023021782");
         Debt debt2 = TestUtil.createDebt(person2.getId(), 60000, Debt.DEBT_TYPE_OWED,
                 Debt.DEBT_STATUS_ACTIVE, "note 4345");
-        mDebtsRepository.saveDebt(debt2, person2);
+        mDebtsRepository.savePersonDebt(debt2, person2);
 
-        mDebtsRepository.deleteAllDebtsByType(Debt.DEBT_TYPE_OWED);
+        mDebtsRepository.deleteAllPersonDebtsByType(Debt.DEBT_TYPE_OWED);
 
-        verify(mDebtsLocalDataSource).deleteAllDebtsByType(eq(Debt.DEBT_TYPE_OWED));
+        verify(mDebtsLocalDataSource).deleteAllPersonDebtsByType(eq(Debt.DEBT_TYPE_OWED));
 
-        assertTrue(mDebtsRepository.getAllDebtsByType(Debt.DEBT_TYPE_OWED).size() == 0);
+        assertTrue(mDebtsRepository.getAllPersonDebtsByType(Debt.DEBT_TYPE_OWED).size() == 0);
     }
 
     @Test
@@ -174,18 +174,18 @@ public class DebtsRepositoryTest {
         Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
         Debt debt1 = TestUtil.createDebt(person1.getId(), 4000, Debt.DEBT_TYPE_OWED,
                 Debt.DEBT_STATUS_ACTIVE, "note 123");
-        mDebtsRepository.saveDebt(debt1, person1);
+        mDebtsRepository.savePersonDebt(debt1, person1);
 
-        PersonDebt personDebt = mDebtsRepository.getDebt(debt1.getId());
+        PersonDebt personDebt = mDebtsRepository.getPersonDebt(debt1.getId());
 
         personDebt.getPerson().setFullname("Emeka Onu");
         personDebt.getDebt().setAmount(300);
 
-        mDebtsRepository.updateDebt(personDebt);
+        mDebtsRepository.updatePersonDebt(personDebt);
 
-        verify(mDebtsLocalDataSource).updateDebt(eq(personDebt));
+        verify(mDebtsLocalDataSource).updatePersonDebt(eq(personDebt));
 
-        PersonDebt personDebt1 = mDebtsRepository.getDebt(debt1.getId());
+        PersonDebt personDebt1 = mDebtsRepository.getPersonDebt(debt1.getId());
 
         assertEquals(personDebt1, personDebt);
     }

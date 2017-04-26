@@ -47,7 +47,7 @@ public class AddEditDebtPresenterTest {
                 System.currentTimeMillis(), System.currentTimeMillis(),
                 Debt.DEBT_TYPE_OWED, Debt.DEBT_STATUS_ACTIVE);
 
-        verify(mDebtsRepository).saveDebt(any(Debt.class), any(Person.class));
+        verify(mDebtsRepository).savePersonDebt(any(Debt.class), any(Person.class));
         verify(mAddDebtView).showDebts();
     }
 
@@ -71,7 +71,7 @@ public class AddEditDebtPresenterTest {
                 System.currentTimeMillis(), System.currentTimeMillis(),
                 Debt.DEBT_TYPE_OWED, Debt.DEBT_STATUS_ACTIVE);
 
-        verify(mDebtsRepository).updateDebt(any(PersonDebt.class));
+        verify(mDebtsRepository).updatePersonDebt(any(PersonDebt.class));
         verify(mAddDebtView).showDebts();
     }
 }

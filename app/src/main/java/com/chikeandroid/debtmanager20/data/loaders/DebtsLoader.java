@@ -32,7 +32,7 @@ public class DebtsLoader extends AsyncTaskLoader<List<PersonDebt>> implements De
 
     @Override
     public List<PersonDebt> loadInBackground() {
-        return mDebtsRepository.getAllDebts();
+        return mDebtsRepository.getAllPersonDebts();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class DebtsLoader extends AsyncTaskLoader<List<PersonDebt>> implements De
     protected void onStartLoading() {
         // Deliver any previously loaded data immediately if available.
         if(mDebtsRepository.cachedDebtsAvailable()) {
-            deliverResult(mDebtsRepository.getAllDebts());
+            deliverResult(mDebtsRepository.getAllPersonDebts());
         }
 
         // Begin monitoring the underlying data source

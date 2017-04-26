@@ -61,7 +61,7 @@ public class OweMeDebtsScreenTest {
 
                 /**
                  * To avoid a long list of debts and the need to scroll through the list to find a
-                 * debt, we call {@link DebtsDataSource#deleteAllDebtsByType(int)} ()} before each test.
+                 * debt, we call {@link DebtsDataSource#deleteAllPersonDebtsByType(int)} ()} before each test.
                  */
                 @Override
                 protected void beforeActivityLaunched() {
@@ -69,7 +69,7 @@ public class OweMeDebtsScreenTest {
 
                     ((DebtManagerApplication) InstrumentationRegistry.getTargetContext()
                             .getApplicationContext()).getComponent()
-                            .getDebtsRepository().deleteAllDebtsByType(Debt.DEBT_TYPE_OWED);
+                            .getDebtsRepository().deleteAllPersonDebtsByType(Debt.DEBT_TYPE_OWED);
                 }};
 
     @Test

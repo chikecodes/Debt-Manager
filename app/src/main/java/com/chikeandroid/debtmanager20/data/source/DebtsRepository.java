@@ -78,7 +78,7 @@ public class DebtsRepository implements DebtsDataSource {
     }
 
     @Override
-    public PersonDebt getDebt(@NonNull String debtId) {
+    public PersonDebt getPersonDebt(@NonNull String debtId) {
         checkNotNull(debtId);
 
         PersonDebt cachedPersonDebt = getDebtById(debtId);
@@ -89,7 +89,7 @@ public class DebtsRepository implements DebtsDataSource {
         }
 
         // Is the task in the local data source? If not, query the network.
-        PersonDebt personDebt = mDebtsLocalDataSource.getDebt(debtId);
+        PersonDebt personDebt = mDebtsLocalDataSource.getPersonDebt(debtId);
         /*if (task == null) {
             task = mTasksRemoteDataSource.getTask(taskId);
         }*/
@@ -108,7 +108,7 @@ public class DebtsRepository implements DebtsDataSource {
     }
 
     @Override
-    public List<PersonDebt> getAllDebts() {
+    public List<PersonDebt> getAllPersonDebts() {
 
         List<PersonDebt> personDebts = null;
 
@@ -119,7 +119,7 @@ public class DebtsRepository implements DebtsDataSource {
                 return personDebts;
             } else {
                 // Query the local Storage if available
-                personDebts = mDebtsLocalDataSource.getAllDebts();
+                personDebts = mDebtsLocalDataSource.getAllPersonDebts();
             }
         }
 
@@ -129,7 +129,7 @@ public class DebtsRepository implements DebtsDataSource {
     }
 
     @Override
-    public List<PersonDebt> getAllDebtsByType(@NonNull int debtType) {
+    public List<PersonDebt> getAllPersonDebtsByType(@NonNull int debtType) {
         checkNotNull(debtType);
 
         List<PersonDebt> personDebts = null;
@@ -143,7 +143,7 @@ public class DebtsRepository implements DebtsDataSource {
                 }
                 return personDebts;
             } else {
-                personDebts = mDebtsLocalDataSource.getAllDebtsByType(debtType);
+                personDebts = mDebtsLocalDataSource.getAllPersonDebtsByType(debtType);
             }
         }
         return personDebts;
@@ -169,11 +169,11 @@ public class DebtsRepository implements DebtsDataSource {
     }
 
     @Override
-    public void saveDebt(@NonNull Debt debt, @NonNull Person person) {
+    public void savePersonDebt(@NonNull Debt debt, @NonNull Person person) {
 
         checkNotNull(debt);
         checkNotNull(person);
-        mDebtsLocalDataSource.saveDebt(debt, person);
+        mDebtsLocalDataSource.savePersonDebt(debt, person);
 
         // Do in memory cache update to keep the app UI up to date
         if(mCachedDebts == null) {
@@ -193,9 +193,9 @@ public class DebtsRepository implements DebtsDataSource {
     }
 
     @Override
-    public void deleteAllDebts() {
+    public void deleteAllPersonDebts() {
 
-        mDebtsLocalDataSource.deleteAllDebts();
+        mDebtsLocalDataSource.deleteAllPersonDebts();
 
         if(mCachedDebts == null ) {
             mCachedDebts = new LinkedHashMap<>();
@@ -207,30 +207,31 @@ public class DebtsRepository implements DebtsDataSource {
     }
 
     @Override
-    public void deleteDebt(@NonNull String debtId) {
-        checkNotNull(debtId);
-        mDebtsLocalDataSource.deleteDebt(debtId);
+    public void deletePersonDebt(@NonNull PersonDebt personDebt) {
 
-        mCachedDebts.remove(debtId);
+        checkNotNull(personDebt);
+        //mDebtsLocalDataSource.deletePersonDebt(debtId);
+
+        mCachedDebts.remove(personDebt.getDebt().getId());
 
         // Update the UI
         notifyContentObserver();
     }
 
     @Override
-    public void deleteAllDebtsByType(@NonNull int debtType) {
+    public void deleteAllPersonDebtsByType(@NonNull int debtType) {
 
         checkNotNull(debtType);
-        mDebtsLocalDataSource.deleteAllDebtsByType(debtType);
+        mDebtsLocalDataSource.deleteAllPersonDebtsByType(debtType);
 
         removeDebtTypeFromCache(debtType);
     }
 
     @Override
-    public void updateDebt(@NonNull PersonDebt personDebt) {
+    public void updatePersonDebt(@NonNull PersonDebt personDebt) {
 
         checkNotNull(personDebt);
-        mDebtsLocalDataSource.updateDebt(personDebt);
+        mDebtsLocalDataSource.updatePersonDebt(personDebt);
 
         Debt debt = personDebt.getDebt();
         mCachedDebts.remove(debt.getId());
@@ -244,6 +245,18 @@ public class DebtsRepository implements DebtsDataSource {
     @Override
     public String saveNewPerson(@NonNull Person person) {
         return null;
+    }
+
+    @Override
+    public Person getPerson(@NonNull String personId) {
+        checkNotNull(personId);
+
+        return null;
+    }
+
+    @Override
+    public void deletePerson(@NonNull String personId) {
+
     }
 
     private void removeDebtTypeFromCache(@NonNull int debtType) {

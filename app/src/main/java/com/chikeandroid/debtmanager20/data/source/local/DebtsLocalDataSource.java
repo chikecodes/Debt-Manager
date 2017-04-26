@@ -38,7 +38,7 @@ public class DebtsLocalDataSource implements DebtsDataSource {
     }
 
     @Override
-    public List<PersonDebt> getAllDebts() {
+    public List<PersonDebt> getAllPersonDebts() {
 
         List<PersonDebt> personDebts = new ArrayList<>();
         SQLiteDatabase db = mDebtsDbHelper.getReadableDatabase();
@@ -88,7 +88,7 @@ public class DebtsLocalDataSource implements DebtsDataSource {
     }
 
     @Override
-    public List<PersonDebt> getAllDebtsByType(@NonNull int debtType) {
+    public List<PersonDebt> getAllPersonDebtsByType(@NonNull int debtType) {
         checkNotNull(debtType);
 
         List<PersonDebt> personDebts = new ArrayList<>();
@@ -139,7 +139,7 @@ public class DebtsLocalDataSource implements DebtsDataSource {
     }
 
     @Override
-    public PersonDebt getDebt(@NonNull String debtId) {
+    public PersonDebt getPersonDebt(@NonNull String debtId) {
 
         checkNotNull(debtId);
 
@@ -235,7 +235,7 @@ public class DebtsLocalDataSource implements DebtsDataSource {
     }
 
     @Override
-    public void saveDebt(@NonNull Debt debt, @NonNull Person person) {
+    public void savePersonDebt(@NonNull Debt debt, @NonNull Person person) {
         checkNotNull(debt);
         checkNotNull(person);
 
@@ -276,7 +276,7 @@ public class DebtsLocalDataSource implements DebtsDataSource {
     }
 
     @Override
-    public void deleteAllDebts() {
+    public void deleteAllPersonDebts() {
 
         SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();
 
@@ -288,18 +288,50 @@ public class DebtsLocalDataSource implements DebtsDataSource {
     }
 
     @Override
-    public void deleteDebt(@NonNull String id) {
-        checkNotNull(id);
+    public void deletePersonDebt(@NonNull PersonDebt personDebt) {
+
+        checkNotNull(personDebt);
+
+        String debtId = personDebt.getDebt().getId();
 
         SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();
 
-        db.delete(DebtsEntry.TABLE_NAME, DebtsEntry.COLUMN_ENTRY_ID + "= ?", new String[]{String.valueOf(id)});
+        db.delete(DebtsEntry.TABLE_NAME, DebtsEntry.COLUMN_ENTRY_ID + "= ?", new String[]{debtId});
+
+        // delete person if he has only one debt
+        String personId = personDebt.getPerson().getId();
+        if(personHasOneDebt(personId)) {
+            deletePerson(personId);
+        }
 
         db.close();
     }
 
     @Override
-    public void deleteAllDebtsByType(@NonNull int debtType) {
+    public void deletePerson(@NonNull String personId) {
+        checkNotNull(personId);
+        SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();
+        db.delete(PersonsEntry.TABLE_NAME, DebtsEntry.COLUMN_ENTRY_ID + " = ?", new String[]{personId});
+        db.close();
+    }
+
+    private boolean personHasOneDebt(String personId) {
+        checkNotNull(personId);
+        SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + DebtsEntry.TABLE_NAME + " WHERE " +
+                DebtsEntry.COLUMN_PERSON_ID  + " = ?", new String[]{personId});
+
+        if(cursor != null && cursor.getCount() > 0) {
+            cursor.close();
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+    @Override
+    public void deleteAllPersonDebtsByType(@NonNull int debtType) {
         checkNotNull(debtType);
 
         SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();
@@ -310,7 +342,7 @@ public class DebtsLocalDataSource implements DebtsDataSource {
     }
 
     @Override
-    public void updateDebt(@NonNull PersonDebt personDebt) {
+    public void updatePersonDebt(@NonNull PersonDebt personDebt) {
 
         checkNotNull(personDebt);
         SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();
@@ -357,6 +389,34 @@ public class DebtsLocalDataSource implements DebtsDataSource {
         db.insert(PersonsEntry.TABLE_NAME, null, personValues);
 
         return personId;
+    }
+
+    @Override
+    public Person getPerson(@NonNull String personId) {
+        checkNotNull(personId);
+
+        SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + PersonsEntry.TABLE_NAME + " WHERE " +
+                PersonsEntry.COLUMN_ENTRY_ID + " = ?", new String[] {personId});
+
+        Person person = null;
+        if(cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+
+            String entryId = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_ENTRY_ID));
+            String fullName = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_NAME));
+            String phoneNo = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_PHONE_NO));
+
+            person = new Person(entryId, fullName, phoneNo);
+        }
+
+        if(cursor != null) {
+            cursor.close();
+        }
+
+        db.close();
+        return person;
     }
 
     private String getPersonIdIfAlreadyExist(String phoneNumber) {

@@ -30,7 +30,7 @@ public class DebtLoader extends AsyncTaskLoader<PersonDebt> implements DebtsRepo
 
     @Override
     public PersonDebt loadInBackground() {
-        return mDebtsRepository.getDebt(mDebtId);
+        return mDebtsRepository.getPersonDebt(mDebtId);
     }
 
     @Override

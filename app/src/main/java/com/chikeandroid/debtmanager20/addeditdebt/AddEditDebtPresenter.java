@@ -59,7 +59,7 @@ public class AddEditDebtPresenter implements AddEditDebtContract.Presenter {
 
     private void updateDebt(String name, String phoneNumber, double amount, String note, long createdDate, long dueDate, int debtType, int status) {
         if(isNewDebt()) {
-            throw new RuntimeException("updateDebt() was called but debt is new.");
+            throw new RuntimeException("updatePersonDebt() was called but debt is new.");
         }
 
         Person person = new Person(mPersonId, name, phoneNumber);
@@ -68,7 +68,7 @@ public class AddEditDebtPresenter implements AddEditDebtContract.Presenter {
                 .note(note)
                 .build();
         PersonDebt personDebt = new PersonDebt(person, debt);
-        mDebtsRepository.updateDebt(personDebt);
+        mDebtsRepository.updatePersonDebt(personDebt);
         mAddDebtsView.showDebts();
     }
 
@@ -85,7 +85,7 @@ public class AddEditDebtPresenter implements AddEditDebtContract.Presenter {
         if(person.isEmpty() && debt.isEmpty()) {
             mAddDebtsView.showEmptyDebtError();
         } else {
-            mDebtsRepository.saveDebt(debt, person);
+            mDebtsRepository.savePersonDebt(debt, person);
             mAddDebtsView.showDebts();
         }
     }

@@ -14,23 +14,27 @@ import java.util.List;
 
 public interface DebtsDataSource {
 
-    PersonDebt getDebt(@NonNull String debtId);
+    PersonDebt getPersonDebt(@NonNull String debtId);
 
-    List<PersonDebt> getAllDebts();
+    List<PersonDebt> getAllPersonDebts();
 
-    List<PersonDebt> getAllDebtsByType(@NonNull int debtType);
+    List<PersonDebt> getAllPersonDebtsByType(@NonNull int debtType);
 
-    void saveDebt(@NonNull Debt debt, @NonNull Person person);
+    void savePersonDebt(@NonNull Debt debt, @NonNull Person person);
 
     void refreshDebts();
 
-    void deleteAllDebts();
+    void deleteAllPersonDebts();
 
-    void deleteDebt(@NonNull String debtId);
+    void deletePersonDebt(@NonNull PersonDebt personDebt);
 
-    void deleteAllDebtsByType(@NonNull int debtType);
+    void deleteAllPersonDebtsByType(@NonNull int debtType);
 
-    void updateDebt(@NonNull PersonDebt personDebt);
+    void updatePersonDebt(@NonNull PersonDebt personDebt);
 
     String saveNewPerson(@NonNull Person person) ;
+
+    Person getPerson(@NonNull String personId);
+
+    void deletePerson(@NonNull String personId);
 }

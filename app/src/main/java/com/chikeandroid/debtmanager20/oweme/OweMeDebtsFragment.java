@@ -118,7 +118,7 @@ public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.V
             mTextViewEmptyDebts.setVisibility(View.GONE);
         }
 
-        mDebtsAdapter.replaceData(debts);
+        mDebtsAdapter.updatePersonDebtListItems(debts);
         Log.d(TAG, "debts size is " + debts.size());
     }
 
@@ -129,6 +129,7 @@ public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.V
 
     @Override
     public void showEmptyView() {
+        mDebtsAdapter.updatePersonDebtListItems(new ArrayList<PersonDebt>());
         mTextViewEmptyDebts.setVisibility(View.VISIBLE);
     }
 

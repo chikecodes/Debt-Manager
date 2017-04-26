@@ -16,4 +16,8 @@
     <string name="required_field">%1$s is required</string>
     <string name="msg_empty_debt">Cannot save empty debt</string>
     <string name="msg_loading_debts_error">Error loading debts</string>
+    <string name="delete_dialog_title">Delete %1$s\'s %2$s debt?</string>
+    <string name="dialog_delete">Delete</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="msg_success_message_deleted">Debt was deleted successfully</string>
 </resources>

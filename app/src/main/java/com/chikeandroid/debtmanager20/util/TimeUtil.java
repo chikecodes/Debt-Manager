@@ -2,6 +2,7 @@ package com.chikeandroid.debtmanager20.util;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -51,6 +52,15 @@ public class TimeUtil {
 
     public static String millis2String(long millis, String pattern) {
         return new SimpleDateFormat(pattern, Locale.getDefault()).format(new Date(millis));
+    }
+
+    public static String dateToString(int year, int month, int dayOfMonth) {
+
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(year, month, dayOfMonth);
+
+        return TimeUtil.millis2String(calendar.getTimeInMillis(), "MMM d, yyyy");
     }
 
 }

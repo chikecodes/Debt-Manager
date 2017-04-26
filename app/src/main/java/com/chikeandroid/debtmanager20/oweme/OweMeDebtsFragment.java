@@ -19,17 +19,12 @@ import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.addeditdebt.AddEditDebtActivity;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
-import com.chikeandroid.debtmanager20.databinding.ListItemDebtBinding;
 import com.chikeandroid.debtmanager20.databinding.OweMeFragmentBinding;
-import com.chikeandroid.debtmanager20.debtdetail.DebtDetailActivity;
-import com.chikeandroid.debtmanager20.debtdetail.DebtDetailFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by Chike on 3/13/2017.
@@ -163,71 +158,5 @@ public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.V
         Log.d(TAG, "onStop: ");
     }
 
-    private class DebtsAdapter extends RecyclerView.Adapter<DebtsAdapter.ViewHolder> {
 
-        private List<PersonDebt> mPersonDebts;
-        private Context mContext;
-        private final LayoutInflater mLayoutInflater;
-
-        public DebtsAdapter(Context context, List<PersonDebt> personDebts) {
-            mPersonDebts = personDebts;
-            mContext = context;
-            mLayoutInflater = LayoutInflater.from(context);
-        }
-
-        private Context getContext() {
-            return mContext;
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            final ListItemDebtBinding binding = ListItemDebtBinding.inflate(mLayoutInflater, parent, false);
-            return new ViewHolder(binding);
-        }
-
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            final PersonDebt personDebt = mPersonDebts.get(position);
-
-            holder.bind(personDebt);
-        }
-
-        public void replaceData(List<PersonDebt> personDebts) {
-            setList(personDebts);
-            notifyDataSetChanged();
-        }
-
-        private void setList(List<PersonDebt> personDebts) {
-            mPersonDebts = checkNotNull(personDebts);
-        }
-
-        @Override
-        public int getItemCount() {
-            return mPersonDebts.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-            private final ListItemDebtBinding mListItemDebtBinding;
-            String mDebtId;
-
-            public ViewHolder(ListItemDebtBinding binding) {
-                super(binding.getRoot());
-                mListItemDebtBinding = binding;
-                itemView.setOnClickListener(this);
-            }
-
-            public void bind(PersonDebt personDebt) {
-                mDebtId = personDebt.getDebt().getId();
-                mListItemDebtBinding.setPersonDebt(personDebt);
-            }
-
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), DebtDetailActivity.class);
-                intent.putExtra(DebtDetailFragment.EXTRA_DEBT_ID, mDebtId);
-                startActivity(intent);
-            }
-        }
-    }
 }

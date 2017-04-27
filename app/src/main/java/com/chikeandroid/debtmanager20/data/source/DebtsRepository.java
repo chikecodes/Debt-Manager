@@ -210,7 +210,7 @@ public class DebtsRepository implements DebtsDataSource {
     public void deletePersonDebt(@NonNull PersonDebt personDebt) {
 
         checkNotNull(personDebt);
-        //mDebtsLocalDataSource.deletePersonDebt(debtId);
+        mDebtsLocalDataSource.deletePersonDebt(personDebt);
 
         mCachedDebts.remove(personDebt.getDebt().getId());
 

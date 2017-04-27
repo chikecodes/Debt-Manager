@@ -1,6 +1,7 @@
 package com.chikeandroid.debtmanager20.debtdetail;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -121,6 +123,25 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
                 intent.putExtra(AddEditDebtFragment.ARGUMENT_EDIT_DEBT, mPersonDebt);
                 startActivityForResult(intent, AddEditDebtActivity.REQUEST_EDIT_DEBT);
                 break;
+            case R.id.action_delete:
+                String message = String.format(getString(R.string.delete_dialog_title),
+                        mPersonDebt.getPerson().getFullname(), StringUtil.commaNumber(mPersonDebt.getDebt().getAmount()));
+                new AlertDialog.Builder(getContext())
+                        .setMessage(message)
+                        .setPositiveButton(getString(R.string.dialog_delete), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                mPresenter.deletePersonDebt(mPersonDebt);
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .show();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -149,11 +170,6 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
     }
 
     @Override
-    public void deleteDebt() {
-
-    }
-
-    @Override
     public void callDebtor() {
 
     }
@@ -164,7 +180,7 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
     }
 
     @Override
-    public void showDebt(@NonNull PersonDebt personDebt) {
+    public void showPersonDebt(@NonNull PersonDebt personDebt) {
         checkNotNull(personDebt);
         mPersonDebt = personDebt;
 
@@ -175,5 +191,12 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
     @Override
     public void showMissingDebt() {
 
+    }
+
+    @Override
+    public void showPersonDebtDeleted() {
+
+        Toast.makeText(getActivity(), getString(R.string.msg_success_message_deleted), Toast.LENGTH_LONG).show();
+        getActivity().finish();
     }
 }

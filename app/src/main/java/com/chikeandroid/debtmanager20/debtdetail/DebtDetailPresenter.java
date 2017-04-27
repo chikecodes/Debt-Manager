@@ -13,6 +13,8 @@ import com.chikeandroid.debtmanager20.data.loaders.DebtLoader;
 
 import javax.inject.Inject;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by Chike on 4/20/2017.
  * Listens to user actions from the UI ({@link DebtDetailFragment}), retrieves the data and updates
@@ -61,8 +63,10 @@ public class DebtDetailPresenter implements DebtDetailContract.Presenter, Loader
     }
 
     @Override
-    public void deleteDebt(@NonNull String debtId) {
-
+    public void deletePersonDebt(@NonNull PersonDebt personDebt) {
+        checkNotNull(personDebt);
+        mDebtsRepository.deletePersonDebt(personDebt);
+        mDebtDetailView.showPersonDebtDeleted();
     }
 
     @Override
@@ -82,7 +86,7 @@ public class DebtDetailPresenter implements DebtDetailContract.Presenter, Loader
     @Override
     public void onLoadFinished(Loader<PersonDebt> loader, PersonDebt data) {
         if(data != null) {
-            mDebtDetailView.showDebt(data);
+            mDebtDetailView.showPersonDebt(data);
         }else {
             mDebtDetailView.showMissingDebt();
         }

@@ -18,21 +18,21 @@ public interface DebtDetailContract {
 
         void openEditDebtUi();
 
-        void deleteDebt();
-
         void callDebtor();
 
         void addPartialPayment();
 
-        void showDebt(@NonNull PersonDebt personDebt);
+        void showPersonDebt(@NonNull PersonDebt personDebt);
 
         void showMissingDebt();
+
+        void showPersonDebtDeleted();
     }
 
     interface Presenter extends BasePresenter {
 
-        void deleteDebt(@NonNull String debtId);
-
         void addAdditionalDebt();
+
+        void deletePersonDebt(@NonNull PersonDebt personDebt);
     }
 }

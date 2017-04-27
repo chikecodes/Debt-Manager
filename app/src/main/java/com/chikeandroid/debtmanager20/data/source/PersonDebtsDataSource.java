@@ -10,9 +10,10 @@ import java.util.List;
 
 /**
  * Created by Chike on 3/22/2017.
+ * Main entry point for accessing debts data.
  */
 
-public interface DebtsDataSource {
+public interface PersonDebtsDataSource {
 
     PersonDebt getPersonDebt(@NonNull String debtId);
 
@@ -32,7 +33,7 @@ public interface DebtsDataSource {
 
     void updatePersonDebt(@NonNull PersonDebt personDebt);
 
-    String saveNewPerson(@NonNull Person person) ;
+    String saveNewPerson(@NonNull Person person);
 
     Person getPerson(@NonNull String personId);
 

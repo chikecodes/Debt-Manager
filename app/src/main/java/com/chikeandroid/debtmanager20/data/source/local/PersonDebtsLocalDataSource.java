@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
-import com.chikeandroid.debtmanager20.data.source.DebtsDataSource;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsDataSource;
 import com.chikeandroid.debtmanager20.data.source.local.DebtsPersistenceContract.DebtsEntry;
 import com.chikeandroid.debtmanager20.data.source.local.DebtsPersistenceContract.PersonsEntry;
 import com.chikeandroid.debtmanager20.util.StringUtil;
@@ -24,15 +24,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by Chike on 3/22/2017.
+ * Concrete implementation of a data source as a db.
  */
 @Singleton
-public class DebtsLocalDataSource implements DebtsDataSource {
+public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
 
     private static final String TAG = "DebtsLocalDataSource";
 
     private DebtsDbHelper mDebtsDbHelper;
 
-    public DebtsLocalDataSource(@NonNull Context context) {
+    public PersonDebtsLocalDataSource(@NonNull Context context) {
         checkNotNull(context);
         mDebtsDbHelper = new DebtsDbHelper(context);
     }
@@ -186,36 +187,36 @@ public class DebtsLocalDataSource implements DebtsDataSource {
         return personDebt;
     }
 
-    public String buildGetDebtsQueryByWhere(String where) {
+    private String buildGetDebtsQueryByWhere(String where) {
 
-        String COMMA_SEP = ", ";
-        String ALIAS = " AS ";
+        String comma = ", ";
+        String alias = " AS ";
         StringBuilder sqlStringBuilder = new StringBuilder();
         sqlStringBuilder.append("SELECT ");
         sqlStringBuilder.append(DebtsEntry.COLUMN_PERSON_ID);
-        sqlStringBuilder.append(COMMA_SEP);
+        sqlStringBuilder.append(comma);
         sqlStringBuilder.append(DebtsEntry.TABLE_NAME + "." + DebtsEntry.COLUMN_ENTRY_ID);
-        sqlStringBuilder.append(ALIAS);
+        sqlStringBuilder.append(alias);
         sqlStringBuilder.append(DebtsEntry.ALIAS_DEBT_ID);
-        sqlStringBuilder.append(COMMA_SEP);
+        sqlStringBuilder.append(comma);
         sqlStringBuilder.append(DebtsEntry.COLUMN_AMOUNT);
-        sqlStringBuilder.append(COMMA_SEP);
+        sqlStringBuilder.append(comma);
         sqlStringBuilder.append(DebtsEntry.COLUMN_DATE_DUE);
-        sqlStringBuilder.append(COMMA_SEP);
+        sqlStringBuilder.append(comma);
         sqlStringBuilder.append(DebtsEntry.COLUMN_DATE_ENTERED);
-        sqlStringBuilder.append(COMMA_SEP);
+        sqlStringBuilder.append(comma);
         sqlStringBuilder.append(DebtsEntry.COLUMN_NOTE);
-        sqlStringBuilder.append(COMMA_SEP);
+        sqlStringBuilder.append(comma);
         sqlStringBuilder.append(DebtsEntry.COLUMN_STATUS);
-        sqlStringBuilder.append(COMMA_SEP);
+        sqlStringBuilder.append(comma);
         sqlStringBuilder.append(DebtsEntry.COLUMN_TYPE);
-        sqlStringBuilder.append(COMMA_SEP);
+        sqlStringBuilder.append(comma);
         sqlStringBuilder.append(PersonsEntry.COLUMN_NAME);
-        sqlStringBuilder.append(COMMA_SEP);
+        sqlStringBuilder.append(comma);
         sqlStringBuilder.append(PersonsEntry.TABLE_NAME + "." + PersonsEntry.COLUMN_ENTRY_ID);
-        sqlStringBuilder.append(ALIAS);
+        sqlStringBuilder.append(alias);
         sqlStringBuilder.append(PersonsEntry.ALIAS_PERSON_ID);
-        sqlStringBuilder.append(COMMA_SEP);
+        sqlStringBuilder.append(comma);
         sqlStringBuilder.append(PersonsEntry.COLUMN_PHONE_NO);
         sqlStringBuilder.append(" FROM ");
         sqlStringBuilder.append(DebtsEntry.TABLE_NAME);

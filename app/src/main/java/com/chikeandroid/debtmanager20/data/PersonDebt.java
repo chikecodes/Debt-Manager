@@ -38,12 +38,18 @@ public final class PersonDebt implements Parcelable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         PersonDebt that = (PersonDebt) o;
 
-        if (!mPerson.equals(that.mPerson)) return false;
+        if (!mPerson.equals(that.mPerson)) {
+            return false;
+        }
         return mDebt.equals(that.mDebt);
 
     }

@@ -11,6 +11,10 @@ import java.util.UUID;
 
 public class TestUtil {
 
+    private TestUtil() {
+
+    }
+
     public static Debt createDebt(String personId, double amount, int debtType, int debtStatus, String note) {
 
         Debt debt = new Debt.Builder(UUID.randomUUID().toString(), personId, amount,

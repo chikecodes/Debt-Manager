@@ -7,8 +7,8 @@ import android.support.v4.content.Loader;
 
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
-import com.chikeandroid.debtmanager20.data.source.DebtsDataSource;
-import com.chikeandroid.debtmanager20.data.source.DebtsRepository;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsDataSource;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
 import com.chikeandroid.debtmanager20.data.loaders.DebtsLoader;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class OweMeDebtsPresenter implements OweMeDebtsContract.Presenter, Loader
     private final static int OWE_ME_DEBTS_QUERY = 1;
 
     @NonNull
-    private final DebtsDataSource mDebtsRepository;
+    private final PersonDebtsDataSource mDebtsRepository;
 
     @NonNull
     private final OweMeDebtsContract.View mOweMeDebtsView;
@@ -40,7 +40,7 @@ public class OweMeDebtsPresenter implements OweMeDebtsContract.Presenter, Loader
     private List<PersonDebt> mCurrentDebts;
 
     @Inject
-    OweMeDebtsPresenter(DebtsRepository debtsRepository, OweMeDebtsContract.View view,
+    OweMeDebtsPresenter(PersonDebtsRepository debtsRepository, OweMeDebtsContract.View view,
                         LoaderManager loaderManager, DebtsLoader loader) {
         mLoader = loader;
         mDebtsRepository = debtsRepository;

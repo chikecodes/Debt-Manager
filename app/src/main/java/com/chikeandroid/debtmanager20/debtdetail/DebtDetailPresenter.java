@@ -7,8 +7,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
 import com.chikeandroid.debtmanager20.data.PersonDebt;
-import com.chikeandroid.debtmanager20.data.source.DebtsDataSource;
-import com.chikeandroid.debtmanager20.data.source.DebtsRepository;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsDataSource;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
 import com.chikeandroid.debtmanager20.data.loaders.DebtLoader;
 
 import javax.inject.Inject;
@@ -25,7 +25,7 @@ public class DebtDetailPresenter implements DebtDetailContract.Presenter, Loader
     private static final int DEBT_QUERY = 106;
 
     @NonNull
-    private final DebtsDataSource mDebtsRepository;
+    private final PersonDebtsDataSource mDebtsRepository;
 
     @NonNull
     private final DebtDetailContract.View mDebtDetailView;
@@ -38,7 +38,7 @@ public class DebtDetailPresenter implements DebtDetailContract.Presenter, Loader
     private String mDebtId;
 
     @Inject
-    public DebtDetailPresenter(@Nullable String debtId, DebtsRepository debtsRepository,
+    public DebtDetailPresenter(@Nullable String debtId, PersonDebtsRepository debtsRepository,
                                DebtDetailContract.View view, LoaderManager loaderManager, DebtLoader loader) {
         mDebtId = debtId;
         mDebtsRepository = debtsRepository;

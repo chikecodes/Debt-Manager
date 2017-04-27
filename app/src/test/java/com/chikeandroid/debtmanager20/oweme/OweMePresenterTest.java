@@ -9,7 +9,7 @@ import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.loaders.DebtsLoader;
 import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
-import com.chikeandroid.debtmanager20.data.source.DebtsRepository;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public class OweMePresenterTest {
     private static List<PersonDebt> DEBTS;
 
     @Mock
-    private DebtsRepository mDebtsRepository;
+    private PersonDebtsRepository mDebtsRepository;
 
     @Mock
     private OweMeDebtsContract.View mOweMeDebtsView;

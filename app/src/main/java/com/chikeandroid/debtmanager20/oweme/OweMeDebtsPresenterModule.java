@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 
-import com.chikeandroid.debtmanager20.data.source.DebtsRepository;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
 import com.chikeandroid.debtmanager20.data.loaders.DebtsLoader;
 
 import dagger.Module;
@@ -37,7 +37,7 @@ public class OweMeDebtsPresenterModule {
     }
 
     @Provides
-    DebtsLoader providesOweMeDebtsLoader(Context context, DebtsRepository repository) {
+    DebtsLoader providesOweMeDebtsLoader(Context context, PersonDebtsRepository repository) {
         return new DebtsLoader(context, repository);
     }
 }

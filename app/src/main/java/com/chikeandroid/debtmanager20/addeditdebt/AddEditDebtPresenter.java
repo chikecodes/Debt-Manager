@@ -6,8 +6,8 @@ import android.support.annotation.Nullable;
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
-import com.chikeandroid.debtmanager20.data.source.DebtsDataSource;
-import com.chikeandroid.debtmanager20.data.source.DebtsRepository;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsDataSource;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
 
 import javax.inject.Inject;
 
@@ -18,7 +18,7 @@ import javax.inject.Inject;
 public class AddEditDebtPresenter implements AddEditDebtContract.Presenter {
 
     @NonNull
-    private final DebtsDataSource mDebtsRepository;
+    private final PersonDebtsDataSource mDebtsRepository;
 
     @NonNull
     private final AddEditDebtContract.View mAddDebtsView;
@@ -27,7 +27,7 @@ public class AddEditDebtPresenter implements AddEditDebtContract.Presenter {
     private boolean mEditDebt;
 
     @Inject
-    AddEditDebtPresenter(DebtsRepository debtsRepository, AddEditDebtContract.View view, boolean editDebt) {
+    AddEditDebtPresenter(PersonDebtsRepository debtsRepository, AddEditDebtContract.View view, boolean editDebt) {
         mDebtsRepository = debtsRepository;
         mAddDebtsView = view;
         mEditDebt = editDebt;

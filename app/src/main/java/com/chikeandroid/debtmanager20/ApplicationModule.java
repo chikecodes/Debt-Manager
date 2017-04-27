@@ -5,9 +5,9 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
-import com.chikeandroid.debtmanager20.data.source.DebtsDataSource;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsDataSource;
 import com.chikeandroid.debtmanager20.data.source.Local;
-import com.chikeandroid.debtmanager20.data.source.local.DebtsLocalDataSource;
+import com.chikeandroid.debtmanager20.data.source.local.PersonDebtsLocalDataSource;
 
 import javax.inject.Singleton;
 
@@ -48,7 +48,7 @@ public class ApplicationModule {
     @Singleton
     @Provides
     @Local
-    DebtsDataSource providesDebtsLocalDataSource(Context context) {
-        return new DebtsLocalDataSource(context);
+    PersonDebtsDataSource providesDebtsLocalDataSource(Context context) {
+        return new PersonDebtsLocalDataSource(context);
     }
 }

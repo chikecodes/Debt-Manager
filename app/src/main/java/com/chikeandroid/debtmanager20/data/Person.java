@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Chike on 3/14/2017.
+ * Immutable model class for a Person.
  */
 
 public final class Person implements Parcelable {
@@ -70,15 +71,24 @@ public final class Person implements Parcelable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Person person = (Person) o;
 
-        if (!mId.equals(person.mId)) return false;
-        if (!mFullname.equals(person.mFullname)) return false;
-        if (mPhoneNumber != null ? !mPhoneNumber.equals(person.mPhoneNumber) : person.mPhoneNumber != null)
+        if (!mId.equals(person.mId)) {
             return false;
+        }
+        if (!mFullname.equals(person.mFullname)) {
+            return false;
+        }
+        if (mPhoneNumber != null ? !mPhoneNumber.equals(person.mPhoneNumber) : person.mPhoneNumber != null) {
+            return false;
+        }
         return mDebts != null ? mDebts.equals(person.mDebts) : person.mDebts == null;
 
     }
@@ -110,7 +120,7 @@ public final class Person implements Parcelable {
         this.mId = in.readString();
         this.mFullname = in.readString();
         this.mPhoneNumber = in.readString();
-        this.mDebts = new ArrayList<Debt>();
+        this.mDebts = new ArrayList<>();
         in.readList(this.mDebts, Debt.class.getClassLoader());
     }
 

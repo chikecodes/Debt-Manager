@@ -3,9 +3,7 @@ package com.chikeandroid.debtmanager20.data;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.chikeandroid.debtmanager20.data.source.DebtsDataSource;
-import com.chikeandroid.debtmanager20.data.source.local.DebtsDbHelper;
-import com.chikeandroid.debtmanager20.data.source.local.DebtsLocalDataSource;
+import com.chikeandroid.debtmanager20.data.source.local.PersonDebtsLocalDataSource;
 import com.chikeandroid.debtmanager20.util.TestUtil;
 
 import org.junit.After;
@@ -25,16 +23,16 @@ import static org.hamcrest.core.Is.is;
 
 /**
  * Created by Chike on 4/17/2017.
- * Integration test for the {@link DebtsDataSource}, which uses the {@link DebtsDbHelper}.
+ * Integration test for {@link com.chikeandroid.debtmanager20.data.source.PersonDebtsDataSource}, which uses {@link com.chikeandroid.debtmanager20.data.source.local.DebtsDbHelper}.
  */
 @RunWith(AndroidJUnit4.class)
 public class DebtsLocalDataSourceTest {
 
-    private DebtsLocalDataSource mDebtsLocalDataSource;
+    private PersonDebtsLocalDataSource mDebtsLocalDataSource;
 
     @Before
     public void setUp() {
-        mDebtsLocalDataSource = new DebtsLocalDataSource(InstrumentationRegistry.getTargetContext());
+        mDebtsLocalDataSource = new PersonDebtsLocalDataSource(InstrumentationRegistry.getTargetContext());
     }
 
     @After
@@ -71,7 +69,7 @@ public class DebtsLocalDataSourceTest {
         mDebtsLocalDataSource.savePersonDebt(debt1, person1);
 
         Person person2 = TestUtil.createPerson("Mary Jane", "080145236987");
-        Debt debt2 = TestUtil.createDebt(person2.getId(), 445444, Debt.DEBT_TYPE_i_OWE,
+        Debt debt2 = TestUtil.createDebt(person2.getId(), 445444, Debt.DEBT_TYPE_IOWE,
                 Debt.DEBT_STATUS_ACTIVE, "Hair money");
         PersonDebt personDebt2 = new PersonDebt(person2, debt2);
         mDebtsLocalDataSource.savePersonDebt(debt2, person2);
@@ -104,7 +102,7 @@ public class DebtsLocalDataSourceTest {
         mDebtsLocalDataSource.savePersonDebt(debt1, person1);
 
         Person person2 = TestUtil.createPerson("Mary Jane", "080145236987");
-        Debt debt2 = TestUtil.createDebt(person2.getId(), 445444, Debt.DEBT_TYPE_i_OWE,
+        Debt debt2 = TestUtil.createDebt(person2.getId(), 445444, Debt.DEBT_TYPE_IOWE,
                 Debt.DEBT_STATUS_ACTIVE, "Hair money");
         mDebtsLocalDataSource.savePersonDebt(debt2, person2);
 
@@ -197,18 +195,18 @@ public class DebtsLocalDataSourceTest {
     public void shouldBeAbleToDeleteAllDebtsByType() {
 
         Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
-        Debt debt1 = TestUtil.createDebt(person1.getId(), 564744, Debt.DEBT_TYPE_i_OWE,
+        Debt debt1 = TestUtil.createDebt(person1.getId(), 564744, Debt.DEBT_TYPE_IOWE,
                 Debt.DEBT_STATUS_ACTIVE, "textbook money");
         mDebtsLocalDataSource.savePersonDebt(debt1, person1);
 
         Person person2 = TestUtil.createPerson("Mary Jane", "080145236987");
-        Debt debt2 = TestUtil.createDebt(person2.getId(), 445444, Debt.DEBT_TYPE_i_OWE,
+        Debt debt2 = TestUtil.createDebt(person2.getId(), 445444, Debt.DEBT_TYPE_IOWE,
                 Debt.DEBT_STATUS_ACTIVE, "Hair money");
         mDebtsLocalDataSource.savePersonDebt(debt2, person2);
 
-        mDebtsLocalDataSource.deleteAllPersonDebtsByType(Debt.DEBT_TYPE_i_OWE);
+        mDebtsLocalDataSource.deleteAllPersonDebtsByType(Debt.DEBT_TYPE_IOWE);
 
-        List<PersonDebt> personDebts = mDebtsLocalDataSource.getAllPersonDebtsByType(Debt.DEBT_TYPE_i_OWE);
+        List<PersonDebt> personDebts = mDebtsLocalDataSource.getAllPersonDebtsByType(Debt.DEBT_TYPE_IOWE);
         assertEquals(personDebts.size(), 0);
     }
 
@@ -216,7 +214,7 @@ public class DebtsLocalDataSourceTest {
     public void shouldBeAbleToUpdateDebtWithOutPhoneNumber() {
 
         Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
-        Debt debt1 = TestUtil.createDebt(person1.getId(), 564744, Debt.DEBT_TYPE_i_OWE,
+        Debt debt1 = TestUtil.createDebt(person1.getId(), 564744, Debt.DEBT_TYPE_IOWE,
                 Debt.DEBT_STATUS_ACTIVE, "textbook money");
         mDebtsLocalDataSource.savePersonDebt(debt1, person1);
 
@@ -239,7 +237,7 @@ public class DebtsLocalDataSourceTest {
     public void shouldCreateNewUserOnUpdateWithPhoneNumberIfNotAlreadyInDatabase() {
 
         Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
-        Debt debt1 = TestUtil.createDebt(person1.getId(), 564744, Debt.DEBT_TYPE_i_OWE,
+        Debt debt1 = TestUtil.createDebt(person1.getId(), 564744, Debt.DEBT_TYPE_IOWE,
                 Debt.DEBT_STATUS_ACTIVE, "textbook money");
         mDebtsLocalDataSource.savePersonDebt(debt1, person1);
 

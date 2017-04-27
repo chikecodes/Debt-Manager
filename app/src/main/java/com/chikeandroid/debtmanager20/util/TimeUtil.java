@@ -10,9 +10,14 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Created by Chike on 4/10/2017.
+ * A Time utility class
  */
 
 public class TimeUtil {
+
+    private TimeUtil() {
+
+    }
 
     public static String getDayOfMonthSuffix(final int n) {
         checkArgument(n >= 1 && n <= 31, "illegal day of month: " + n);
@@ -29,16 +34,16 @@ public class TimeUtil {
 
     public static String getCurrentDay(int dayIndex){
 
-        String daysArray[] = {"Sunday","Monday","Tuesday", "Wednesday","Thursday","Friday", "Saturday"};
+        String[] daysArray = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
         return daysArray[dayIndex];
     }
 
-    public static String getMonthForInt(int num) {
+    public static String getMonthForInt(int num){
 
         String month = "wrong";
         DateFormatSymbols dfs = new DateFormatSymbols();
         String[] months = dfs.getMonths();
-        if (num >= 0 && num <= 11 ) {
+        if (num >= 0 && num <= 11) {
             month = months[num];
         }
         return month;

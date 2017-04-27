@@ -11,7 +11,7 @@ import android.support.annotation.Nullable;
  */
 public final class Debt implements Parcelable {
 
-    public static final int DEBT_TYPE_i_OWE = 100;
+    public static final int DEBT_TYPE_IOWE = 100;
     public static final int DEBT_TYPE_OWED = 200;
     public static final int DEBT_STATUS_PARTIAL = 101;
     public static final int DEBT_STATUS_ACTIVE = 102;
@@ -114,7 +114,7 @@ public final class Debt implements Parcelable {
         private String mNote = "";
         private long mDueDate = 0;
 
-        public Builder(String id, String personId, Double amount, long createdDate,int debtType, int status) {
+        public Builder(String id, String personId, Double amount, long createdDate, int debtType, int status) {
             mId = id;
             mAmount = amount;
             mCreatedDate = createdDate;
@@ -153,20 +153,37 @@ public final class Debt implements Parcelable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Debt debt = (Debt) o;
 
-        if (Double.compare(debt.mAmount, mAmount) != 0) return false;
-        if (mCreatedDate != debt.mCreatedDate) return false;
-        if (mDueDate != debt.mDueDate) return false;
-        if (mDebtType != debt.mDebtType) return false;
-        if (mStatus != debt.mStatus) return false;
-        if (!mId.equals(debt.mId)) return false;
-        if (mNote != null ? !mNote.equals(debt.mNote) : debt.mNote != null) return false;
+        if (Double.compare(debt.mAmount, mAmount) != 0) {
+            return false;
+        }
+        if (mCreatedDate != debt.mCreatedDate) {
+            return false;
+        }
+        if (mDueDate != debt.mDueDate) {
+            return false;
+        }
+        if (mDebtType != debt.mDebtType) {
+            return false;
+        }
+        if (mStatus != debt.mStatus) {
+            return false;
+        }
+        if (!mId.equals(debt.mId)) {
+            return false;
+        }
+        if (mNote != null ? !mNote.equals(debt.mNote) : debt.mNote != null) {
+            return false;
+        }
         return mPersonId.equals(debt.mPersonId);
-
     }
 
     public boolean isEmpty() {

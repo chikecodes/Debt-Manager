@@ -2,7 +2,7 @@ package com.chikeandroid.debtmanager20;
 
 import android.content.Context;
 
-import com.chikeandroid.debtmanager20.data.source.DebtsRepository;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
 
 import javax.inject.Singleton;
 
@@ -13,10 +13,10 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = { ApplicationModule.class} )
+@Component(modules = {ApplicationModule.class})
 public interface ApplicationComponent {
 
-    DebtsRepository getDebtsRepository();
+    PersonDebtsRepository getDebtsRepository();
 
     Context getContext();
 

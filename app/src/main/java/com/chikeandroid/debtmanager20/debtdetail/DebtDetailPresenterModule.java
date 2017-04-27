@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 
-import com.chikeandroid.debtmanager20.data.source.DebtsRepository;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
 import com.chikeandroid.debtmanager20.data.loaders.DebtLoader;
 
 import dagger.Module;
@@ -41,7 +41,7 @@ public class DebtDetailPresenterModule {
     }
 
     @Provides
-    DebtLoader providesOweMeDebtLoader(Context context, DebtsRepository repository) {
+    DebtLoader providesOweMeDebtLoader(Context context, PersonDebtsRepository repository) {
         return new DebtLoader(context, repository, mDebtId);
     }
 

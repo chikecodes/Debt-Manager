@@ -11,7 +11,6 @@ import android.widget.DatePicker;
 import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.data.Debt;
-import com.chikeandroid.debtmanager20.data.source.DebtsDataSource;
 import com.chikeandroid.debtmanager20.home.MainActivity;
 import com.chikeandroid.debtmanager20.util.RecyclerViewItemCountAssertion;
 import com.chikeandroid.debtmanager20.util.StringUtil;
@@ -63,7 +62,7 @@ public class OweMeDebtsScreenTest {
 
                 /**
                  * To avoid a long list of debts and the need to scroll through the list to find a
-                 * debt, we call {@link DebtsDataSource#deleteAllPersonDebtsByType(int)} ()} before each test.
+                 * debt, we call {@link com.chikeandroid.debtmanager20.data.source.PersonDebtsDataSource ;#deleteAllPersonDebtsByType(int)} ()} before each test.
                  */
                 @Override
                 protected void beforeActivityLaunched() {

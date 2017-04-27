@@ -1,7 +1,6 @@
 package com.chikeandroid.debtmanager20.util;
 
 import android.support.design.widget.TextInputLayout;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -20,11 +19,7 @@ public class ValidationUtil {
         EditText editText = editTextValidator.getEditText();
         String value = editText.getText().toString().trim();
 
-        Log.d("kolo", "isEmpty value " + value);
-
         boolean isEmpty = StringUtil.isEmpty(value);
-
-        Log.d("kolo", "isEmpty value " + isEmpty );
 
         if(isEmpty) {
             if (editText.getVisibility() != View.VISIBLE) {
@@ -57,7 +52,7 @@ public class ValidationUtil {
         return isInValid;
     }
 
-    public static void setError(EditText editText, String errorString) {
+    private static void setError(EditText editText, String errorString) {
         if (editText.getParent() != null && editText.getParent() instanceof TextInputLayout) {
             ((TextInputLayout) editText.getParent()).setError(editText.getHint() == null ? errorString : editText.getHint());
             ((TextInputLayout) editText.getParent()).setErrorEnabled(true);
@@ -76,7 +71,7 @@ public class ValidationUtil {
         }
     }
 
-    public static void clearError(EditText editText) {
+    private static void clearError(EditText editText) {
         if (editText.getParent() != null && editText.getParent() instanceof TextInputLayout) {
             ((TextInputLayout) editText.getParent()).setErrorEnabled(false);
             ((TextInputLayout) editText.getParent()).setError(null);

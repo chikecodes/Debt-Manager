@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.AsyncTaskLoader;
 
 import com.chikeandroid.debtmanager20.data.PersonDebt;
-import com.chikeandroid.debtmanager20.data.source.DebtsRepository;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
 
 import java.util.List;
 
@@ -14,17 +14,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by Chike on 4/15/2017.
  * Custom {@link android.content.Loader} for a list of {@link PersonDebt}, using the
- * {@link DebtsRepository} as its source. This Loader is a {@link AsyncTaskLoader} so it queries
+ * {@link PersonDebtsRepository} as its source. This Loader is a {@link AsyncTaskLoader} so it queries
  * the data asynchronously.
  */
 
-public class DebtsLoader extends AsyncTaskLoader<List<PersonDebt>> implements DebtsRepository.DebtsRepositoryObserver {
+public class DebtsLoader extends AsyncTaskLoader<List<PersonDebt>> implements PersonDebtsRepository.DebtsRepositoryObserver {
 
     private static final String TAG = "OweMeDebtsLoader";
 
-    private DebtsRepository mDebtsRepository;
+    private PersonDebtsRepository mDebtsRepository;
 
-    public DebtsLoader(Context context, @NonNull DebtsRepository repository) {
+    public DebtsLoader(Context context, @NonNull PersonDebtsRepository repository) {
         super(context);
         checkNotNull(repository);
         mDebtsRepository = repository;

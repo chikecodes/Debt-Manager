@@ -3,7 +3,7 @@ package com.chikeandroid.debtmanager20.addeditdebt;
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
-import com.chikeandroid.debtmanager20.data.source.DebtsRepository;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
 import com.chikeandroid.debtmanager20.util.TestUtil;
 
 import org.junit.Before;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 public class AddEditDebtPresenterTest {
 
     @Mock
-    private DebtsRepository mDebtsRepository;
+    private PersonDebtsRepository mDebtsRepository;
 
     @Mock
     private AddEditDebtContract.View mAddDebtView;

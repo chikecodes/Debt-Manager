@@ -19,13 +19,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by Chike on 3/24/2017.
+ * Concrete implementation to load PersonDebts from the data sources into a cache.
  */
 @Singleton
-public class DebtsRepository implements DebtsDataSource {
+public class PersonDebtsRepository implements PersonDebtsDataSource {
 
     private static final String TAG = "DebtsRepository";
 
-    private final DebtsDataSource mDebtsLocalDataSource;
+    private final PersonDebtsDataSource mDebtsLocalDataSource;
 
     // private final DebtsDataSource mDebtsRemoteDataSource;
 
@@ -43,7 +44,7 @@ public class DebtsRepository implements DebtsDataSource {
     boolean mCacheIsDirty;
 
     @Inject
-    public DebtsRepository(@Local DebtsDataSource debtsLocalDataSource) {
+    public PersonDebtsRepository(@Local PersonDebtsDataSource debtsLocalDataSource) {
         mDebtsLocalDataSource = debtsLocalDataSource;
     }
 
@@ -89,12 +90,11 @@ public class DebtsRepository implements DebtsDataSource {
         }
 
         // Is the task in the local data source? If not, query the network.
-        PersonDebt personDebt = mDebtsLocalDataSource.getPersonDebt(debtId);
         /*if (task == null) {
             task = mTasksRemoteDataSource.getTask(taskId);
         }*/
 
-        return personDebt;
+        return mDebtsLocalDataSource.getPersonDebt(debtId);
     }
 
     @Nullable
@@ -197,7 +197,7 @@ public class DebtsRepository implements DebtsDataSource {
 
         mDebtsLocalDataSource.deleteAllPersonDebts();
 
-        if(mCachedDebts == null ) {
+        if(mCachedDebts == null) {
             mCachedDebts = new LinkedHashMap<>();
         }
         mCachedDebts.clear();

@@ -4,6 +4,7 @@ import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.data.source.DebtsRepository;
+import com.chikeandroid.debtmanager20.util.TestUtil;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,15 +38,17 @@ public class AddEditDebtPresenterTest {
         // The presenter wont't update the view unless it's active.
         when(mAddDebtView.isActive()).thenReturn(true);
 
-        mAddEditDebtPresenter = new AddEditDebtPresenter(mDebtsRepository, mAddDebtView, null, null);
+        mAddEditDebtPresenter = new AddEditDebtPresenter(mDebtsRepository, mAddDebtView, false);
     }
 
     @Test
     public void shouldSaveDebtToRepository() {
 
-        mAddEditDebtPresenter.saveDebt("Chike Mgbemena", "07038111534", 5045.34, "my note",
-                System.currentTimeMillis(), System.currentTimeMillis(),
-                Debt.DEBT_TYPE_OWED, Debt.DEBT_STATUS_ACTIVE);
+        Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
+        Debt debt1 = TestUtil.createDebt(person1.getId(), 60000, Debt.DEBT_TYPE_IOWE,
+                Debt.DEBT_STATUS_ACTIVE, "note 4345");
+
+        mAddEditDebtPresenter.saveDebt(person1, debt1);
 
         verify(mDebtsRepository).savePersonDebt(any(Debt.class), any(Person.class));
         verify(mAddDebtView).showDebts();
@@ -54,7 +57,11 @@ public class AddEditDebtPresenterTest {
     @Test
     public void shouldShowEmptyDebtErrorUiWhenDebtSaved() {
 
-        mAddEditDebtPresenter.saveDebt("", "", 0, "", 0, 0, Debt.DEBT_TYPE_OWED, 0);
+        Person person1 = TestUtil.createPerson("", "");
+        Debt debt1 = TestUtil.createDebt("", 0, Debt.DEBT_TYPE_OWED,
+                Debt.DEBT_STATUS_ACTIVE, "");
+
+        mAddEditDebtPresenter.saveDebt(person1, debt1);
 
         verify(mAddDebtView).showEmptyDebtError();
     }
@@ -62,14 +69,13 @@ public class AddEditDebtPresenterTest {
     @Test
     public void shouldUpdateDebtInRepository() {
 
-        String debtId = "1234";
-        String personId = "4567";
+        mAddEditDebtPresenter = new AddEditDebtPresenter(mDebtsRepository, mAddDebtView, true);
 
-        mAddEditDebtPresenter = new AddEditDebtPresenter(mDebtsRepository, mAddDebtView, debtId, personId);
+        Person person1 = TestUtil.createPerson("Mary Jane", "08023021782");
+        Debt debt1 = TestUtil.createDebt(person1.getId(), 60000, Debt.DEBT_TYPE_IOWE,
+                Debt.DEBT_STATUS_ACTIVE, "note 4345");
 
-        mAddEditDebtPresenter.saveDebt("Chike Mgbemena", "07038111534", 5045.34, "my note",
-                System.currentTimeMillis(), System.currentTimeMillis(),
-                Debt.DEBT_TYPE_OWED, Debt.DEBT_STATUS_ACTIVE);
+        mAddEditDebtPresenter.saveDebt(person1, debt1);
 
         verify(mDebtsRepository).updatePersonDebt(any(PersonDebt.class));
         verify(mAddDebtView).showDebts();

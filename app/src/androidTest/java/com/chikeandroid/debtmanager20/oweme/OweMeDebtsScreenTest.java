@@ -13,6 +13,7 @@ import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.source.DebtsDataSource;
 import com.chikeandroid.debtmanager20.home.MainActivity;
+import com.chikeandroid.debtmanager20.util.RecyclerViewItemCountAssertion;
 import com.chikeandroid.debtmanager20.util.StringUtil;
 import com.chikeandroid.debtmanager20.util.TimeUtil;
 
@@ -28,6 +29,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -112,6 +114,28 @@ public class OweMeDebtsScreenTest {
         onView(withText(dateCreated + " (Created)")).check(matches(isDisplayed()));
         onView(withText(dateDue + " (Due Date)")).check(matches(isDisplayed()));
 
+    }
+
+    @Test
+    public void shouldBeAbleToDeleteDebtOnDetailScreenAndThenNotShowInList() {
+
+        createDebt(NAME, PHONE_NUMBER, AMOUNT, COMMENT, Debt.DEBT_TYPE_OWED);
+
+        createDebt("Mary Jane", "0124535476", 8000, "comment 098", Debt.DEBT_TYPE_OWED);
+
+        createDebt("Chuka Smith", "10245784", 9000, "comment 4543", Debt.DEBT_TYPE_OWED);
+
+        onView(withText(NAME)).perform(click());
+
+        onView(withId(R.id.action_delete)).perform(click());
+
+        onView(withId(android.R.id.message)).check(matches(isDisplayed()));
+
+        onView(withId(android.R.id.button1)).perform(click());
+
+        onView(withText(NAME)).check(doesNotExist());
+
+        onView(withId(R.id.rv_oweme)).check(new RecyclerViewItemCountAssertion(2));
     }
 
     private void createDebt(String name, String phoneNumber, double amount, String comment, int debtType) {

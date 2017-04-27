@@ -125,7 +125,7 @@ public class DebtsRepositoryTest {
     }
 
     @Test
-    public void shouldBeAbleToDeleteADebtFromLocalDataSource() {
+    public void shouldBeAbleToDeleteAPersonDebtFromLocalDataSource() {
 
         Person person1 = TestUtil.createPerson("Mary Jane", "08023021782");
         Debt debt1 = TestUtil.createDebt(person1.getId(), 60000, Debt.DEBT_TYPE_i_OWE,
@@ -133,9 +133,10 @@ public class DebtsRepositoryTest {
 
         mDebtsRepository.savePersonDebt(debt1, person1);
 
-        mDebtsRepository.deletePersonDebt(debt1.getId());
+        PersonDebt personDebt = new PersonDebt(person1, debt1);
+        mDebtsRepository.deletePersonDebt(personDebt);
 
-        verify(mDebtsLocalDataSource).deletePersonDebt(eq(debt1.getId()));
+        verify(mDebtsLocalDataSource).deletePersonDebt(personDebt);
 
         assertTrue(mDebtsRepository.mCachedDebts.size() == 0);
     }

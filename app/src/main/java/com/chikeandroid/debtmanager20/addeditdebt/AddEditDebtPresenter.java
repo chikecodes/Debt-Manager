@@ -9,10 +9,7 @@ import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.data.source.DebtsDataSource;
 import com.chikeandroid.debtmanager20.data.source.DebtsRepository;
 
-import java.util.UUID;
-
 import javax.inject.Inject;
-import javax.inject.Named;
 
 /**
  * Created by Chike on 3/16/2017.
@@ -27,18 +24,13 @@ public class AddEditDebtPresenter implements AddEditDebtContract.Presenter {
     private final AddEditDebtContract.View mAddDebtsView;
 
     @Nullable
-    private String mDebtId;
-
-    @Nullable
-    private String mPersonId;
+    private boolean mEditDebt;
 
     @Inject
-    AddEditDebtPresenter(DebtsRepository debtsRepository, AddEditDebtContract.View view,
-                         @Nullable @Named("debt_id") String debtId, @Nullable @Named("person_id") String personId) {
+    AddEditDebtPresenter(DebtsRepository debtsRepository, AddEditDebtContract.View view, boolean editDebt) {
         mDebtsRepository = debtsRepository;
         mAddDebtsView = view;
-        mDebtId = debtId;
-        mPersonId = personId;
+        mEditDebt = editDebt;
     }
 
     @Inject
@@ -47,40 +39,25 @@ public class AddEditDebtPresenter implements AddEditDebtContract.Presenter {
     }
 
     @Override
-    public void saveDebt(String name, String phoneNumber, double amount, String note,
-                         long createdDate, long dueDate, int debtType, int status) {
+    public void saveDebt(Person person, Debt debt) {
 
-        if(isNewDebt()) {
-            createDebt(name, phoneNumber, amount, note, createdDate, dueDate, debtType, status);
+        if(!isUpdateDebt()) {
+            createPersonDebt(person, debt);
         } else {
-            updateDebt(name, phoneNumber, amount, note, createdDate, dueDate, debtType, status);
+            updatePersonDebt(person, debt);
         }
     }
 
-    private void updateDebt(String name, String phoneNumber, double amount, String note, long createdDate, long dueDate, int debtType, int status) {
-        if(isNewDebt()) {
+    private void updatePersonDebt(Person person, Debt debt) {
+        if(!isUpdateDebt()) {
             throw new RuntimeException("updatePersonDebt() was called but debt is new.");
         }
-
-        Person person = new Person(mPersonId, name, phoneNumber);
-        Debt debt = new Debt.Builder(mDebtId, person.getId(), amount, createdDate, debtType, status)
-                .dueDate(dueDate)
-                .note(note)
-                .build();
         PersonDebt personDebt = new PersonDebt(person, debt);
         mDebtsRepository.updatePersonDebt(personDebt);
         mAddDebtsView.showDebts();
     }
 
-    private void createDebt(String name, String phoneNumber, double amount, String note,
-                            long createdAt, long dateDue, int debtType, int status) {
-
-        Person person = new Person(UUID.randomUUID().toString(), name, phoneNumber);
-        Debt debt = new Debt.Builder(UUID.randomUUID().toString(), person.getId(), amount, createdAt,
-                debtType, status)
-                .dueDate(dateDue)
-                .note(note)
-                .build();
+    private void createPersonDebt(Person person, Debt debt) {
 
         if(person.isEmpty() && debt.isEmpty()) {
             mAddDebtsView.showEmptyDebtError();
@@ -90,8 +67,8 @@ public class AddEditDebtPresenter implements AddEditDebtContract.Presenter {
         }
     }
 
-    private boolean isNewDebt() {
-        return mDebtId == null && mPersonId == null;
+    private boolean isUpdateDebt() {
+        return mEditDebt;
     }
 
     @Override

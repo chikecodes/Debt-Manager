@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.data.Debt;
+import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.FragmentAddDebtBinding;
 import com.chikeandroid.debtmanager20.util.TimeUtil;
@@ -38,6 +39,7 @@ import com.chikeandroid.debtmanager20.util.validator.EditTextIntegerValidator;
 import com.chikeandroid.debtmanager20.util.validator.EditTextPhoneNumberValidator;
 
 import java.util.Calendar;
+import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -63,6 +65,8 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
     private PersonDebt mPersonDebt;
 
     private AddEditDebtContract.Presenter mPresenter;
+    private FragmentAddDebtBinding mFragmentAddDebtBinding;
+    private String mActionBarTitle;
 
     public static AddEditDebtFragment newInstance(Bundle bundle) {
         AddEditDebtFragment addEditDebtFragment = new AddEditDebtFragment();
@@ -90,14 +94,28 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        FragmentAddDebtBinding fragmentAddDebtBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_debt, container, false);
+        mFragmentAddDebtBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_debt, container, false);
 
+        setUpViews();
+
+        mActionBarTitle = "Add Debt";
+        setViewsTextFromBundle();
+
+        setUpToolbar();
+
+        setHasOptionsMenu(true);
+        setRetainInstance(true);
+
+        return mFragmentAddDebtBinding.getRoot();
+    }
+
+    private void setUpViews() {
         mCalendar = Calendar.getInstance();
 
         mDebtCreatedAt = System.currentTimeMillis();
         mDebtDue = System.currentTimeMillis();
 
-        mButtonDateCreated = fragmentAddDebtBinding.btnDateCreated;
+        mButtonDateCreated = mFragmentAddDebtBinding.btnDateCreated;
         mButtonDateCreated.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,11 +123,11 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
             }
         });
 
-        mEditTextComment = fragmentAddDebtBinding.etComment;
-        mEditTextAmount = fragmentAddDebtBinding.etAmount;
-        mEditTextName = fragmentAddDebtBinding.etFullName;
-        mEditTextPhoneNumber = fragmentAddDebtBinding.etPhoneNumber;
-        mButtonDateDue = fragmentAddDebtBinding.btnDateDue;
+        mEditTextComment = mFragmentAddDebtBinding.etComment;
+        mEditTextAmount = mFragmentAddDebtBinding.etAmount;
+        mEditTextName = mFragmentAddDebtBinding.etFullName;
+        mEditTextPhoneNumber = mFragmentAddDebtBinding.etPhoneNumber;
+        mButtonDateDue = mFragmentAddDebtBinding.btnDateDue;
         mButtonDateDue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,10 +137,35 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
 
         String currentDateString = TimeUtil.millis2String(System.currentTimeMillis(), "MMM d, yyyy");
 
-        mButtonDateCreated.setText(String.format(getString(R.string.created_date),currentDateString));
+        mButtonDateCreated.setText(String.format(getString(R.string.created_date), currentDateString));
         mButtonDateDue.setText(String.format(getString(R.string.due_date), currentDateString));
 
-        String actionBarTitle = "Add Debt";
+        RadioGroup radioGroupDebtType = mFragmentAddDebtBinding.rgDebtType;
+        mDebtType = Debt.DEBT_TYPE_OWED;
+        radioGroupDebtType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int checkedId) {
+
+                if(checkedId == R.id.rb_owed_by_me) {
+                    mDebtType = Debt.DEBT_TYPE_IOWE;
+                }else if(checkedId == R.id.rb_owed_to_me) {
+                    mDebtType = Debt.DEBT_TYPE_OWED;
+                }
+            }
+        });
+
+        ImageButton imageButtonContacts = mFragmentAddDebtBinding.ibContacts;
+        imageButtonContacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent pickContactIntent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+                startActivityForResult(pickContactIntent, REQUEST_CONTACT);
+            }
+        });
+    }
+
+    private void setViewsTextFromBundle() {
+
         Bundle bundle = getArguments();
         if(bundle != null) {
             mPersonDebt = bundle.getParcelable(ARGUMENT_EDIT_DEBT);
@@ -139,53 +182,27 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
             String createdDateString = String.format(getString(R.string.created_date),
                     TimeUtil.millis2String(mPersonDebt.getDebt().getCreatedDate(), "MMM d, yyyy"));
             mButtonDateCreated.setText(createdDateString);
-            actionBarTitle = "Edit Debt";
+            mActionBarTitle = "Edit Debt";
 
             if(mPersonDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_OWED) {
-                fragmentAddDebtBinding.rbOwedToMe.setChecked(true);
-                fragmentAddDebtBinding.rbOwedByMe.setChecked(false);
-            }else if(mPersonDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_i_OWE) {
-                fragmentAddDebtBinding.rbOwedToMe.setChecked(false);
-                fragmentAddDebtBinding.rbOwedByMe.setChecked(true);
+                mFragmentAddDebtBinding.rbOwedToMe.setChecked(true);
+                mFragmentAddDebtBinding.rbOwedByMe.setChecked(false);
+            }else if(mPersonDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_IOWE) {
+                mFragmentAddDebtBinding.rbOwedToMe.setChecked(false);
+                mFragmentAddDebtBinding.rbOwedByMe.setChecked(true);
             }
         }
+    }
 
-        Toolbar toolbar = fragmentAddDebtBinding.toolbar;
+    private void setUpToolbar() {
+        Toolbar toolbar = mFragmentAddDebtBinding.toolbar;
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(actionBarTitle);
+            actionBar.setTitle(mActionBarTitle);
         }
-
-        RadioGroup radioGroupDebtType = fragmentAddDebtBinding.rgDebtType;
-        mDebtType = Debt.DEBT_TYPE_OWED;
-        radioGroupDebtType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int checkedId) {
-
-                if(checkedId == R.id.rb_owed_by_me) {
-                    mDebtType = Debt.DEBT_TYPE_i_OWE;
-                }else if(checkedId == R.id.rb_owed_to_me) {
-                    mDebtType = Debt.DEBT_TYPE_OWED;
-                }
-            }
-        });
-
-        ImageButton imageButtonContacts = fragmentAddDebtBinding.ibContacts;
-        imageButtonContacts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent pickContactIntent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
-                startActivityForResult(pickContactIntent, REQUEST_CONTACT);
-            }
-        });
-
-        setHasOptionsMenu(true);
-        setRetainInstance(true);
-
-        return fragmentAddDebtBinding.getRoot();
     }
 
     @Override
@@ -212,9 +229,25 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
                     Toast.makeText(getActivity(), "Invalid", Toast.LENGTH_LONG).show();
 
                 }else {
-                    mPresenter.saveDebt(mEditTextName.getText().toString(),
-                            mEditTextPhoneNumber.getText().toString(), Double.valueOf(mEditTextAmount.getText().toString()), mEditTextComment.getText().toString(),
-                            mDebtCreatedAt, mDebtDue, mDebtType, Debt.DEBT_STATUS_ACTIVE);
+
+                    String personId = UUID.randomUUID().toString();
+                    String debtId = UUID.randomUUID().toString();
+                    // update
+                    if(mPersonDebt != null) {
+                        personId = mPersonDebt.getPerson().getId();
+                        debtId = mPersonDebt.getDebt().getId();
+                    }
+
+                    Person person = new Person(personId, mEditTextName.getText().toString(),
+                            mEditTextPhoneNumber.getText().toString());
+
+                    Debt debt = new Debt.Builder(debtId, person.getId(),
+                            Double.valueOf(mEditTextAmount.getText().toString()), mDebtCreatedAt,
+                            mDebtType, Debt.DEBT_STATUS_ACTIVE)
+                            .dueDate(mDebtDue)
+                            .note(mEditTextComment.getText().toString())
+                            .build();
+                    mPresenter.saveDebt(person, debt);
                 }
                 break;
         }
@@ -243,6 +276,7 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
         Toast.makeText(getActivity(), getString(R.string.msg_empty_debt), Toast.LENGTH_LONG).show();
     }
 
+
     @Override
     public void setPresenter(AddEditDebtContract.Presenter presenter) {
         mPresenter = presenter;
@@ -250,14 +284,16 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode != Activity.RESULT_OK ) return ;
+        if(resultCode != Activity.RESULT_OK) {
+            return;
+        }
         if(requestCode == REQUEST_CONTACT) {
             Uri contactUri = data.getData();
             String[] queryFields = new String[] {
                     ContactsContract.Contacts.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER
             };
             Cursor c = getActivity().getContentResolver().query(contactUri, queryFields, null, null, null);
-            if(c.getCount() == 0 ) {
+            if(c.getCount() == 0) {
                 c.close();
                 return;
             }

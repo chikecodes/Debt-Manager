@@ -16,9 +16,7 @@ public class DebtManagerApplication extends Application{
     public void onCreate() {
         super.onCreate();
 
-        mApplicationComponent = DaggerApplicationComponent.builder()
-                .applicationModule(new ApplicationModule(getApplicationContext()))
-                .build();
+        mApplicationComponent = DaggerApplicationComponent.builder().context(getApplicationContext()).build();
 
         if(BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(this);

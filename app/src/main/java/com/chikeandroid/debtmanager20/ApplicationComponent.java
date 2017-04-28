@@ -6,6 +6,7 @@ import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
 
 import javax.inject.Singleton;
 
+import dagger.BindsInstance;
 import dagger.Component;
 
 /**
@@ -15,6 +16,13 @@ import dagger.Component;
 @Singleton
 @Component(modules = {ApplicationModule.class})
 public interface ApplicationComponent {
+
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        Builder context(Context context);
+        ApplicationComponent build();
+    }
 
     PersonDebtsRepository getDebtsRepository();
 

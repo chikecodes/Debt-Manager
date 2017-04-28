@@ -40,7 +40,7 @@ ext {
     rulesVersion = '0.5'
     espressoVersion = '2.2.2'
     circleImageVersion = "2.1.0"
-    daggerVersion = '2.2'
+    daggerVersion = '2.10'
     stethoVersion = '1.4.2'
 
 }

@@ -17,6 +17,7 @@ import dagger.Component;
 @Component(modules = {ApplicationModule.class})
 public interface ApplicationComponent {
 
+    // https://google.github.io/dagger/users-guide.html#binding-instances
     @Component.Builder
     interface Builder {
         @BindsInstance

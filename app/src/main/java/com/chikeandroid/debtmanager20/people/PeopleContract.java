@@ -18,8 +18,6 @@ public interface PeopleContract {
 
         void showPeople(List<Person> persons);
 
-        void showPersonDebtDetailsUi(String personId);
-
         void showNoPerson();
 
         void showLoadingPersonError();

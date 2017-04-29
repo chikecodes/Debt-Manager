@@ -24,7 +24,7 @@ public class AddEditDebtPresenter implements AddEditDebtContract.Presenter {
     private final AddEditDebtContract.View mAddDebtsView;
 
     @Nullable
-    private boolean mEditDebt;
+    private final boolean mEditDebt;
 
     @Inject
     AddEditDebtPresenter(PersonDebtsRepository debtsRepository, AddEditDebtContract.View view, boolean editDebt) {
@@ -41,10 +41,10 @@ public class AddEditDebtPresenter implements AddEditDebtContract.Presenter {
     @Override
     public void saveDebt(Person person, Debt debt) {
 
-        if(!isUpdateDebt()) {
-            createPersonDebt(person, debt);
-        } else {
+        if(isUpdateDebt()) {
             updatePersonDebt(person, debt);
+        } else {
+            createPersonDebt(person, debt);
         }
     }
 
@@ -73,11 +73,11 @@ public class AddEditDebtPresenter implements AddEditDebtContract.Presenter {
 
     @Override
     public void start() {
-
+        // do nothing for now
     }
 
     @Override
     public void stop() {
-
+        // do nothing for now
     }
 }

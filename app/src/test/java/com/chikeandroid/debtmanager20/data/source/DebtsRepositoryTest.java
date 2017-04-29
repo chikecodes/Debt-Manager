@@ -1,7 +1,5 @@
 package com.chikeandroid.debtmanager20.data.source;
 
-import android.content.Context;
-
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
@@ -34,9 +32,6 @@ public class DebtsRepositoryTest {
     @Mock
     private PersonDebtsDataSource mDebtsLocalDataSource;
 
-    @Mock
-    private Context mContext;
-
     @Before
     public void setUp() {
         // Mockito has a very convenient way to inject mocks by using the @Mock annotation. To
@@ -51,18 +46,17 @@ public class DebtsRepositoryTest {
     public void shouldBeAbleToSaveDebtToLocalDataSource() {
 
         // save owe me debt
-        Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
-        Debt debt1 = TestUtil.createDebt(person1.getId(), 4000, Debt.DEBT_TYPE_OWED,
-                Debt.DEBT_STATUS_ACTIVE, "note 123");
-        mDebtsRepository.savePersonDebt(debt1, person1);
+        Person person1 = TestUtil.getPerson();
+        Debt debt1 = TestUtil.getDebt(person1.getId());
+        mDebtsLocalDataSource.savePersonDebt(debt1, person1);
 
         verify(mDebtsLocalDataSource).savePersonDebt(debt1, person1);
         assertThat(mDebtsRepository.getCachedDebts().size(), is(1));
 
         // save i owe debt
-        Person person2 = TestUtil.createPerson("Mary Jane", "08023021782");
-        Debt debt2 = TestUtil.createDebt(person2.getId(), 60000, Debt.DEBT_TYPE_IOWE,
-                Debt.DEBT_STATUS_ACTIVE, "note 4345");
+        Person person2 = TestUtil.createPerson("Nkeiru Ineh", "070414741");
+        Debt debt2 = TestUtil.createDebt(person2.getId(), 60000000, Debt.DEBT_TYPE_IOWE,
+                Debt.DEBT_STATUS_ACTIVE, "");
         mDebtsRepository.savePersonDebt(debt2, person2);
 
         verify(mDebtsLocalDataSource).savePersonDebt(debt2, person2);
@@ -96,14 +90,13 @@ public class DebtsRepositoryTest {
     @Test
     public void shouldBeAbleToDeleteAllDebts() {
 
-        Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
-        Debt debt1 = TestUtil.createDebt(person1.getId(), 4000, Debt.DEBT_TYPE_OWED,
-                Debt.DEBT_STATUS_ACTIVE, "note 123");
-        mDebtsRepository.savePersonDebt(debt1, person1);
+        Person person1 = TestUtil.getPerson();
+        Debt debt1 = TestUtil.getDebt(person1.getId());
+        mDebtsLocalDataSource.savePersonDebt(debt1, person1);
         verify(mDebtsLocalDataSource).savePersonDebt(debt1, person1);
 
-        Person person2 = TestUtil.createPerson("Mary Jane", "08023021782");
-        Debt debt2 = TestUtil.createDebt(person2.getId(), 60000, Debt.DEBT_TYPE_IOWE,
+        Person person2 = TestUtil.createPerson("Emeka Onu", "07045124589");
+        Debt debt2 = TestUtil.createDebt(person2.getId(), 400, Debt.DEBT_TYPE_IOWE,
                 Debt.DEBT_STATUS_ACTIVE, "note 4345");
         mDebtsRepository.savePersonDebt(debt2, person2);
         verify(mDebtsLocalDataSource).savePersonDebt(debt2, person2);
@@ -127,9 +120,9 @@ public class DebtsRepositoryTest {
     @Test
     public void shouldBeAbleToDeleteAPersonDebtFromLocalDataSource() {
 
-        Person person1 = TestUtil.createPerson("Mary Jane", "08023021782");
-        Debt debt1 = TestUtil.createDebt(person1.getId(), 60000, Debt.DEBT_TYPE_IOWE,
-                Debt.DEBT_STATUS_ACTIVE, "note 4345");
+        Person person1 = TestUtil.getPerson();
+        Debt debt1 = TestUtil.getDebt(person1.getId());
+        mDebtsLocalDataSource.savePersonDebt(debt1, person1);
 
         mDebtsRepository.savePersonDebt(debt1, person1);
 
@@ -152,14 +145,13 @@ public class DebtsRepositoryTest {
     @Test
     public void shouldBeAbleToDeleteDebtsByTypeFromLocalDataSource() {
 
-        Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
-        Debt debt1 = TestUtil.createDebt(person1.getId(), 4000, Debt.DEBT_TYPE_OWED,
-                Debt.DEBT_STATUS_ACTIVE, "note 123");
-        mDebtsRepository.savePersonDebt(debt1, person1);
+        Person person1 = TestUtil.getPerson();
+        Debt debt1 = TestUtil.getDebt(person1.getId());
+        mDebtsLocalDataSource.savePersonDebt(debt1, person1);
 
-        Person person2 = TestUtil.createPerson("Mary Jane", "08023021782");
-        Debt debt2 = TestUtil.createDebt(person2.getId(), 60000, Debt.DEBT_TYPE_OWED,
-                Debt.DEBT_STATUS_ACTIVE, "note 4345");
+        Person person2 = TestUtil.createPerson("Ijeoma James", "0501245784");
+        Debt debt2 = TestUtil.createDebt(person2.getId(), 600000, Debt.DEBT_TYPE_OWED,
+                Debt.DEBT_STATUS_ACTIVE, "note 7774");
         mDebtsRepository.savePersonDebt(debt2, person2);
 
         mDebtsRepository.deleteAllPersonDebtsByType(Debt.DEBT_TYPE_OWED);
@@ -172,10 +164,9 @@ public class DebtsRepositoryTest {
     @Test
     public void shouldBeAbleToUpdateDebtFromLocalDataSource() {
 
-        Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
-        Debt debt1 = TestUtil.createDebt(person1.getId(), 4000, Debt.DEBT_TYPE_OWED,
-                Debt.DEBT_STATUS_ACTIVE, "note 123");
-        mDebtsRepository.savePersonDebt(debt1, person1);
+        Person person1 = TestUtil.getPerson();
+        Debt debt1 = TestUtil.getDebt(person1.getId());
+        mDebtsLocalDataSource.savePersonDebt(debt1, person1);
 
         PersonDebt personDebt = mDebtsRepository.getPersonDebt(debt1.getId());
 

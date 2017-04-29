@@ -22,7 +22,7 @@ public class DebtDetailPresenterModule {
 
     private final DebtDetailContract.View mView;
     private final Fragment mContext;
-    private String mDebtId;
+    private final String mDebtId;
 
     public DebtDetailPresenterModule(DebtDetailContract.View view, @Nullable String debtId) {
         mView = view;

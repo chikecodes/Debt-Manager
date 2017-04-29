@@ -10,19 +10,15 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
 
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.addeditdebt.AddEditDebtActivity;
 import com.chikeandroid.debtmanager20.databinding.ActivityMainBinding;
 import com.chikeandroid.debtmanager20.home.adapter.FragmentPagerAdapter;
+import com.chikeandroid.debtmanager20.util.ViewUtil;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    private FloatingActionButton fab;
-    private TabLayout mTabLayout;
-    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +30,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ViewPager viewPager = binding.viewPagerMain;
-        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this));
+        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()));
         viewPager.setOffscreenPageLimit(3);
 
         TabLayout tabLayout = binding.tabLayoutMain;
         tabLayout.setupWithViewPager(viewPager);
 
-        fab = binding.fabMain;
+        FloatingActionButton fab = binding.fabMain;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (AddEditDebtActivity.REQUEST_ADD_DEBT == requestCode && Activity.RESULT_OK == resultCode) {
-            Toast.makeText(this, "Debt saved successfully", Toast.LENGTH_LONG).show();
 
+            ViewUtil.showToast(this, getString(R.string.msg_debt_save_success));
         }
     }
 }

@@ -16,8 +16,6 @@ public interface DebtDetailContract {
 
         boolean isActive();
 
-        void openEditDebtUi();
-
         void callDebtor();
 
         void addPartialPayment();

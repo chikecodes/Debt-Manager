@@ -19,7 +19,6 @@ import com.chikeandroid.debtmanager20.util.TimeUtil;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -141,7 +140,11 @@ public class OweMeDebtsScreenTest {
 
         onView(withId(R.id.fab_main)).perform(click());
 
-        onView(withId(R.id.rb_owed_to_me)).perform(click());
+        if(debtType == Debt.DEBT_TYPE_OWED) {
+            onView(withId(R.id.rb_owed_to_me)).perform(click());
+        }else if(debtType == Debt.DEBT_TYPE_IOWE) {
+            onView(withId(R.id.rb_owed_by_me)).perform(click());
+        }
 
         onView(withId(R.id.et_full_name)).perform(typeText(name), closeSoftKeyboard());
         onView(withId(R.id.et_phone_number)).perform(typeText(phoneNumber), closeSoftKeyboard());
@@ -164,7 +167,7 @@ public class OweMeDebtsScreenTest {
     /**
      * Matches the {@link DebtsAdapter.ViewHolder}s in the middle of the list.
      */
-    private static Matcher<DebtsAdapter.ViewHolder> isInTheMiddle() {
+   /* private static Matcher<DebtsAdapter.ViewHolder> isInTheMiddle() {
         return new TypeSafeMatcher<DebtsAdapter.ViewHolder>() {
             @Override
             protected boolean matchesSafely(DebtsAdapter.ViewHolder customHolder) {
@@ -176,7 +179,7 @@ public class OweMeDebtsScreenTest {
                 description.appendText("item in the middle");
             }
         };
-    }
+    }*/
 
     private static Matcher<Object> withCollapsingToolbarLayoutTitle(final Matcher<CharSequence> textMatcher) {
         return new BoundedMatcher<Object, CollapsingToolbarLayout>(CollapsingToolbarLayout.class) {

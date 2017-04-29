@@ -10,11 +10,11 @@ public class IOwePresenter implements BasePresenter {
 
     @Override
     public void start() {
-
+        // presenter start callback
     }
 
     @Override
     public void stop() {
-
+        // presenter callback stop
     }
 }

@@ -19,7 +19,7 @@ import java.util.List;
 public class PeopleFragment extends Fragment implements PeopleContract.View {
 
     public PeopleFragment() {
-
+        // Required empty public constructor
     }
 
     public static PeopleFragment newInstance() {
@@ -29,6 +29,8 @@ public class PeopleFragment extends Fragment implements PeopleContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRetainInstance(true);
     }
 
     @Nullable
@@ -36,29 +38,22 @@ public class PeopleFragment extends Fragment implements PeopleContract.View {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View view = inflater.inflate(R.layout.fragment_page_3, container, false);
-
-        return view;
+        return inflater.inflate(R.layout.fragment_page_3, container, false);
     }
 
     @Override
     public void showPeople(List<Person> persons) {
-
-    }
-
-    @Override
-    public void showPersonDebtDetailsUi(String personId) {
-
+        // show list of people to ui
     }
 
     @Override
     public void showNoPerson() {
-
+        // show no person available message
     }
 
     @Override
     public void showLoadingPersonError() {
-
+        // show error getting person
     }
 
     @Override
@@ -68,6 +63,6 @@ public class PeopleFragment extends Fragment implements PeopleContract.View {
 
     @Override
     public void setPresenter(PeopleContract.Presenter presenter) {
-
+        // set presenter for this view
     }
 }

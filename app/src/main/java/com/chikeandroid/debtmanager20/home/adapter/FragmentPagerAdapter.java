@@ -1,6 +1,5 @@
 package com.chikeandroid.debtmanager20.home.adapter;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
@@ -15,12 +14,10 @@ import com.chikeandroid.debtmanager20.people.PeopleFragment;
 
 public class FragmentPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
 
-    private int mPageCount = 3;
-    private String[] mTabTitles = new String[] {"Owe Me", "I Owe", "People"};
+    private final String[] mTabTitles = new String[] {"Owe Me", "I Owe", "People"};
 
-    public FragmentPagerAdapter(FragmentManager fm, Context context) {
+    public FragmentPagerAdapter(FragmentManager fm) {
         super(fm);
-        Context context1 = context;
     }
 
     @Override
@@ -36,13 +33,14 @@ public class FragmentPagerAdapter extends android.support.v4.app.FragmentPagerAd
             case 2:
                 fragment = PeopleFragment.newInstance();
                 break;
+            default:
         }
         return fragment;
     }
 
     @Override
     public int getCount() {
-        return mPageCount;
+        return 3;
     }
 
     @Override

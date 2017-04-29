@@ -2,6 +2,7 @@ package com.chikeandroid.debtmanager20.util;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Patterns;
 
 import java.text.DecimalFormat;
@@ -10,7 +11,7 @@ import java.text.DecimalFormat;
  * Created by Chike on 4/10/2017.
  */
 
-public class StringUtil {
+public final class StringUtil {
 
     private StringUtil() {}
 
@@ -19,7 +20,7 @@ public class StringUtil {
     }
 
     public static boolean isEmpty(final @Nullable String str) {
-        return str == null || str.trim().length() == 0;
+        return str == null || TextUtils.isEmpty(str);
     }
 
     public static boolean isPresent(final @Nullable String str) {

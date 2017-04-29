@@ -6,10 +6,9 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
 import com.chikeandroid.debtmanager20.data.Debt;
-import com.chikeandroid.debtmanager20.data.loaders.DebtsLoader;
 import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
-import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
+import com.chikeandroid.debtmanager20.data.loaders.DebtsLoader;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,10 +32,7 @@ import static org.mockito.Mockito.verify;
 
 public class OweMePresenterTest {
 
-    private static List<PersonDebt> DEBTS;
-
-    @Mock
-    private PersonDebtsRepository mDebtsRepository;
+    private static List<PersonDebt> mPersonDebts;
 
     @Mock
     private OweMeDebtsContract.View mOweMeDebtsView;
@@ -56,7 +52,7 @@ public class OweMePresenterTest {
     public void setUpOweMeDebtsPresenter() {
         MockitoAnnotations.initMocks(this);
 
-        mOweMeDebtsPresenter = new OweMeDebtsPresenter(mDebtsRepository, mOweMeDebtsView,
+        mOweMeDebtsPresenter = new OweMeDebtsPresenter(mOweMeDebtsView,
                 mLoaderManager, mDebtsLoader);
 
         Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534");
@@ -91,13 +87,13 @@ public class OweMePresenterTest {
                 .note("note 3")
                 .build();
         PersonDebt personDebt3 = new PersonDebt(person3, debt3);
-        DEBTS = Lists.newArrayList(personDebt1, personDebt2, personDebt3);
+        mPersonDebts = Lists.newArrayList(personDebt1, personDebt2, personDebt3);
     }
 
     @Test
     public void shouldBeAbleToLoadAllDebtsFromRepositoryAndLoadIntoView() {
 
-        mOweMeDebtsPresenter.onLoadFinished(mock(Loader.class), DEBTS);
+        mOweMeDebtsPresenter.onLoadFinished(mock(Loader.class), mPersonDebts);
 
         verify(mOweMeDebtsView).showDebts(mShowDebtsArgumentCaptor.capture());
         assertThat(mShowDebtsArgumentCaptor.getValue().size(), is(3));

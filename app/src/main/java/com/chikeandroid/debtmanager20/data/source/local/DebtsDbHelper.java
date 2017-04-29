@@ -24,6 +24,9 @@ public class DebtsDbHelper extends SQLiteOpenHelper{
 
     private static final String COMMA_SEP = ",";
 
+    public static final String WHERE = " WHERE ";
+    public static final String WHERE_EQUAL_TO = " = ? ";
+
     private static final String SQL_CREATE_DEBTS_TABLE =
             "CREATE TABLE " + DebtsEntry.TABLE_NAME + " (" +
                     DebtsEntry._ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT," +

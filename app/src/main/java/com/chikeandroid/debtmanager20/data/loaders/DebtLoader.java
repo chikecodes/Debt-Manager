@@ -19,7 +19,7 @@ public class DebtLoader extends AsyncTaskLoader<PersonDebt> implements PersonDeb
 
     private final String mDebtId;
 
-    private PersonDebtsRepository mDebtsRepository;
+    private final PersonDebtsRepository mDebtsRepository;
 
     public DebtLoader(Context context, @NonNull PersonDebtsRepository repository, @NonNull String debtId) {
         super(context);

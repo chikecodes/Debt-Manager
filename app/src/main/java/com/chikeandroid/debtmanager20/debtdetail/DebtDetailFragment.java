@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -20,7 +19,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.R;
@@ -29,6 +27,7 @@ import com.chikeandroid.debtmanager20.addeditdebt.AddEditDebtFragment;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.FragmentDebtDetailBinding;
 import com.chikeandroid.debtmanager20.util.StringUtil;
+import com.chikeandroid.debtmanager20.util.ViewUtil;
 
 import javax.inject.Inject;
 
@@ -45,10 +44,7 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
 
     private PersonDebt mPersonDebt;
     private FragmentDebtDetailBinding mFragmentDebtDetailBinding;
-    private ActionBar mActionBar;
     private String mDebtId;
-    private View mView;
-    private Toolbar mToolbar;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
 
     @Inject
@@ -89,21 +85,21 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
 
         mFragmentDebtDetailBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_debt_detail, container, false);
 
-        FloatingActionButton fab = mFragmentDebtDetailBinding.fabScrolling;
+        // FloatingActionButton fab = mFragmentDebtDetailBinding.fabScrolling;
         mCollapsingToolbarLayout = mFragmentDebtDetailBinding.collapsingToolbar;
 
         mCollapsingToolbarLayout.setTitle("");
-        mView = mFragmentDebtDetailBinding.getRoot();
+        View view = mFragmentDebtDetailBinding.getRoot();
 
-        mToolbar = mFragmentDebtDetailBinding.toolbar;
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-        mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (mActionBar != null) {
-            mActionBar.setDisplayHomeAsUpEnabled(true);
-            mActionBar.setDisplayShowTitleEnabled(false);
+        Toolbar toolbar = mFragmentDebtDetailBinding.toolbar;
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
         }
 
-        return mView;
+        return view;
     }
 
     @Override
@@ -119,9 +115,7 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
                 getActivity().finish();
                 break;
             case R.id.action_edit:
-                Intent intent = new Intent(getActivity(), AddEditDebtActivity.class);
-                intent.putExtra(AddEditDebtFragment.ARGUMENT_EDIT_DEBT, mPersonDebt);
-                startActivityForResult(intent, AddEditDebtActivity.REQUEST_EDIT_DEBT);
+                openEditDebtUi();
                 break;
             case R.id.action_delete:
                 String message = String.format(getString(R.string.delete_dialog_title),
@@ -142,6 +136,7 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
                         })
                         .show();
                 break;
+            default:
         }
         return super.onOptionsItemSelected(item);
     }
@@ -149,7 +144,7 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (AddEditDebtActivity.REQUEST_EDIT_DEBT == requestCode && Activity.RESULT_OK == resultCode) {
-            Toast.makeText(getActivity(), "Debt edited successfully", Toast.LENGTH_LONG).show();
+            ViewUtil.showToast(getActivity(), getString(R.string.msg_edit_debt_success));
         }
     }
 
@@ -164,19 +159,20 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
         return false;
     }
 
-    @Override
-    public void openEditDebtUi() {
-
+    private void openEditDebtUi() {
+        Intent intent = new Intent(getActivity(), AddEditDebtActivity.class);
+        intent.putExtra(AddEditDebtFragment.ARGUMENT_EDIT_DEBT, mPersonDebt);
+        startActivityForResult(intent, AddEditDebtActivity.REQUEST_EDIT_DEBT);
     }
 
     @Override
     public void callDebtor() {
-
+        // open dialer to call Person
     }
 
     @Override
     public void addPartialPayment() {
-
+        // add partial payment
     }
 
     @Override
@@ -190,13 +186,13 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
 
     @Override
     public void showMissingDebt() {
-
+        ViewUtil.showToast(getActivity(), getString(R.string.msg_missing_debt));
     }
 
     @Override
     public void showPersonDebtDeleted() {
 
-        Toast.makeText(getActivity(), getString(R.string.msg_success_message_deleted), Toast.LENGTH_LONG).show();
+        ViewUtil.showToast(getActivity(), getString(R.string.msg_success_message_deleted));
         getActivity().finish();
     }
 }

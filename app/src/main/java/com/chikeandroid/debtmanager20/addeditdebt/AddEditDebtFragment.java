@@ -34,6 +34,7 @@ import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.FragmentAddDebtBinding;
 import com.chikeandroid.debtmanager20.util.TimeUtil;
 import com.chikeandroid.debtmanager20.util.ValidationUtil;
+import com.chikeandroid.debtmanager20.util.ViewUtil;
 import com.chikeandroid.debtmanager20.util.validator.EditTextFullNameValidator;
 import com.chikeandroid.debtmanager20.util.validator.EditTextIntegerValidator;
 import com.chikeandroid.debtmanager20.util.validator.EditTextPhoneNumberValidator;
@@ -75,7 +76,7 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
     }
 
     public AddEditDebtFragment() {
-
+        // Required empty public constructor
     }
 
     @Override
@@ -135,7 +136,7 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
             }
         });
 
-        String currentDateString = TimeUtil.millis2String(System.currentTimeMillis(), "MMM d, yyyy");
+        String currentDateString = TimeUtil.millis2String(System.currentTimeMillis());
 
         mButtonDateCreated.setText(String.format(getString(R.string.created_date), currentDateString));
         mButtonDateDue.setText(String.format(getString(R.string.due_date), currentDateString));
@@ -177,10 +178,10 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
             mEditTextAmount.setText(String.valueOf(mPersonDebt.getDebt().getAmount()));
             mEditTextComment.setText(mPersonDebt.getDebt().getNote());
             String dueDateString = String.format(getString(R.string.due_date),
-                    TimeUtil.millis2String(mPersonDebt.getDebt().getDueDate(), "MMM d, yyyy"));
+                    TimeUtil.millis2String(mPersonDebt.getDebt().getDueDate()));
             mButtonDateDue.setText(dueDateString);
             String createdDateString = String.format(getString(R.string.created_date),
-                    TimeUtil.millis2String(mPersonDebt.getDebt().getCreatedDate(), "MMM d, yyyy"));
+                    TimeUtil.millis2String(mPersonDebt.getDebt().getCreatedDate()));
             mButtonDateCreated.setText(createdDateString);
             mActionBarTitle = "Edit Debt";
 
@@ -216,42 +217,39 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int itemId = item.getItemId();
-        switch (itemId) {
-            case android.R.id.home:
-                getActivity().finish();
-                break;
-            case R.id.action_save_debt:
-                if(ValidationUtil.isInValid(new EditTextFullNameValidator(mEditTextName, getActivity()),
-                        new EditTextPhoneNumberValidator(mEditTextPhoneNumber, getActivity()),
-                        new EditTextIntegerValidator(mEditTextAmount, getActivity())
-                )) {
 
-                    Toast.makeText(getActivity(), "Invalid", Toast.LENGTH_LONG).show();
+        if(itemId == android.R.id.home) {
+            getActivity().finish();
+        }else if(itemId == R.id.action_save_debt) {
+            if(ValidationUtil.isInValid(new EditTextFullNameValidator(mEditTextName, getActivity()),
+                    new EditTextPhoneNumberValidator(mEditTextPhoneNumber, getActivity()),
+                    new EditTextIntegerValidator(mEditTextAmount, getActivity())
+            )) {
 
-                }else {
+                Toast.makeText(getActivity(), "Invalid", Toast.LENGTH_LONG).show();
 
-                    String personId = UUID.randomUUID().toString();
-                    String debtId = UUID.randomUUID().toString();
-                    // update
-                    if(mPersonDebt != null) {
-                        personId = mPersonDebt.getPerson().getId();
-                        debtId = mPersonDebt.getDebt().getId();
-                    }
+            }else {
 
-                    Person person = new Person(personId, mEditTextName.getText().toString(),
-                            mEditTextPhoneNumber.getText().toString());
-
-                    Debt debt = new Debt.Builder(debtId, person.getId(),
-                            Double.valueOf(mEditTextAmount.getText().toString()), mDebtCreatedAt,
-                            mDebtType, Debt.DEBT_STATUS_ACTIVE)
-                            .dueDate(mDebtDue)
-                            .note(mEditTextComment.getText().toString())
-                            .build();
-                    mPresenter.saveDebt(person, debt);
+                String personId = UUID.randomUUID().toString();
+                String debtId = UUID.randomUUID().toString();
+                // update
+                if(mPersonDebt != null) {
+                    personId = mPersonDebt.getPerson().getId();
+                    debtId = mPersonDebt.getDebt().getId();
                 }
-                break;
-        }
 
+                Person person = new Person(personId, mEditTextName.getText().toString(),
+                        mEditTextPhoneNumber.getText().toString());
+
+                Debt debt = new Debt.Builder(debtId, person.getId(),
+                        Double.valueOf(mEditTextAmount.getText().toString()), mDebtCreatedAt,
+                        mDebtType, Debt.DEBT_STATUS_ACTIVE)
+                        .dueDate(mDebtDue)
+                        .note(mEditTextComment.getText().toString())
+                        .build();
+                mPresenter.saveDebt(person, debt);
+            }
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -262,7 +260,7 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
 
     @Override
     public void showErroSavingDebt() {
-
+        ViewUtil.showToast(getActivity(), getString(R.string.msg_error_debt));
     }
 
     @Override
@@ -273,9 +271,8 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
 
     @Override
     public void showEmptyDebtError() {
-        Toast.makeText(getActivity(), getString(R.string.msg_empty_debt), Toast.LENGTH_LONG).show();
+        ViewUtil.showToast(getActivity(), getString(R.string.msg_empty_debt));
     }
-
 
     @Override
     public void setPresenter(AddEditDebtContract.Presenter presenter) {
@@ -318,7 +315,7 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
                 mCalendar.set(Calendar.MONTH, monthOfYear);
                 mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                String dateString = TimeUtil.millis2String(mCalendar.getTimeInMillis(), "MMM d, yyyy");
+                String dateString = TimeUtil.millis2String(mCalendar.getTimeInMillis());
 
                 if(buttonId == mButtonDateDue.getId()) {
                     mButtonDateDue.setText(String.format(getString(R.string.due_date), dateString));

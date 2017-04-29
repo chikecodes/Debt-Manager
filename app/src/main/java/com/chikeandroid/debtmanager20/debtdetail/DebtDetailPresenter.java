@@ -35,7 +35,7 @@ public class DebtDetailPresenter implements DebtDetailContract.Presenter, Loader
 
     private final DebtLoader mLoader;
 
-    private String mDebtId;
+    private final String mDebtId;
 
     @Inject
     public DebtDetailPresenter(@Nullable String debtId, PersonDebtsRepository debtsRepository,
@@ -59,7 +59,7 @@ public class DebtDetailPresenter implements DebtDetailContract.Presenter, Loader
 
     @Override
     public void stop() {
-
+        // stop presenter
     }
 
     @Override
@@ -71,7 +71,7 @@ public class DebtDetailPresenter implements DebtDetailContract.Presenter, Loader
 
     @Override
     public void addAdditionalDebt() {
-
+        // add additional debt
     }
 
     @Override
@@ -85,15 +85,15 @@ public class DebtDetailPresenter implements DebtDetailContract.Presenter, Loader
 
     @Override
     public void onLoadFinished(Loader<PersonDebt> loader, PersonDebt data) {
-        if(data != null) {
-            mDebtDetailView.showPersonDebt(data);
-        }else {
+        if(data == null) {
             mDebtDetailView.showMissingDebt();
+        }else {
+            mDebtDetailView.showPersonDebt(data);
         }
     }
 
     @Override
     public void onLoaderReset(Loader<PersonDebt> loader) {
-
+        // remove any references it has to the Loader's data.
     }
 }

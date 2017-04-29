@@ -24,13 +24,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Singleton
 public class PersonDebtsRepository implements PersonDebtsDataSource {
 
-    private static final String TAG = "DebtsRepository";
-
     private final PersonDebtsDataSource mDebtsLocalDataSource;
 
     // private final DebtsDataSource mDebtsRemoteDataSource;
 
-    private List<DebtsRepositoryObserver> mObservers = new ArrayList<>();
+    private final List<DebtsRepositoryObserver> mObservers = new ArrayList<>();
 
     /**
      * This variable has package local visibility so it can be accessed from tests.
@@ -114,12 +112,12 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
 
         if(!mCacheIsDirty) {
             // Respond immediately with cache if available and not dirty
-            if(mCachedDebts != null) {
-                personDebts = getCachedDebts();
-                return personDebts;
-            } else {
+            if(mCachedDebts == null) {
                 // Query the local Storage if available
                 personDebts = mDebtsLocalDataSource.getAllPersonDebts();
+            } else {
+                personDebts = getCachedDebts();
+                return personDebts;
             }
         }
 
@@ -134,7 +132,9 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
 
         List<PersonDebt> personDebts = null;
         if(!mCacheIsDirty) {
-            if(mCachedDebts != null) {
+            if(mCachedDebts == null) {
+                personDebts = mDebtsLocalDataSource.getAllPersonDebtsByType(debtType);
+            } else {
                 personDebts = new ArrayList<>();
                 for(PersonDebt personDebt : getCachedDebts()) {
                     if(personDebt.getDebt().getDebtType() == debtType) {
@@ -142,8 +142,6 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
                     }
                 }
                 return personDebts;
-            } else {
-                personDebts = mDebtsLocalDataSource.getAllPersonDebtsByType(debtType);
             }
         }
         return personDebts;
@@ -256,7 +254,7 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
 
     @Override
     public void deletePerson(@NonNull String personId) {
-
+        // call database to delete person
     }
 
     private void removeDebtTypeFromCache(@NonNull int debtType) {

@@ -20,7 +20,7 @@ import com.chikeandroid.debtmanager20.R;
  * Created by Chike on 3/11/2017.
  */
 
-public class ViewUtil {
+public final class ViewUtil {
 
     private ViewUtil() {
 

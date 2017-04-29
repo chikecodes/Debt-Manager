@@ -13,7 +13,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  * A Time utility class
  */
 
-public class TimeUtil {
+public final class TimeUtil {
 
     private TimeUtil() {
 
@@ -55,7 +55,8 @@ public class TimeUtil {
                 dayOfMonth + getDayOfMonthSuffix(dayOfMonth);
     }
 
-    public static String millis2String(long millis, String pattern) {
+    public static String millis2String(long millis) {
+        String pattern = "MMM d, yyyy";
         return new SimpleDateFormat(pattern, Locale.getDefault()).format(new Date(millis));
     }
 
@@ -65,7 +66,7 @@ public class TimeUtil {
 
         calendar.set(year, month, dayOfMonth);
 
-        return TimeUtil.millis2String(calendar.getTimeInMillis(), "MMM d, yyyy");
+        return TimeUtil.millis2String(calendar.getTimeInMillis());
     }
 
 }

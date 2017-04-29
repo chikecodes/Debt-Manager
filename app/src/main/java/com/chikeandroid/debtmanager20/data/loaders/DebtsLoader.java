@@ -20,9 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class DebtsLoader extends AsyncTaskLoader<List<PersonDebt>> implements PersonDebtsRepository.DebtsRepositoryObserver {
 
-    private static final String TAG = "OweMeDebtsLoader";
-
-    private PersonDebtsRepository mDebtsRepository;
+    private final PersonDebtsRepository mDebtsRepository;
 
     public DebtsLoader(Context context, @NonNull PersonDebtsRepository repository) {
         super(context);

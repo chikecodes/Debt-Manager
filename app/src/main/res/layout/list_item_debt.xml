@@ -102,7 +102,7 @@
 
                 <TextView
                         android:id="@+id/tv_due_date"
-                        android:text='@{TimeUtil.millis2String(PersonDebt.debt.dueDate, "MMM d, yyyy")}'
+                        android:text='@{TimeUtil.millis2String(PersonDebt.debt.dueDate)}'
                         tools:text="Mar 7, 2017"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

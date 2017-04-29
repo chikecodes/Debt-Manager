@@ -1,7 +1,6 @@
 package com.chikeandroid.debtmanager20.oweme;
 
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 
 import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.R;
-import com.chikeandroid.debtmanager20.addeditdebt.AddEditDebtActivity;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.OweMeFragmentBinding;
 
@@ -33,9 +31,7 @@ import javax.inject.Inject;
 public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.View {
 
     private static final String TAG = "OweMeDebtsFragment";
-    private RecyclerView mRecyclerViewOweMeDebts;
     private DebtsAdapter mDebtsAdapter;
-    private List<PersonDebt> mPersonDebts;
     private TextView mTextViewEmptyDebts;
 
     @Inject
@@ -44,7 +40,7 @@ public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.V
     private OweMeDebtsContract.Presenter mPresenter;
 
     public OweMeDebtsFragment() {
-
+        // Required empty public constructor
     }
 
     public static OweMeDebtsFragment newInstance() {
@@ -88,12 +84,6 @@ public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.V
                 .inject(this);
     }
 
-    @Override
-    public void showAddDebtUI() {
-        Intent intent = new Intent(getContext(), AddEditDebtActivity.class);
-        startActivityForResult(intent, AddEditDebtActivity.REQUEST_ADD_DEBT);
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -102,9 +92,9 @@ public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.V
         OweMeFragmentBinding binding = DataBindingUtil.inflate(inflater, R.layout.owe_me_fragment, container, false);
         final View view = binding.getRoot();
 
-        mRecyclerViewOweMeDebts = binding.rvOweme;
-        mRecyclerViewOweMeDebts.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        mRecyclerViewOweMeDebts.setAdapter(mDebtsAdapter);
+        RecyclerView recyclerViewOweMeDebts = binding.rvOweme;
+        recyclerViewOweMeDebts.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerViewOweMeDebts.setAdapter(mDebtsAdapter);
         mTextViewEmptyDebts = binding.tvNoDebts;
 
         Log.d(TAG, "onCreateView()");
@@ -120,11 +110,6 @@ public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.V
 
         mDebtsAdapter.updatePersonDebtListItems(debts);
         Log.d(TAG, "debts size is " + debts.size());
-    }
-
-    @Override
-    public void showDebtDetailsUi(String debtId) {
-
     }
 
     @Override

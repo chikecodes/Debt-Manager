@@ -6,6 +6,7 @@ import com.facebook.stetho.Stetho;
 
 /**
  * Created by Chike on 3/24/2017.
+ * Application class
  */
 
 public class DebtManagerApplication extends Application{
@@ -16,6 +17,7 @@ public class DebtManagerApplication extends Application{
     public void onCreate() {
         super.onCreate();
 
+        // no need to include the applicationModule since it requires no constructor argument
         mApplicationComponent = DaggerApplicationComponent.builder().context(getApplicationContext()).build();
 
         if(BuildConfig.DEBUG) {

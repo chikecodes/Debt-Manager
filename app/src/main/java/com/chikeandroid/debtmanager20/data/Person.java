@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Chike on 3/14/2017.
@@ -25,7 +26,7 @@ public final class Person implements Parcelable {
     @Nullable
     private String mPhoneNumber;
 
-    private ArrayList<Debt> mDebts;
+    private List<Debt> mDebts;
 
     public Person(@NonNull String id, @NonNull String fullname, @Nullable String phoneNumber) {
         mId = id;
@@ -48,11 +49,11 @@ public final class Person implements Parcelable {
         return mPhoneNumber;
     }
 
-    public ArrayList<Debt> getDebts() {
+    public List<Debt> getDebts() {
         return mDebts;
     }
 
-    public void setDebts(ArrayList<Debt> debts) {
+    public void setDebts(List<Debt> debts) {
         mDebts = debts;
     }
 
@@ -86,10 +87,10 @@ public final class Person implements Parcelable {
         if (!mFullname.equals(person.mFullname)) {
             return false;
         }
-        if (mPhoneNumber != null ? !mPhoneNumber.equals(person.mPhoneNumber) : person.mPhoneNumber != null) {
+        if (mPhoneNumber != null ? !mPhoneNumber.equals(person.mPhoneNumber) : person.mPhoneNumber != null) { //NOPMD
             return false;
         }
-        return mDebts != null ? mDebts.equals(person.mDebts) : person.mDebts == null;
+        return mDebts != null ? mDebts.equals(person.mDebts) : person.mDebts == null; //NOPMD
 
     }
 
@@ -97,8 +98,8 @@ public final class Person implements Parcelable {
     public int hashCode() {
         int result = mId.hashCode();
         result = 31 * result + mFullname.hashCode();
-        result = 31 * result + (mPhoneNumber != null ? mPhoneNumber.hashCode() : 0);
-        result = 31 * result + (mDebts != null ? mDebts.hashCode() : 0);
+        result = 31 * result + (mPhoneNumber != null ? mPhoneNumber.hashCode() : 0); //NOPMD
+        result = 31 * result + (mDebts != null ? mDebts.hashCode() : 0); //NOPMD
         return result;
     }
 

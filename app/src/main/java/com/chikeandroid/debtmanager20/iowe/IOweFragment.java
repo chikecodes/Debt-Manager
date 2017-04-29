@@ -19,7 +19,7 @@ import java.util.List;
 public class IOweFragment extends Fragment implements IOweContract.View {
 
     public IOweFragment() {
-
+        // Required empty public constructor
     }
 
     public static IOweFragment newInstance() {
@@ -29,6 +29,8 @@ public class IOweFragment extends Fragment implements IOweContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRetainInstance(true);
     }
 
     @Nullable
@@ -36,30 +38,28 @@ public class IOweFragment extends Fragment implements IOweContract.View {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View view = inflater.inflate(R.layout.fragment_page_2, container, false);
-
-        return view;
+        return inflater.inflate(R.layout.fragment_page_2, container, false);
     }
 
 
     @Override
     public void showDebts(List<Debt> debts) {
-
+        // show debtds
     }
 
     @Override
     public void showDebtDetailsUi(String debtId) {
-
+        // open debt detail ui
     }
 
     @Override
     public void showNoDebts() {
-
+        // show no debts
     }
 
     @Override
     public void showLoadingDebtsError() {
-
+        // showing debts error on loading
     }
 
     @Override
@@ -69,6 +69,6 @@ public class IOweFragment extends Fragment implements IOweContract.View {
 
     @Override
     public void setPresenter(IOweContract.Presenter presenter) {
-
+        // set presenter
     }
 }

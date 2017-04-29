@@ -108,7 +108,7 @@ public final class Debt implements Parcelable {
         private final long mCreatedDate;
         private final int mDebtType;
         private final int mStatus;
-        private double mAmount;
+        private final double mAmount;
 
         // Optional parameters
         private String mNote = "";
@@ -139,7 +139,7 @@ public final class Debt implements Parcelable {
 
     }
 
-    private Debt(Builder builder) {
+    public Debt(Builder builder) {
 
         mId = builder.mId;
         mPersonId = builder.mPersonId;
@@ -177,13 +177,10 @@ public final class Debt implements Parcelable {
         if (mStatus != debt.mStatus) {
             return false;
         }
-        if (!mId.equals(debt.mId)) {
+        if (!mId.equals(debt.mId)) { //NOPMD
             return false;
         }
-        if (mNote != null ? !mNote.equals(debt.mNote) : debt.mNote != null) {
-            return false;
-        }
-        return mPersonId.equals(debt.mPersonId);
+        return mNote != null ? mNote.equals(debt.mNote) : debt.mNote == null && mPersonId.equals(debt.mPersonId); //NOPMD
     }
 
     public boolean isEmpty() {
@@ -197,7 +194,7 @@ public final class Debt implements Parcelable {
         result = mId.hashCode();
         temp = Double.doubleToLongBits(mAmount);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (mNote != null ? mNote.hashCode() : 0);
+        result = 31 * result + (mNote != null ? mNote.hashCode() : 0); //NOPMD
         result = 31 * result + mPersonId.hashCode();
         result = 31 * result + (int) (mCreatedDate ^ (mCreatedDate >>> 32));
         result = 31 * result + (int) (mDueDate ^ (mDueDate >>> 32));

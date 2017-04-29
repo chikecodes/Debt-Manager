@@ -8,17 +8,15 @@ import android.widget.EditText;
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.util.ValidationUtil;
 
-import java.util.regex.Pattern;
-
 /**
  * Created by Chike on 4/11/2017.
  */
 
 public class EditTextFullNameValidator extends EditTextValidator {
 
-    private static final String USERNAME_PATTERN = "^[a-z0-9_-]{3,15}$";
-    private Pattern mPattern;
-    private Context mContext;
+    // private static final String USERNAME_PATTERN = "^[a-z0-9_-]{3,15}$";
+    // private Pattern mPattern;
+    private final Context mContext;
 
     public EditTextFullNameValidator(EditText editText, Context context) {
         super(editText);
@@ -27,7 +25,7 @@ public class EditTextFullNameValidator extends EditTextValidator {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                // do nothing
             }
 
             @Override
@@ -37,7 +35,7 @@ public class EditTextFullNameValidator extends EditTextValidator {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                // do nothing
             }
         });
     }

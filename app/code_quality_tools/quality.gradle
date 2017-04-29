@@ -1,6 +1,7 @@
 apply plugin: 'checkstyle'
+apply plugin: 'pmd'
 
-task checkstyle(type: Checkstyle) {
+task checkstyle(type: Checkstyle, dependsOn: "assembleDebug") {
     description 'Checks if the code meets standards'
     group 'verification'
 
@@ -11,4 +12,23 @@ task checkstyle(type: Checkstyle) {
 
     classpath = files()
     ignoreFailures = false
+}
+
+task pmd(type: Pmd, dependsOn: "assembleDebug") {
+    description 'Run PMD'
+    group 'verification'
+
+    ruleSetFiles = files("./code_quality_tools/pmd.xml")
+    ruleSets = []
+
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+
+    ignoreFailures = true
 }

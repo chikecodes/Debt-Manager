@@ -29,8 +29,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @RunWith(AndroidJUnit4.class)
 public class AddDebtScreenTest {
 
-    private final static String PHONE_NUMBER = "07038111534";
-
     @Rule
     public ActivityTestRule<AddEditDebtActivity> activityRule =
             new ActivityTestRule<>(AddEditDebtActivity.class);

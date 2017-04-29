@@ -7,8 +7,6 @@ import android.support.v4.content.Loader;
 
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
-import com.chikeandroid.debtmanager20.data.source.PersonDebtsDataSource;
-import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
 import com.chikeandroid.debtmanager20.data.loaders.DebtsLoader;
 
 import java.util.ArrayList;
@@ -22,12 +20,7 @@ import javax.inject.Inject;
 
 public class OweMeDebtsPresenter implements OweMeDebtsContract.Presenter, LoaderManager.LoaderCallbacks<List<PersonDebt>> {
 
-    private static final String TAG = "OweMeDebtsPresenter";
-
     private final static int OWE_ME_DEBTS_QUERY = 1;
-
-    @NonNull
-    private final PersonDebtsDataSource mDebtsRepository;
 
     @NonNull
     private final OweMeDebtsContract.View mOweMeDebtsView;
@@ -40,10 +33,8 @@ public class OweMeDebtsPresenter implements OweMeDebtsContract.Presenter, Loader
     private List<PersonDebt> mCurrentDebts;
 
     @Inject
-    OweMeDebtsPresenter(PersonDebtsRepository debtsRepository, OweMeDebtsContract.View view,
-                        LoaderManager loaderManager, DebtsLoader loader) {
+    OweMeDebtsPresenter(OweMeDebtsContract.View view, LoaderManager loaderManager, DebtsLoader loader) {
         mLoader = loader;
-        mDebtsRepository = debtsRepository;
         mOweMeDebtsView = view;
         mLoaderManager = loaderManager;
     }
@@ -60,12 +51,7 @@ public class OweMeDebtsPresenter implements OweMeDebtsContract.Presenter, Loader
 
     @Override
     public void stop() {
-
-    }
-
-    @Override
-    public void openDebtDetails(@NonNull Debt debt) {
-
+        // presenter stop callback
     }
 
     @Override
@@ -100,7 +86,6 @@ public class OweMeDebtsPresenter implements OweMeDebtsContract.Presenter, Loader
     }
     private void processDebts(List<PersonDebt> debts) {
         if(debts.isEmpty()) {
-            // show empty debt view
             mOweMeDebtsView.showEmptyView();
         } else {
             mOweMeDebtsView.showDebts(debts);
@@ -109,6 +94,6 @@ public class OweMeDebtsPresenter implements OweMeDebtsContract.Presenter, Loader
 
     @Override
     public void onLoaderReset(Loader<List<PersonDebt>> loader) {
-
+        //  remove any references it has to the Loader's data.
     }
 }

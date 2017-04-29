@@ -3,7 +3,6 @@ package com.chikeandroid.debtmanager20.util.validator;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.widget.EditText;
 
@@ -15,18 +14,17 @@ import com.chikeandroid.debtmanager20.util.ValidationUtil;
  */
 public class EditTextPhoneNumberValidator extends EditTextValidator {
 
-    private Context mContext;
-    private String mPhoneNumber;
+    private final Context mContext;
+
     public EditTextPhoneNumberValidator(EditText editText, Context context) {
         super(editText);
         mContext = context;
-        mPhoneNumber = getPhoneNumber();
-        Log.d("kolo", "phone number is " + mPhoneNumber);
+        // String phoneNumber = getPhoneNumber();
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                // do nothing
             }
 
             @Override
@@ -36,7 +34,7 @@ public class EditTextPhoneNumberValidator extends EditTextValidator {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                // do nothing
             }
         });
     }

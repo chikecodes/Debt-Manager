@@ -10,7 +10,7 @@ import com.chikeandroid.debtmanager20.util.validator.EditTextValidator;
  * Created by Chike on 4/10/2017.
  */
 
-public class ValidationUtil {
+public final class ValidationUtil {
 
     private ValidationUtil() {}
 
@@ -34,10 +34,10 @@ public class ValidationUtil {
 
     public static boolean isInValid(EditTextValidator editTextValidator) {
         boolean isValid = editTextValidator.isValid();
-        if (!isValid) {
-            setError(editTextValidator.getEditText(), editTextValidator.getErrorMessage());
-        } else {
+        if (isValid) {
             clearError(editTextValidator.getEditText());
+        } else {
+            setError(editTextValidator.getEditText(), editTextValidator.getErrorMessage());
         }
         return !isValid;
     }

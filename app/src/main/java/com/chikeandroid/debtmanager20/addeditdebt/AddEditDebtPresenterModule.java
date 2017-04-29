@@ -12,7 +12,7 @@ import dagger.Provides;
 public class AddEditDebtPresenterModule {
 
     private final AddEditDebtContract.View mView;
-    private boolean mEditDebt;
+    private final boolean mEditDebt;
 
     public AddEditDebtPresenterModule(AddEditDebtContract.View view, boolean editDebt) {
         mView = view;

@@ -122,7 +122,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="@dimen/spacing_medium"
-                                android:text='@{TimeUtil.millis2String(PersonDebt.debt.createdDate, "MMM d, yyyy") + " (Created)"}'
+                                android:text='@{TimeUtil.millis2String(PersonDebt.debt.createdDate) + " (Created)"}'
                                 tools:text="Mar 29, 2017"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                                 android:textColor="@color/material_grey_600"/>
@@ -147,7 +147,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="@dimen/spacing_medium"
-                                android:text='@{TimeUtil.millis2String(PersonDebt.debt.dueDate, "MMM d, yyyy") + " (Due Date)"}'
+                                android:text='@{TimeUtil.millis2String(PersonDebt.debt.dueDate) + " (Due Date)"}'
                                 tools:text="Dec 29, 2017"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                                 android:textColor="@color/material_grey_600"/>

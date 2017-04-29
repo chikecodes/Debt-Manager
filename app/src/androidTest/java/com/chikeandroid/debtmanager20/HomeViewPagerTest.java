@@ -93,7 +93,7 @@ public class HomeViewPagerTest {
         return new BoundedMatcher<View, View>(View.class) {
             @Override
             public void describeTo(org.hamcrest.Description description) {
-
+                // just do nothing for now
             }
 
             @Override

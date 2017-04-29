@@ -14,18 +14,16 @@ import com.chikeandroid.debtmanager20.util.ValidationUtil;
 
 public class EditTextIntegerValidator extends EditTextValidator {
 
-    private Context mContext;
-    private String mAmount;
+    private final Context mContext;
 
     public EditTextIntegerValidator(EditText editText, Context context) {
         super(editText);
         mContext = context;
-        mAmount = editText.getText().toString();
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                // do nothing
             }
 
             @Override
@@ -35,7 +33,7 @@ public class EditTextIntegerValidator extends EditTextValidator {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                // do nothing
             }
         });
     }

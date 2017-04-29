@@ -20,4 +20,8 @@
     <string name="dialog_delete">Delete</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="msg_success_message_deleted">Debt was deleted successfully</string>
+    <string name="msg_error_debt">Error saving debt</string>
+    <string name="msg_debt_save_success">Debt saved successfully</string>
+    <string name="msg_edit_debt_success">Debt edited successfully</string>
+    <string name="msg_missing_debt">Debt missing</string>
 </resources>

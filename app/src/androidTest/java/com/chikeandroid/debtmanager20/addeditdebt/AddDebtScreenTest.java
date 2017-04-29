@@ -9,9 +9,12 @@ import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.util.TimeUtil;
 
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Calendar;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
@@ -28,6 +31,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
  */
 @RunWith(AndroidJUnit4.class)
 public class AddDebtScreenTest {
+
+    private Calendar mCalendar;
 
     @Rule
     public ActivityTestRule<AddEditDebtActivity> activityRule =
@@ -70,6 +75,10 @@ public class AddDebtScreenTest {
         onView(withId(R.id.ib_contacts)).perform(click());
     }*/
 
+   @Before
+   public void setUpCalendar() {
+       mCalendar = Calendar.getInstance();
+   }
 
    @Test
    public void shouldBeAbleToPickADueDateFromDatePicker() {
@@ -82,7 +91,11 @@ public class AddDebtScreenTest {
        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(year, month + 1, day));
        onView(withId(android.R.id.button1)).perform(click());
 
-       String dateString = "Date due: " + TimeUtil.formatDateToString(6, month, day) + " " + year;
+       mCalendar.set(Calendar.YEAR, year);
+       mCalendar.set(Calendar.MONTH, month);
+       mCalendar.set(Calendar.DAY_OF_MONTH, day);
+
+       String dateString = "Date due: " + TimeUtil.millis2String(mCalendar.getTimeInMillis());
        onView(withId(R.id.btn_date_due)).check(matches(withText(dateString)));
    }
 
@@ -97,7 +110,11 @@ public class AddDebtScreenTest {
        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(year, month + 1, day));
        onView(withId(android.R.id.button1)).perform(click());
 
-       String dateString = "Created on: " + TimeUtil.formatDateToString(6, month, day) + " " + year;
+       mCalendar.set(Calendar.YEAR, year);
+       mCalendar.set(Calendar.MONTH, month);
+       mCalendar.set(Calendar.DAY_OF_MONTH, day);
+
+       String dateString = "Created on: " + TimeUtil.millis2String(mCalendar.getTimeInMillis());
        onView(withId(R.id.btn_date_created)).check(matches(withText(dateString)));
    }
 

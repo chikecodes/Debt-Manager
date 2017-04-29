@@ -2,6 +2,7 @@ package com.chikeandroid.debtmanager20.oweme;
 
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
@@ -19,6 +20,8 @@ import com.chikeandroid.debtmanager20.util.TimeUtil;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,7 +59,7 @@ public class OweMeDebtsScreenTest {
     private final static int DUE_DAY_OF_MONTH = 15;
 
     @Rule
-    public ActivityTestRule<MainActivity> activityRule =
+    public ActivityTestRule<MainActivity> mActivityTestRule =
             new ActivityTestRule<MainActivity>(MainActivity.class) {
 
                 /**
@@ -71,6 +74,11 @@ public class OweMeDebtsScreenTest {
                             .getApplicationContext()).getComponent()
                             .getDebtsRepository().deleteAllPersonDebtsByType(Debt.DEBT_TYPE_OWED);
                 }};
+
+    @Before
+    public void registerIdlingResource() {
+        Espresso.registerIdlingResources(mActivityTestRule.getActivity().getCountingIdlingResource());
+    }
 
     @Test
     public void shouldOpenAddDebtUiWhenAddDebtFabButtonIsClicked() {
@@ -191,5 +199,10 @@ public class OweMeDebtsScreenTest {
                 textMatcher.describeTo(description);
             }
         };
+    }
+
+    @After
+    public void unregisterIdlingResource() {
+        Espresso.unregisterIdlingResources(mActivityTestRule.getActivity().getCountingIdlingResource());
     }
 }

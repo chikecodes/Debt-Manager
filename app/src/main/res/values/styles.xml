@@ -18,6 +18,18 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!-- Typography -->
+    <style name="TextPrimary">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="BodyPrimary" parent="TextPrimary">
+        <item name="android:textSize">@dimen/body</item>
+        <item name="android:lineSpacingExtra">@dimen/body_line_spacing_extra</item>
+    </style>
+
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

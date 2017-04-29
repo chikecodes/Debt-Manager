@@ -9,6 +9,8 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
 
+    <color name="text_primary">@color/black</color>
+
     <color name="white">#fff</color>
     <color name="white_dim_light">#e0e0e0</color>
     <color name="white_date_strip">#b9e0e0e0</color>

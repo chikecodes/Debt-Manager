@@ -8,6 +8,7 @@ import android.support.v4.content.Loader;
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.data.loaders.DebtsLoader;
+import com.chikeandroid.debtmanager20.util.EspressoIdlingResource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,13 @@ public class OweMeDebtsPresenter implements OweMeDebtsContract.Presenter, Loader
 
     @Override
     public void onLoadFinished(Loader<List<PersonDebt>> loader, List<PersonDebt> data) {
+
+        // This callback may be called twice, once for the cache and once for loading
+        // the data from the server API, so we check before decrementing, otherwise
+        // it throws "Counter has been corrupted!" exception.
+        if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+            EspressoIdlingResource.decrement(); // Set app as idle.
+        }
 
         // set view loading indicator to false
         mCurrentDebts = data;

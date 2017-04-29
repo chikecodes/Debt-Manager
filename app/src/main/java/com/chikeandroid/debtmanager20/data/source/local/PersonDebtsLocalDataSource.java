@@ -220,7 +220,7 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
 
         if (personAlreadyExist(person.getPhoneNumber())) {
 
-            personId = getPersonIdIfAlreadyExist(person.getPhoneNumber());
+            personId = getPersonId(person.getPhoneNumber());
 
         } else {
 
@@ -332,7 +332,7 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
         String personId;
         if (personAlreadyExist(person.getPhoneNumber())) {
 
-            personId = getPersonIdIfAlreadyExist(person.getPhoneNumber());
+            personId = getPersonId(person.getPhoneNumber());
             db.update(PersonsEntry.TABLE_NAME, personContentValues, PersonsEntry.COLUMN_ENTRY_ID + DebtsDbHelper.WHERE_EQUAL_TO, new String[]{personId});
 
         } else {
@@ -395,7 +395,7 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
         return person;
     }
 
-    private String getPersonIdIfAlreadyExist(String phoneNumber) {
+    private String getPersonId(String phoneNumber) {
 
         if (!StringUtil.isEmpty(phoneNumber)) {
             SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();

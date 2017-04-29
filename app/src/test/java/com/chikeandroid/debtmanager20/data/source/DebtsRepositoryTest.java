@@ -48,9 +48,9 @@ public class DebtsRepositoryTest {
         // save owe me debt
         Person person1 = TestUtil.getPerson();
         Debt debt1 = TestUtil.getDebt(person1.getId());
-        mDebtsLocalDataSource.savePersonDebt(debt1, person1);
+        mDebtsRepository.savePersonDebt(debt1, person1);
 
-        verify(mDebtsLocalDataSource).savePersonDebt(debt1, person1);
+        verify(mDebtsLocalDataSource).savePersonDebt(eq(debt1), eq(person1));
         assertThat(mDebtsRepository.getCachedDebts().size(), is(1));
 
         // save i owe debt
@@ -59,7 +59,7 @@ public class DebtsRepositoryTest {
                 Debt.DEBT_STATUS_ACTIVE, "");
         mDebtsRepository.savePersonDebt(debt2, person2);
 
-        verify(mDebtsLocalDataSource).savePersonDebt(debt2, person2);
+        verify(mDebtsLocalDataSource).savePersonDebt(eq(debt2), eq(person2));
         assertThat(mDebtsRepository.getCachedDebts().size(), is(2));
     }
 
@@ -92,14 +92,14 @@ public class DebtsRepositoryTest {
 
         Person person1 = TestUtil.getPerson();
         Debt debt1 = TestUtil.getDebt(person1.getId());
-        mDebtsLocalDataSource.savePersonDebt(debt1, person1);
-        verify(mDebtsLocalDataSource).savePersonDebt(debt1, person1);
+        mDebtsRepository.savePersonDebt(debt1, person1);
+        verify(mDebtsLocalDataSource).savePersonDebt(eq(debt1), eq(person1));
 
         Person person2 = TestUtil.createPerson("Emeka Onu", "07045124589");
         Debt debt2 = TestUtil.createDebt(person2.getId(), 400, Debt.DEBT_TYPE_IOWE,
                 Debt.DEBT_STATUS_ACTIVE, "note 4345");
         mDebtsRepository.savePersonDebt(debt2, person2);
-        verify(mDebtsLocalDataSource).savePersonDebt(debt2, person2);
+        verify(mDebtsLocalDataSource).savePersonDebt(eq(debt2), eq(person2));
 
         mDebtsRepository.deleteAllPersonDebts();
 
@@ -122,14 +122,14 @@ public class DebtsRepositoryTest {
 
         Person person1 = TestUtil.getPerson();
         Debt debt1 = TestUtil.getDebt(person1.getId());
-        mDebtsLocalDataSource.savePersonDebt(debt1, person1);
-
         mDebtsRepository.savePersonDebt(debt1, person1);
+
+        verify(mDebtsLocalDataSource).savePersonDebt(eq(debt1), eq(person1));
 
         PersonDebt personDebt = new PersonDebt(person1, debt1);
         mDebtsRepository.deletePersonDebt(personDebt);
 
-        verify(mDebtsLocalDataSource).deletePersonDebt(personDebt);
+        verify(mDebtsLocalDataSource).deletePersonDebt(eq(personDebt));
 
         assertTrue(mDebtsRepository.mCachedDebts.size() == 0);
     }
@@ -147,7 +147,7 @@ public class DebtsRepositoryTest {
 
         Person person1 = TestUtil.getPerson();
         Debt debt1 = TestUtil.getDebt(person1.getId());
-        mDebtsLocalDataSource.savePersonDebt(debt1, person1);
+        mDebtsRepository.savePersonDebt(debt1, person1);
 
         Person person2 = TestUtil.createPerson("Ijeoma James", "0501245784");
         Debt debt2 = TestUtil.createDebt(person2.getId(), 600000, Debt.DEBT_TYPE_OWED,
@@ -166,7 +166,7 @@ public class DebtsRepositoryTest {
 
         Person person1 = TestUtil.getPerson();
         Debt debt1 = TestUtil.getDebt(person1.getId());
-        mDebtsLocalDataSource.savePersonDebt(debt1, person1);
+        mDebtsRepository.savePersonDebt(debt1, person1);
 
         PersonDebt personDebt = mDebtsRepository.getPersonDebt(debt1.getId());
 

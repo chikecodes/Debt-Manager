@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +17,7 @@ import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.addeditdebt.AddEditDebtActivity;
 import com.chikeandroid.debtmanager20.databinding.ActivityMainBinding;
 import com.chikeandroid.debtmanager20.home.adapter.FragmentPagerAdapter;
+import com.chikeandroid.debtmanager20.util.EspressoIdlingResource;
 import com.chikeandroid.debtmanager20.util.ViewUtil;
 
 
@@ -54,5 +57,10 @@ public class MainActivity extends AppCompatActivity {
 
             ViewUtil.showToast(this, getString(R.string.msg_debt_save_success));
         }
+    }
+
+    @VisibleForTesting
+    public IdlingResource getCountingIdlingResource() {
+        return EspressoIdlingResource.getIdlingResource();
     }
 }

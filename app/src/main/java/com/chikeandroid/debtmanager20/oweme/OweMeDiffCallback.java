@@ -43,7 +43,7 @@ public class OweMeDiffCallback extends DiffUtil.Callback {
         final PersonDebt oldPersonDebt = mOldOweMeDebtList.get(oldItemPosition);
         final PersonDebt newPersonDebt = mNewOweMeDebtList.get(newItemPosition);
 
-        return oldPersonDebt.getDebt().getAmount() == newPersonDebt.getDebt().getAmount();
+        return oldPersonDebt.equals(newPersonDebt);
     }
 
     @Nullable

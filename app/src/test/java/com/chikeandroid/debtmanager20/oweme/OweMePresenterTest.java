@@ -32,7 +32,7 @@ import static org.mockito.Mockito.verify;
 
 public class OweMePresenterTest {
 
-    private static List<PersonDebt> mPersonDebts;
+    private List<PersonDebt> mPersonDebts;
 
     @Mock
     private OweMeDebtsContract.View mOweMeDebtsView;

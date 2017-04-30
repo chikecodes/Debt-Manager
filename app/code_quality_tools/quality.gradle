@@ -1,5 +1,6 @@
 apply plugin: 'checkstyle'
 apply plugin: 'pmd'
+apply plugin: 'findbugs'
 
 task checkstyle(type: Checkstyle, dependsOn: "assembleDebug") {
     description 'Checks if the code meets standards'
@@ -24,6 +25,25 @@ task pmd(type: Pmd, dependsOn: "assembleDebug") {
     source 'src'
     include '**/*.java'
     exclude '**/gen/**'
+
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+
+    ignoreFailures = true
+}
+
+task findbugs(type: FindBugs) {
+    description 'Run findbugs'
+    group 'verification'
+
+    classes = files("$project.buildDir/intermediates/classes")
+    source 'src'
+    classpath = files()
+
+    effort 'max'
+    excludeFilter file('./code_quality_tools/findbugs-exclude.xml')
 
     reports {
         xml.enabled = false

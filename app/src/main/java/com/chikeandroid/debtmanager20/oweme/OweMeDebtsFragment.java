@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chikeandroid.debtmanager20.ApplicationComponent;
 import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
@@ -80,7 +81,8 @@ public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.V
         Log.d(TAG, "onActivityCreated()");
         DaggerOweMeDebtsComponent.builder()
                 .oweMeDebtsPresenterModule(new OweMeDebtsPresenterModule(this))
-                .applicationComponent(((DebtManagerApplication) getActivity().getApplication()).getComponent()).build()
+                .applicationComponent((ApplicationComponent) ((DebtManagerApplication) getActivity().getApplication()).getComponent())
+                .build()
                 .inject(this);
     }
 

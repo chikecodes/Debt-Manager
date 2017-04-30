@@ -16,7 +16,7 @@ import android.view.View;
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.addeditdebt.AddEditDebtActivity;
 import com.chikeandroid.debtmanager20.databinding.ActivityMainBinding;
-import com.chikeandroid.debtmanager20.home.adapter.FragmentPagerAdapter;
+import com.chikeandroid.debtmanager20.home.adapter.HomeFragmentPagerAdapter;
 import com.chikeandroid.debtmanager20.util.EspressoIdlingResource;
 import com.chikeandroid.debtmanager20.util.ViewUtil;
 
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ViewPager viewPager = binding.viewPagerMain;
-        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()));
+        viewPager.setAdapter(new HomeFragmentPagerAdapter(getSupportFragmentManager()));
         viewPager.setOffscreenPageLimit(3);
 
         TabLayout tabLayout = binding.tabLayoutMain;

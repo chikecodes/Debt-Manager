@@ -1,7 +1,6 @@
 package com.chikeandroid.debtmanager20.addeditdebt;
 
 import android.support.test.espresso.contrib.PickerActions;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.widget.DatePicker;
 
@@ -10,7 +9,6 @@ import com.chikeandroid.debtmanager20.util.TimeUtil;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -34,9 +32,9 @@ public class AddDebtScreenTest {
 
     private Calendar mCalendar;
 
-    @Rule
+   /* @Rule
     public ActivityTestRule<AddEditDebtActivity> activityRule =
-            new ActivityTestRule<>(AddEditDebtActivity.class);
+            new ActivityTestRule<>(AddEditDebtActivity.class);*/
 
    /* @Before
     public void stubContactIntent() {

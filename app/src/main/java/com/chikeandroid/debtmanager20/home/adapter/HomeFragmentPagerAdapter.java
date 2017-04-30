@@ -12,11 +12,11 @@ import com.chikeandroid.debtmanager20.people.PeopleFragment;
  * PagerAdapter for MainActivity
  */
 
-public class FragmentPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
+public class HomeFragmentPagerAdapter extends android.support.v4.app.FragmentPagerAdapter {
 
     private final String[] mTabTitles = new String[] {"Owe Me", "I Owe", "People"};
 
-    public FragmentPagerAdapter(FragmentManager fm) {
+    public HomeFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 

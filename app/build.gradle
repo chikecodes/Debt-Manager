@@ -13,9 +13,6 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-       /* jackOptions {
-            enabled true
-        }*/
     }
     buildTypes {
         debug {
@@ -32,6 +29,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
         }
+    }
+
+    lintOptions {
+        abortOnError false
+        quiet true
+        lintConfig file('./code_quality_tools/lint.xml')
     }
 
     productFlavors {

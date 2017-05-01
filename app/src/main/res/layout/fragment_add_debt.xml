@@ -60,6 +60,7 @@
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:baselineAligned="false"
                         android:weightSum="3">
 
                     <android.support.design.widget.TextInputLayout
@@ -84,7 +85,10 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="0.4"
-                            android:paddingRight="@dimen/spacing_large">
+                            android:paddingRight="@dimen/spacing_large"
+                            android:paddingLeft="0dp"
+                            android:paddingStart="0dp"
+                            android:paddingEnd="@dimen/spacing_large">
 
                         <ImageButton
                                 android:id="@+id/ib_contacts"
@@ -93,8 +97,9 @@
                                 android:layout_marginBottom="6dp"
                                 android:layout_alignParentBottom="true"
                                 android:layout_alignParentRight="true"
+                                android:layout_alignParentEnd="true"
                                 android:background="@drawable/ic_person_add"
-                               />
+                                android:contentDescription="@string/pick_user_content_description"/>
 
                     </RelativeLayout>
 
@@ -159,7 +164,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_small"
-                        android:backgroundTint="#4CAF50"
+                        android:background="@color/colorPrimaryDark"
                         android:padding="@dimen/spacing_large"
                         tools:text="Date Due: Friday, March 29th 2017"
                         android:textColor="@color/white"
@@ -175,7 +180,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_small"
-                        android:backgroundTint="#4CAF50"
+                        android:background="@color/colorPrimaryDark"
                         android:padding="@dimen/spacing_large"
                         tools:text="Created on: Friday, March 29th 2017"
                         android:textColor="@color/white"

@@ -16,6 +16,7 @@
             android:orientation="horizontal"
             android:background="@color/grey_bg"
             android:layout_width="match_parent"
+            android:baselineAligned="false"
             android:layout_height="match_parent">
 
         <LinearLayout
@@ -45,13 +46,13 @@
                             android:layout_marginLeft="@dimen/spacing_large"
                             android:layout_marginRight="@dimen/spacing_large"
                             android:layout_marginTop="@dimen/spacing_large"
-                            android:text="Details"
+                            android:text="@string/title_details"
                             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                             android:textColor="@color/material_grey_800"/>
 
                     <View
                             android:layout_width="match_parent"
-                            android:layout_height="2px"
+                            android:layout_height="2dp"
                             android:background="@color/grey_soft"/>
 
                     <LinearLayout
@@ -59,12 +60,14 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:padding="5dp">
+                            android:padding="5dp"
+                            tools:ignore="UseCompoundDrawables">
 
                         <ImageView
                                 android:layout_width="@dimen/spacing_mlarge"
                                 android:layout_height="@dimen/spacing_mlarge"
                                 android:layout_margin="@dimen/spacing_middle"
+                                android:contentDescription="@string/avatar_icon_content_description"
                                 android:src="@drawable/ic_person"/>
 
                         <TextView
@@ -84,13 +87,15 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:padding="5dp">
+                            android:padding="5dp"
+                            tools:ignore="UseCompoundDrawables">
 
                         <ImageView
                                 android:layout_width="@dimen/spacing_mlarge"
                                 android:layout_height="@dimen/spacing_mlarge"
                                 android:layout_margin="@dimen/spacing_middle"
-                                android:src="@drawable/ic_description"/>
+                                android:src="@drawable/ic_description"
+                                android:contentDescription="@string/document_icon_content_description"/>
 
                         <TextView
                                 android:id="@+id/tv_comment"
@@ -109,13 +114,15 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:padding="5dp">
+                            android:padding="5dp"
+                            tools:ignore="UseCompoundDrawables">
 
                         <ImageView
                                 android:layout_width="@dimen/spacing_mlarge"
                                 android:layout_height="@dimen/spacing_mlarge"
                                 android:layout_margin="@dimen/spacing_middle"
-                                android:src="@drawable/ic_date_range"/>
+                                android:src="@drawable/ic_date_range"
+                                android:contentDescription="@string/date_icon_content_description"/>
 
                         <TextView
                                 android:id="@+id/description1"
@@ -134,13 +141,15 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:padding="5dp">
+                            android:padding="5dp"
+                            tools:ignore="UseCompoundDrawables">
 
                         <ImageView
                                 android:layout_width="@dimen/spacing_mlarge"
                                 android:layout_height="@dimen/spacing_mlarge"
                                 android:layout_margin="@dimen/spacing_middle"
-                                android:src="@drawable/ic_date_range"/>
+                                android:src="@drawable/ic_date_range"
+                                android:contentDescription="@string/date_icon_content_description"/>
 
                         <TextView
                                 android:id="@+id/description2"

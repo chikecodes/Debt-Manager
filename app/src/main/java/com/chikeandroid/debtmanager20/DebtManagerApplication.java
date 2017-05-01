@@ -2,7 +2,6 @@ package com.chikeandroid.debtmanager20;
 
 import android.app.Application;
 
-import com.facebook.stetho.Stetho;
 
 /**
  * Created by Chike on 3/24/2017.
@@ -20,9 +19,9 @@ public class DebtManagerApplication extends Application{
         // no need to include the applicationModule since it requires no constructor argument
         mApplicationComponent = DaggerApplicationComponent.builder().context(getApplicationContext()).build();
 
-        if(BuildConfig.DEBUG) {
+       /* if(BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(this);
-        }
+        }*/
     }
 
     public ApplicationComponent getComponent() {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.R;
@@ -46,6 +48,7 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
     private FragmentDebtDetailBinding mFragmentDebtDetailBinding;
     private String mDebtId;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private String mPhoneNumber;
 
     @Inject
     DebtDetailPresenter mDebtDetailPresenter;
@@ -91,6 +94,33 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
         mCollapsingToolbarLayout.setTitle("");
         View view = mFragmentDebtDetailBinding.getRoot();
 
+        Button callButton = mFragmentDebtDetailBinding.debtDetailContent.btnCall;
+        callButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!StringUtil.isEmpty(mPhoneNumber)) {
+                    String dial = "tel:" + mPhoneNumber;
+                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
+                }
+            }
+        });
+
+        Button smsButton = mFragmentDebtDetailBinding.debtDetailContent.btnSms;
+        smsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!StringUtil.isEmpty(mPhoneNumber)) {
+                    String sms = "smsto:" + mPhoneNumber;
+                    startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(sms)));
+                }
+            }
+        });
+        setUpToolbar();
+
+        return view;
+    }
+
+    private void setUpToolbar() {
         Toolbar toolbar = mFragmentDebtDetailBinding.toolbar;
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
@@ -98,8 +128,6 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
-
-        return view;
     }
 
     @Override
@@ -179,7 +207,7 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
     public void showPersonDebt(@NonNull PersonDebt personDebt) {
         checkNotNull(personDebt);
         mPersonDebt = personDebt;
-
+        mPhoneNumber = personDebt.getPerson().getPhoneNumber();
         mFragmentDebtDetailBinding.setPersonDebt(mPersonDebt);
         mCollapsingToolbarLayout.setTitle(StringUtil.commaNumber(mPersonDebt.getDebt().getAmount()));
     }

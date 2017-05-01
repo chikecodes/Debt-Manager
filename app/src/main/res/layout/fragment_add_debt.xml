@@ -163,12 +163,8 @@
                         android:id="@+id/btn_date_due"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_small"
-                        android:background="@color/colorPrimaryDark"
-                        android:padding="@dimen/spacing_large"
-                        tools:text="Date Due: Friday, March 29th 2017"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"/>
+                        style="@style/buttonStyle"
+                        tools:text="Date Due: Friday, March 29th 2017"/>
 
                 <TextView
                         android:id="@+id/dummy"
@@ -179,12 +175,8 @@
                         android:id="@+id/btn_date_created"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_small"
-                        android:background="@color/colorPrimaryDark"
-                        android:padding="@dimen/spacing_large"
-                        tools:text="Created on: Friday, March 29th 2017"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"/>
+                        style="@style/buttonStyle"
+                        tools:text="Created on: Friday, March 29th 2017"/>
 
             </LinearLayout>
 

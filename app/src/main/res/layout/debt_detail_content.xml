@@ -163,6 +163,29 @@
 
                     </LinearLayout>
 
+                    <Button
+                            android:id="@+id/btn_call"
+                            style="@style/buttonStyle"
+                            android:drawableLeft="@drawable/ic_call_white"
+                            android:drawableStart="@drawable/ic_call_white"
+                            android:text='@{"Call " + PersonDebt.getPerson.phoneNumber}'
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="Call +23470381115347"
+                            android:layout_margin="10dp"/>
+
+                    <Button
+                            android:id="@+id/btn_sms"
+                            style="@style/buttonStyle"
+                            android:layout_marginTop="@dimen/spacing_large"
+                            android:drawableLeft="@drawable/ic_sms_white"
+                            android:drawableStart="@drawable/ic_sms_white"
+                            android:text='@{"SMS " + PersonDebt.getPerson.phoneNumber}'
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="Call +23470381115347"
+                            android:layout_margin="10dp"/>
+
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>

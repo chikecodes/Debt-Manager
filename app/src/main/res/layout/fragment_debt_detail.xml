@@ -70,7 +70,9 @@
                 android:clipToPadding="false"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <include layout="@layout/debt_detail_content"
+            <include
+                    android:id="@+id/debt_detail_content"
+                    layout="@layout/debt_detail_content"
                     bind:PersonDebt="@{PersonDebt}"/>
 
         </android.support.v4.widget.NestedScrollView>

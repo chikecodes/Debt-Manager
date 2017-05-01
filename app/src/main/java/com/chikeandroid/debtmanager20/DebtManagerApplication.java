@@ -1,6 +1,9 @@
 package com.chikeandroid.debtmanager20;
 
 import android.app.Application;
+import android.os.StrictMode;
+
+import com.facebook.stetho.Stetho;
 
 
 /**
@@ -8,7 +11,7 @@ import android.app.Application;
  * Application class
  */
 
-public class DebtManagerApplication extends Application{
+public class DebtManagerApplication extends Application {
 
     private ApplicationComponent mApplicationComponent;
 
@@ -19,9 +22,24 @@ public class DebtManagerApplication extends Application{
         // no need to include the applicationModule since it requires no constructor argument
         mApplicationComponent = DaggerApplicationComponent.builder().context(getApplicationContext()).build();
 
-       /* if(BuildConfig.DEBUG) {
+        if(BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(this);
-        }*/
+        }
+
+        if (BuildConfig.DEBUG) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()   // or .detectAll() for all detectable problems
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build());
+        }
     }
 
     public ApplicationComponent getComponent() {

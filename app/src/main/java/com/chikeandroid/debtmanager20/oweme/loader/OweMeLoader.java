@@ -1,4 +1,4 @@
-package com.chikeandroid.debtmanager20.data.loaders;
+package com.chikeandroid.debtmanager20.oweme.loader;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -19,11 +19,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * the data asynchronously.
  */
 
-public class DebtsLoader extends AsyncTaskLoader<List<PersonDebt>> implements PersonDebtsRepository.DebtsRepositoryObserver {
+public class OweMeLoader extends AsyncTaskLoader<List<PersonDebt>> implements PersonDebtsRepository.DebtsRepositoryObserver {
 
     private final PersonDebtsRepository mDebtsRepository;
 
-    public DebtsLoader(Context context, @NonNull PersonDebtsRepository repository) {
+    public OweMeLoader(Context context, @NonNull PersonDebtsRepository repository) {
         super(context);
         checkNotNull(repository);
         mDebtsRepository = repository;

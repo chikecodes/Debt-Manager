@@ -173,7 +173,7 @@ public class OweMeDebtsScreenTest {
     }
 
     /**
-     * Matches the {@link DebtsAdapter.ViewHolder}s in the middle of the list.
+     * Matches the {@link OweMeAdapter.ViewHolder}s in the middle of the list.
      */
    /* private static Matcher<DebtsAdapter.ViewHolder> isInTheMiddle() {
         return new TypeSafeMatcher<DebtsAdapter.ViewHolder>() {

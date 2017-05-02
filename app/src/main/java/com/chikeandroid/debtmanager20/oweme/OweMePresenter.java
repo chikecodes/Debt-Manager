@@ -7,7 +7,7 @@ import android.support.v4.content.Loader;
 
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
-import com.chikeandroid.debtmanager20.data.loaders.DebtsLoader;
+import com.chikeandroid.debtmanager20.oweme.loader.OweMeLoader;
 import com.chikeandroid.debtmanager20.util.EspressoIdlingResource;
 
 import java.util.ArrayList;
@@ -19,22 +19,22 @@ import javax.inject.Inject;
  * Created by Chike on 3/13/2017.
  */
 
-public class OweMeDebtsPresenter implements OweMeDebtsContract.Presenter, LoaderManager.LoaderCallbacks<List<PersonDebt>> {
+public class OweMePresenter implements OweMeContract.Presenter, LoaderManager.LoaderCallbacks<List<PersonDebt>> {
 
     private final static int OWE_ME_DEBTS_QUERY = 1;
 
     @NonNull
-    private final OweMeDebtsContract.View mOweMeDebtsView;
+    private final OweMeContract.View mOweMeDebtsView;
 
     @NonNull
     private final LoaderManager mLoaderManager;
 
-    private final DebtsLoader mLoader;
+    private final OweMeLoader mLoader;
 
     private List<PersonDebt> mCurrentDebts;
 
     @Inject
-    OweMeDebtsPresenter(OweMeDebtsContract.View view, LoaderManager loaderManager, DebtsLoader loader) {
+    OweMePresenter(OweMeContract.View view, LoaderManager loaderManager, OweMeLoader loader) {
         mLoader = loader;
         mOweMeDebtsView = view;
         mLoaderManager = loaderManager;

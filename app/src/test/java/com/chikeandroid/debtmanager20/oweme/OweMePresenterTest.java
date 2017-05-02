@@ -8,7 +8,7 @@ import android.support.v4.content.Loader;
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
-import com.chikeandroid.debtmanager20.data.loaders.DebtsLoader;
+import com.chikeandroid.debtmanager20.oweme.loader.OweMeLoader;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 
 /**
  * Created by Chike on 4/16/2017.
- * Unit tests for the implementation of {@link OweMeDebtsPresenter
+ * Unit tests for the implementation of {@link OweMePresenter
  */
 
 public class OweMePresenterTest {
@@ -35,25 +35,25 @@ public class OweMePresenterTest {
     private List<PersonDebt> mPersonDebts;
 
     @Mock
-    private OweMeDebtsContract.View mOweMeDebtsView;
+    private OweMeContract.View mOweMeDebtsView;
 
     @Captor
     private ArgumentCaptor<List> mShowDebtsArgumentCaptor;
 
     @Mock
-    private DebtsLoader mDebtsLoader;
+    private OweMeLoader mOweMeLoader;
 
     @Mock
     private LoaderManager mLoaderManager;
 
-    private OweMeDebtsPresenter mOweMeDebtsPresenter;
+    private OweMePresenter mOweMePresenter;
 
     @Before
     public void setUpOweMeDebtsPresenter() {
         MockitoAnnotations.initMocks(this);
 
-        mOweMeDebtsPresenter = new OweMeDebtsPresenter(mOweMeDebtsView,
-                mLoaderManager, mDebtsLoader);
+        mOweMePresenter = new OweMePresenter(mOweMeDebtsView,
+                mLoaderManager, mOweMeLoader);
 
         Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534");
 
@@ -93,7 +93,7 @@ public class OweMePresenterTest {
     @Test
     public void shouldBeAbleToLoadAllDebtsFromRepositoryAndLoadIntoView() {
 
-        mOweMeDebtsPresenter.onLoadFinished(mock(Loader.class), mPersonDebts);
+        mOweMePresenter.onLoadFinished(mock(Loader.class), mPersonDebts);
 
         verify(mOweMeDebtsView).showDebts(mShowDebtsArgumentCaptor.capture());
         assertThat(mShowDebtsArgumentCaptor.getValue().size(), is(3));
@@ -102,7 +102,7 @@ public class OweMePresenterTest {
     @Test
     public void shouldBeAbleToShowErrorWhenDebtsIsUnavailable() {
 
-        mOweMeDebtsPresenter.onLoadFinished(mock(Loader.class), null);
+        mOweMePresenter.onLoadFinished(mock(Loader.class), null);
 
         verify(mOweMeDebtsView).showLoadingDebtsError();
     }

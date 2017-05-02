@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Chike on 3/13/2017.
  */
 
-public interface OweMeDebtsContract {
+public interface OweMeContract {
 
     interface View extends BaseView<Presenter> {
 

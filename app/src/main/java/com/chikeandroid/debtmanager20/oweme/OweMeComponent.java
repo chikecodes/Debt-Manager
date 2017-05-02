@@ -12,8 +12,8 @@ import dagger.Component;
  * scope must be specified. All fragment components use a custom scope for this purpose.
  */
 @FragmentScoped
-@Component(dependencies = ApplicationComponent.class, modules = OweMeDebtsPresenterModule.class)
-public interface OweMeDebtsComponent {
+@Component(dependencies = ApplicationComponent.class, modules = OweMePresenterModule.class)
+public interface OweMeComponent {
 
-    void inject(OweMeDebtsFragment fragment);
+    void inject(OweMeFragment fragment);
 }

@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 
 import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
-import com.chikeandroid.debtmanager20.data.loaders.DebtsLoader;
+import com.chikeandroid.debtmanager20.oweme.loader.OweMeLoader;
 
 import dagger.Module;
 import dagger.Provides;
@@ -13,21 +13,21 @@ import dagger.Provides;
 /**
  * Created by Chike on 4/14/2017.
  * This is a Dagger module. We use this to pass in the View dependency to the
- * {@link OweMeDebtsPresenter}.
+ * {@link OweMePresenter}.
  */
 @Module
-public class OweMeDebtsPresenterModule {
+public class OweMePresenterModule {
 
-    private final OweMeDebtsContract.View mView;
+    private final OweMeContract.View mView;
     private final Fragment mContext;
 
-    public OweMeDebtsPresenterModule(OweMeDebtsContract.View view) {
+    public OweMePresenterModule(OweMeContract.View view) {
         mView = view;
         mContext = (Fragment) view;
     }
 
     @Provides
-    OweMeDebtsContract.View provideOweMeDebtsContractView() {
+    OweMeContract.View provideOweMeDebtsContractView() {
         return mView;
     }
 
@@ -37,7 +37,7 @@ public class OweMeDebtsPresenterModule {
     }
 
     @Provides
-    DebtsLoader providesOweMeDebtsLoader(Context context, PersonDebtsRepository repository) {
-        return new DebtsLoader(context, repository);
+    OweMeLoader providesOweMeDebtsLoader(Context context, PersonDebtsRepository repository) {
+        return new OweMeLoader(context, repository);
     }
 }

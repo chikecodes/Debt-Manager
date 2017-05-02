@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chikeandroid.debtmanager20.ApplicationComponent;
 import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
@@ -29,23 +28,23 @@ import javax.inject.Inject;
  * Created by Chike on 3/13/2017.
  */
 
-public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.View {
+public class OweMeFragment extends Fragment implements OweMeContract.View {
 
     private static final String TAG = "OweMeDebtsFragment";
-    private DebtsAdapter mDebtsAdapter;
+    private OweMeAdapter mOweMeAdapter;
     private TextView mTextViewEmptyDebts;
 
     @Inject
-    OweMeDebtsPresenter mOweMeDebtsPresenter;
+    OweMePresenter mOweMePresenter;
 
-    private OweMeDebtsContract.Presenter mPresenter;
+    private OweMeContract.Presenter mPresenter;
 
-    public OweMeDebtsFragment() {
+    public OweMeFragment() {
         // Required empty public constructor
     }
 
-    public static OweMeDebtsFragment newInstance() {
-        return new OweMeDebtsFragment();
+    public static OweMeFragment newInstance() {
+        return new OweMeFragment();
     }
 
     @Override
@@ -58,7 +57,7 @@ public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.V
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate()");
-        mDebtsAdapter = new DebtsAdapter(getActivity(), new ArrayList<PersonDebt>(0));
+        mOweMeAdapter = new OweMeAdapter(getActivity(), new ArrayList<PersonDebt>(0));
     }
 
     @Override
@@ -79,9 +78,9 @@ public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.V
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.d(TAG, "onActivityCreated()");
-        DaggerOweMeDebtsComponent.builder()
-                .oweMeDebtsPresenterModule(new OweMeDebtsPresenterModule(this))
-                .applicationComponent((ApplicationComponent) ((DebtManagerApplication) getActivity().getApplication()).getComponent())
+        DaggerOweMeComponent.builder()
+                .oweMePresenterModule(new OweMePresenterModule(this))
+                .applicationComponent(((DebtManagerApplication) getActivity().getApplication()).getComponent())
                 .build()
                 .inject(this);
     }
@@ -96,7 +95,7 @@ public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.V
 
         RecyclerView recyclerViewOweMeDebts = binding.rvOweme;
         recyclerViewOweMeDebts.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerViewOweMeDebts.setAdapter(mDebtsAdapter);
+        recyclerViewOweMeDebts.setAdapter(mOweMeAdapter);
         mTextViewEmptyDebts = binding.tvNoDebts;
 
         Log.d(TAG, "onCreateView()");
@@ -110,13 +109,13 @@ public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.V
             mTextViewEmptyDebts.setVisibility(View.GONE);
         }
 
-        mDebtsAdapter.updatePersonDebtListItems(debts);
+        mOweMeAdapter.updatePersonDebtListItems(debts);
         Log.d(TAG, "debts size is " + debts.size());
     }
 
     @Override
     public void showEmptyView() {
-        mDebtsAdapter.updatePersonDebtListItems(new ArrayList<PersonDebt>());
+        mOweMeAdapter.updatePersonDebtListItems(new ArrayList<PersonDebt>());
         mTextViewEmptyDebts.setVisibility(View.VISIBLE);
     }
 
@@ -135,7 +134,7 @@ public class OweMeDebtsFragment extends Fragment implements OweMeDebtsContract.V
     }
 
     @Override
-    public void setPresenter(OweMeDebtsContract.Presenter presenter) {
+    public void setPresenter(OweMeContract.Presenter presenter) {
         mPresenter = presenter;
     }
 

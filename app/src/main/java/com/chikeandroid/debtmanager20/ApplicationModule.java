@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
-import com.chikeandroid.debtmanager20.data.source.PersonDebtsDataSource;
 import com.chikeandroid.debtmanager20.data.source.Local;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsDataSource;
 import com.chikeandroid.debtmanager20.data.source.local.PersonDebtsLocalDataSource;
 
 import javax.inject.Singleton;

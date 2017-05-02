@@ -19,13 +19,13 @@ import java.util.List;
  * Created by Chike on 4/25/2017.
  */
 
-public class DebtsAdapter extends RecyclerView.Adapter<DebtsAdapter.ViewHolder> {
+public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> {
 
     private final List<PersonDebt> mPersonDebts;
     private final Context mContext;
     private final LayoutInflater mLayoutInflater;
 
-    public DebtsAdapter(Context context, List<PersonDebt> personDebts) {
+    public OweMeAdapter(Context context, List<PersonDebt> personDebts) {
         mPersonDebts = personDebts;
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);

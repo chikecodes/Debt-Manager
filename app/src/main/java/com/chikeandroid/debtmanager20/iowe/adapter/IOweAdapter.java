@@ -1,4 +1,4 @@
-package com.chikeandroid.debtmanager20.oweme;
+package com.chikeandroid.debtmanager20.iowe.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.ListItemDebtBinding;
 import com.chikeandroid.debtmanager20.debtdetail.DebtDetailActivity;
 import com.chikeandroid.debtmanager20.debtdetail.DebtDetailFragment;
+import com.chikeandroid.debtmanager20.iowe.IOweDiffCallback;
 
 import java.util.List;
 
@@ -19,13 +20,13 @@ import java.util.List;
  * Created by Chike on 4/25/2017.
  */
 
-public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> {
+public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
 
     private final List<PersonDebt> mPersonDebts;
     private final Context mContext;
     private final LayoutInflater mLayoutInflater;
 
-    public OweMeAdapter(Context context, List<PersonDebt> personDebts) {
+    public IOweAdapter(Context context, List<PersonDebt> personDebts) {
         mPersonDebts = personDebts;
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
@@ -44,7 +45,7 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
     }
 
     public void updatePersonDebtListItems(List<PersonDebt> personDebts) {
-        final OweMeDiffCallback diffCallback = new OweMeDiffCallback(this.mPersonDebts, personDebts);
+        final IOweDiffCallback diffCallback = new IOweDiffCallback(this.mPersonDebts, personDebts);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 
         this.mPersonDebts.clear();

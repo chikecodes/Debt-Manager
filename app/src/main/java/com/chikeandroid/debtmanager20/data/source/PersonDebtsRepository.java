@@ -58,9 +58,9 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         }
     }
 
-    private void notifyContentObserver() {
+    private void notifyContentObserver(int debtType) {
         for(DebtsRepositoryObserver observer : mObservers) {
-            observer.onDebtsChanged();
+            observer.onDebtsChanged(debtType);
         }
     }
 
@@ -181,13 +181,13 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         mCachedDebts.put(debt.getId(), personDebt);
 
         //update the UI
-       notifyContentObserver();
+       notifyContentObserver(debt.getDebtType());
     }
 
     @Override
     public void refreshDebts() {
         mCacheIsDirty = true;
-        notifyContentObserver();
+        // notifyContentObserver();
     }
 
     @Override
@@ -201,7 +201,7 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         mCachedDebts.clear();
 
         // update the UI
-        notifyContentObserver();
+        // notifyContentObserver();
     }
 
     @Override
@@ -213,7 +213,7 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         mCachedDebts.remove(personDebt.getDebt().getId());
 
         // Update the UI
-        notifyContentObserver();
+        notifyContentObserver(personDebt.getDebt().getDebtType());
     }
 
     @Override
@@ -236,8 +236,7 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         mCachedDebts.put(debt.getId(), personDebt);
 
         //update the UI
-        notifyContentObserver();
-
+        notifyContentObserver(personDebt.getDebt().getDebtType());
     }
 
     @Override
@@ -270,6 +269,6 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
     }
 
     public interface DebtsRepositoryObserver {
-        void onDebtsChanged();
+        void onDebtsChanged(int debtType);
     }
 }

@@ -1,6 +1,5 @@
 package com.chikeandroid.debtmanager20.oweme;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,12 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.OweMeFragmentBinding;
+import com.chikeandroid.debtmanager20.oweme.adapter.OweMeAdapter;
+import com.chikeandroid.debtmanager20.util.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +26,8 @@ import javax.inject.Inject;
 
 /**
  * Created by Chike on 3/13/2017.
+ * Display a List of {@link PersonDebt}s that people owe the user.
  */
-
 public class OweMeFragment extends Fragment implements OweMeContract.View {
 
     private static final String TAG = "OweMeDebtsFragment";
@@ -47,16 +47,11 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
         return new OweMeFragment();
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Log.d(TAG, "onAttach()");
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate()");
+        setRetainInstance(true);
         mOweMeAdapter = new OweMeAdapter(getActivity(), new ArrayList<PersonDebt>(0));
     }
 
@@ -121,11 +116,7 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
 
     @Override
     public void showLoadingDebtsError() {
-        showMessage(getString(R.string.msg_loading_debts_error));
-    }
-
-    private void showMessage(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+        ViewUtil.showToast(getActivity(), getString(R.string.msg_loading_debts_error));
     }
 
     @Override

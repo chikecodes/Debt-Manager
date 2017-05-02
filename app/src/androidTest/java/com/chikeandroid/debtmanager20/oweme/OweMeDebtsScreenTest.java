@@ -13,6 +13,7 @@ import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.home.MainActivity;
+import com.chikeandroid.debtmanager20.oweme.adapter.OweMeAdapter;
 import com.chikeandroid.debtmanager20.util.RecyclerViewItemCountAssertion;
 import com.chikeandroid.debtmanager20.util.StringUtil;
 import com.chikeandroid.debtmanager20.util.TimeUtil;

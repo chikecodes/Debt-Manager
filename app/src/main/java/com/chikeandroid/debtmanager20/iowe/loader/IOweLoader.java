@@ -1,4 +1,4 @@
-package com.chikeandroid.debtmanager20.oweme.loader;
+package com.chikeandroid.debtmanager20.iowe.loader;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -14,17 +14,14 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by Chike on 4/15/2017.
- * Custom {@link android.content.Loader} for a list of {@link PersonDebt}, using the
- * {@link PersonDebtsRepository} as its source. This Loader is a {@link AsyncTaskLoader} so it queries
- * the data asynchronously.
+ * Created by Chike on 5/2/2017.
  */
 
-public class OweMeLoader extends AsyncTaskLoader<List<PersonDebt>> implements PersonDebtsRepository.DebtsRepositoryObserver {
+public class IOweLoader extends AsyncTaskLoader<List<PersonDebt>> implements PersonDebtsRepository.DebtsRepositoryObserver  {
 
     private final PersonDebtsRepository mDebtsRepository;
 
-    public OweMeLoader(Context context, @NonNull PersonDebtsRepository repository) {
+    public IOweLoader(Context context, @NonNull PersonDebtsRepository repository) {
         super(context);
         checkNotNull(repository);
         mDebtsRepository = repository;

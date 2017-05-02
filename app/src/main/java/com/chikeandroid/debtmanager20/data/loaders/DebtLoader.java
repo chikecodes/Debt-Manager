@@ -62,13 +62,6 @@ public class DebtLoader extends AsyncTaskLoader<PersonDebt> implements PersonDeb
     }
 
     @Override
-    public void onDebtsChanged() {
-        if(isStarted()) {
-            forceLoad();
-        }
-    }
-
-    @Override
     protected void onStopLoading() {
         cancelLoad();
     }
@@ -77,5 +70,12 @@ public class DebtLoader extends AsyncTaskLoader<PersonDebt> implements PersonDeb
     protected void onReset() {
         onStopLoading();
         mDebtsRepository.removeContentObserver(this);
+    }
+
+    @Override
+    public void onDebtsChanged(int debtType) {
+        if(isStarted()) {
+            forceLoad();
+        }
     }
 }

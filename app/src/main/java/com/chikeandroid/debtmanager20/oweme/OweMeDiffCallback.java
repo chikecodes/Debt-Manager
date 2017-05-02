@@ -13,35 +13,35 @@ import java.util.List;
 
 public class OweMeDiffCallback extends DiffUtil.Callback {
 
-    private final List<PersonDebt> mOldOweMeDebtList;
-    private final List<PersonDebt> mNewOweMeDebtList;
+    private final List<PersonDebt> mOldOweMeList;
+    private final List<PersonDebt> mNewOweMeList;
 
-    public OweMeDiffCallback(List<PersonDebt> oldOweMeDebtList, List<PersonDebt> newOweMeDebtList) {
-        mOldOweMeDebtList = oldOweMeDebtList;
-        mNewOweMeDebtList = newOweMeDebtList;
+    public OweMeDiffCallback(List<PersonDebt> oldOweMeList, List<PersonDebt> newOweMeList) {
+        mOldOweMeList = oldOweMeList;
+        mNewOweMeList = newOweMeList;
     }
 
     @Override
     public int getOldListSize() {
-        return mOldOweMeDebtList.size();
+        return mOldOweMeList.size();
     }
 
     @Override
     public int getNewListSize() {
-        return mNewOweMeDebtList.size();
+        return mNewOweMeList.size();
     }
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return mOldOweMeDebtList.get(oldItemPosition).getDebt().getId().equals(
-                mNewOweMeDebtList.get(newItemPosition).getDebt().getId());
+        return mOldOweMeList.get(oldItemPosition).getDebt().getId().equals(
+                mNewOweMeList.get(newItemPosition).getDebt().getId());
     }
 
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        final PersonDebt oldPersonDebt = mOldOweMeDebtList.get(oldItemPosition);
-        final PersonDebt newPersonDebt = mNewOweMeDebtList.get(newItemPosition);
+        final PersonDebt oldPersonDebt = mOldOweMeList.get(oldItemPosition);
+        final PersonDebt newPersonDebt = mNewOweMeList.get(newItemPosition);
 
         return oldPersonDebt.equals(newPersonDebt);
     }

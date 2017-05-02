@@ -32,6 +32,7 @@ import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.FragmentAddDebtBinding;
+import com.chikeandroid.debtmanager20.home.MainActivity;
 import com.chikeandroid.debtmanager20.util.TimeUtil;
 import com.chikeandroid.debtmanager20.util.ValidationUtil;
 import com.chikeandroid.debtmanager20.util.ViewUtil;
@@ -266,7 +267,9 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
 
     @Override
     public void showDebts() {
-        getActivity().setResult(Activity.RESULT_OK);
+        Intent intent = new Intent();
+        intent.putExtra(MainActivity.EXTRA_DEBT_TYPE, mDebtType);
+        getActivity().setResult(Activity.RESULT_OK, intent);
         getActivity().finish();
     }
 

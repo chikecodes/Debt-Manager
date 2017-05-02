@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.addeditdebt.AddEditDebtActivity;
+import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.databinding.ActivityMainBinding;
 import com.chikeandroid.debtmanager20.home.adapter.HomeFragmentPagerAdapter;
 import com.chikeandroid.debtmanager20.util.EspressoIdlingResource;
@@ -22,6 +23,9 @@ import com.chikeandroid.debtmanager20.util.ViewUtil;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    private ViewPager mViewPager;
+    public static String EXTRA_DEBT_TYPE = "com.chikeandroid.debtmanager20.home.debt_type";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +36,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = binding.toolbarMainIncluded.toolbarMain;
         setSupportActionBar(toolbar);
 
-        ViewPager viewPager = binding.viewPagerMain;
-        viewPager.setAdapter(new HomeFragmentPagerAdapter(getSupportFragmentManager()));
-        viewPager.setOffscreenPageLimit(3);
+        mViewPager = binding.viewPagerMain;
+        mViewPager.setAdapter(new HomeFragmentPagerAdapter(getSupportFragmentManager()));
+        mViewPager.setOffscreenPageLimit(3);
 
         TabLayout tabLayout = binding.tabLayoutMain;
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setupWithViewPager(mViewPager);
 
         FloatingActionButton fab = binding.fabMain;
         fab.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +60,14 @@ public class MainActivity extends AppCompatActivity {
         if (AddEditDebtActivity.REQUEST_ADD_DEBT == requestCode && Activity.RESULT_OK == resultCode) {
 
             ViewUtil.showToast(this, getString(R.string.msg_debt_save_success));
+
+            if(data != null) {
+                if(data.getIntExtra(EXTRA_DEBT_TYPE, -1) == Debt.DEBT_TYPE_IOWE) {
+                    mViewPager.setCurrentItem(1, true);
+                }else if(data.getIntExtra(EXTRA_DEBT_TYPE, -1) == Debt.DEBT_TYPE_OWED) {
+                    mViewPager.setCurrentItem(0, true);
+                }
+            }
         }
     }
 

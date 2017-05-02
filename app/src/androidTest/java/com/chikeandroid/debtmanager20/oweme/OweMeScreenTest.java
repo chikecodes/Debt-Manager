@@ -44,7 +44,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
  * Tests for the OweMe fragment screen, in the main screen which contains a list of all debts owed.
  */
 @RunWith(AndroidJUnit4.class)
-public class OweMeDebtsScreenTest {
+public class OweMeScreenTest {
 
     private final static String NAME = "chike mgbemena";
     private final static String PHONE_NUMBER = "070381115342";

@@ -420,6 +420,7 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
             Cursor cursor = db.rawQuery("SELECT " + PersonsEntry.COLUMN_PHONE_NO + " FROM " + PersonsEntry.TABLE_NAME +
                     DebtsDbHelper.WHERE + PersonsEntry.COLUMN_PHONE_NO  + DebtsDbHelper.WHERE_EQUAL_TO, new String[]{String.valueOf(phoneNumber)});
             if (cursor.moveToFirst()) {
+                cursor.close();
                 return true;
             }
             cursor.close();

@@ -93,7 +93,9 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
         List<PersonDebt> personDebts = new ArrayList<>();
         SQLiteDatabase db = mDebtsDbHelper.getReadableDatabase();
 
-        String sql = buildGetDebtsQueryByWhere(DebtsEntry.TABLE_NAME + "." + DebtsEntry.COLUMN_TYPE);
+        String where = DebtsEntry.TABLE_NAME + "." + DebtsEntry.COLUMN_TYPE  + " =?";
+        String sql = buildGetDebtsQueryByWhere(where);
+
         Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(debtType)});
 
         if(cursor != null && cursor.getCount() > 0) {
@@ -138,14 +140,16 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
     }
 
     @Override
-    public PersonDebt getPersonDebt(@NonNull String debtId) {
+    public PersonDebt getPersonDebt(@NonNull String debtId, @NonNull int debtType) {
 
         checkNotNull(debtId);
+        checkNotNull(debtType);
 
         SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();
-
-        String sql = buildGetDebtsQueryByWhere(DebtsEntry.TABLE_NAME + "." + DebtsEntry.COLUMN_ENTRY_ID);
-        Cursor c = db.rawQuery(sql, new String[]{String.valueOf(debtId)});
+        String where = DebtsEntry.TABLE_NAME + "." + DebtsEntry.COLUMN_ENTRY_ID + " =? AND " +
+                DebtsEntry.TABLE_NAME + "." + DebtsEntry.COLUMN_TYPE  + " =?";
+        String sql = buildGetDebtsQueryByWhere(where);
+        Cursor c = db.rawQuery(sql, new String[]{debtId, String.valueOf(debtType)});
 
         Debt debt = null;
         PersonDebt personDebt = null;
@@ -204,7 +208,7 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
                 .append(" = ").append(PersonsEntry.TABLE_NAME).append(dot).append(PersonsEntry.COLUMN_ENTRY_ID);
 
         if(!"no".equals(whereValue)) {
-            sqlStringBuilder.append(DebtsDbHelper.WHERE).append(whereValue).append(DebtsDbHelper.WHERE_EQUAL_TO);
+            sqlStringBuilder.append(DebtsDbHelper.WHERE).append(whereValue);
         }
 
         return sqlStringBuilder.toString();
@@ -301,9 +305,10 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
         if(cursor != null && cursor.getCount() > 0) {
             cursor.close();
             return false;
-        }else {
-            return true;
         }
+
+        cursor.close();
+        return true;
     }
 
     @Override

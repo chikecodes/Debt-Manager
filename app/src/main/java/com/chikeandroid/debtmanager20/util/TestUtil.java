@@ -15,16 +15,14 @@ public final class TestUtil {
     public static final String PHONE_NUMBER1 = "070381115344";
     public static final String NOTE = "computer money";
     public static final double AMOUNT = 6000.545;
-    public static final int DEBT_TYPE = Debt.DEBT_TYPE_OWED;
-    public static final int DEBT_STATUS = Debt.DEBT_STATUS_ACTIVE;
 
-    private TestUtil() {}
+    private TestUtil() {
+    }
 
     public static Debt createDebt(String personId, double amount, int debtType, int debtStatus, String note) {
 
         Debt debt = new Debt.Builder(UUID.randomUUID().toString(), personId, amount,
-                System.currentTimeMillis(), debtType,
-                debtStatus)
+                System.currentTimeMillis(), debtType, debtStatus)
                 .dueDate(System.currentTimeMillis())
                 .note(note)
                 .build();
@@ -41,8 +39,12 @@ public final class TestUtil {
         return createPerson(NAME1, PHONE_NUMBER1);
     }
 
-    public static Debt getDebt(String personId) {
-        return createDebt(personId, AMOUNT, DEBT_TYPE, DEBT_STATUS, NOTE);
+    public static Debt createAndGetOwedDebt(String personId) {
+        return createDebt(personId, AMOUNT, Debt.DEBT_TYPE_OWED, Debt.DEBT_STATUS_ACTIVE, NOTE);
+    }
+
+    public static Debt createAndGetIOweDebt(String personId) {
+        return createDebt(personId, AMOUNT, Debt.DEBT_TYPE_IOWE, Debt.DEBT_STATUS_ACTIVE, NOTE);
     }
 
 }

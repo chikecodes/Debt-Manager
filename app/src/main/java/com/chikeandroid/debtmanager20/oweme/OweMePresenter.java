@@ -7,6 +7,8 @@ import android.support.v4.content.Loader;
 
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsDataSource;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
 import com.chikeandroid.debtmanager20.oweme.loader.OweMeLoader;
 import com.chikeandroid.debtmanager20.util.EspressoIdlingResource;
 
@@ -27,6 +29,9 @@ public class OweMePresenter implements OweMeContract.Presenter, LoaderManager.Lo
     private final OweMeContract.View mOweMeDebtsView;
 
     @NonNull
+    private final PersonDebtsDataSource mPersonDebtsRepository;
+
+    @NonNull
     private final LoaderManager mLoaderManager;
 
     private final OweMeLoader mLoader;
@@ -34,9 +39,10 @@ public class OweMePresenter implements OweMeContract.Presenter, LoaderManager.Lo
     private List<PersonDebt> mCurrentDebts;
 
     @Inject
-    OweMePresenter(OweMeContract.View view, LoaderManager loaderManager, OweMeLoader loader) {
+    OweMePresenter(OweMeContract.View view, PersonDebtsRepository debtsRepository, LoaderManager loaderManager, OweMeLoader loader) {
         mLoader = loader;
         mOweMeDebtsView = view;
+        mPersonDebtsRepository = debtsRepository;
         mLoaderManager = loaderManager;
     }
 
@@ -103,5 +109,13 @@ public class OweMePresenter implements OweMeContract.Presenter, LoaderManager.Lo
     @Override
     public void onLoaderReset(Loader<List<PersonDebt>> loader) {
         //  remove any references it has to the Loader's data.
+    }
+
+    @Override
+    public void deletePersonDebt(PersonDebt personDebt) {
+
+        if(personDebt != null) {
+            mPersonDebtsRepository.deletePersonDebt(personDebt);
+        }
     }
 }

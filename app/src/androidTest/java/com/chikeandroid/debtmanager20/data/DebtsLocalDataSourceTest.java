@@ -52,7 +52,7 @@ public class DebtsLocalDataSourceTest {
     public void shouldBeAbleToSaveDebtAndThenRetrieveIt() {
 
         // Owed Debts
-        Person person = TestUtil.getPerson();
+        Person person = TestUtil.createAndGetPerson();
         Debt debt = TestUtil.createAndGetOwedDebt(person.getId());
         mDebtsLocalDataSource.savePersonDebt(debt, person);
         assertThat(new PersonDebt(person, debt), is(mDebtsLocalDataSource.getPersonDebt(debt.getId(), Debt.DEBT_TYPE_OWED)));
@@ -68,7 +68,7 @@ public class DebtsLocalDataSourceTest {
     public void shouldBeAbleToGetOwedPersonDebtsSaved() {
 
         // Owed Debts
-        Person person1 = TestUtil.getPerson();
+        Person person1 = TestUtil.createAndGetPerson();
         Debt debt1 = TestUtil.createAndGetOwedDebt(person1.getId());
         PersonDebt personDebt1 = new PersonDebt(person1, debt1);
         mDebtsLocalDataSource.savePersonDebt(debt1, person1);
@@ -102,7 +102,7 @@ public class DebtsLocalDataSourceTest {
     public void shouldBeAbleToGetIOwePersonDebtsSaved() {
 
         // I Owe Debts
-        Person person1 = TestUtil.getPerson();
+        Person person1 = TestUtil.createAndGetPerson();
         Debt debt1 = TestUtil.createAndGetIOweDebt(person1.getId());
         PersonDebt personDebt1 = new PersonDebt(person1, debt1);
         mDebtsLocalDataSource.savePersonDebt(debt1, person1);
@@ -135,7 +135,7 @@ public class DebtsLocalDataSourceTest {
     @Test
     public void shouldBeAbleToDeleteAllOwedPersonDebts() {
 
-        Person person1 = TestUtil.getPerson();
+        Person person1 = TestUtil.createAndGetPerson();
         Debt debt1 = TestUtil.createAndGetOwedDebt(person1.getId());
         mDebtsLocalDataSource.savePersonDebt(debt1, person1);
 
@@ -153,7 +153,7 @@ public class DebtsLocalDataSourceTest {
     @Test
     public void shouldBeAbleToDeleteAllIOwePersonDebts() {
 
-        Person person1 = TestUtil.getPerson();
+        Person person1 = TestUtil.createAndGetPerson();
         Debt debt1 = TestUtil.createAndGetIOweDebt(person1.getId());
         mDebtsLocalDataSource.savePersonDebt(debt1, person1);
 
@@ -171,7 +171,7 @@ public class DebtsLocalDataSourceTest {
     @Test
     public void shouldBeAbleToDeleteOwedDebtAndPersonIfPersonHasOneDebtOnly() {
 
-        Person person1 = TestUtil.getPerson();
+        Person person1 = TestUtil.createAndGetPerson();
         Debt debt1 = TestUtil.createAndGetOwedDebt(person1.getId());
         mDebtsLocalDataSource.savePersonDebt(debt1, person1);
         PersonDebt personDebt = new PersonDebt(person1, debt1);
@@ -188,7 +188,7 @@ public class DebtsLocalDataSourceTest {
     @Test
     public void shouldBeAbleToDeleteIOweDebtAndPersonIfPersonHasOneDebtOnly() {
 
-        Person person1 = TestUtil.getPerson();
+        Person person1 = TestUtil.createAndGetPerson();
         Debt debt1 = TestUtil.createAndGetIOweDebt(person1.getId());
         mDebtsLocalDataSource.savePersonDebt(debt1, person1);
         PersonDebt personDebt = new PersonDebt(person1, debt1);
@@ -205,7 +205,7 @@ public class DebtsLocalDataSourceTest {
     @Test
     public void shouldBeAbleToDeleteOwedDebtButNotPersonIfPersonHasMoreThanOneDebt() {
 
-        Person person1 = TestUtil.getPerson();
+        Person person1 = TestUtil.createAndGetPerson();
         Debt debt1 = TestUtil.createAndGetOwedDebt(person1.getId());
         mDebtsLocalDataSource.savePersonDebt(debt1, person1);
         PersonDebt personDebt1 = new PersonDebt(person1, debt1);
@@ -232,7 +232,7 @@ public class DebtsLocalDataSourceTest {
     @Test
     public void shouldBeAbleToDeleteIOweDebtButNotPersonIfPersonHasMoreThanOneDebt() {
 
-        Person person1 = TestUtil.getPerson();
+        Person person1 = TestUtil.createAndGetPerson();
         Debt debt1 = TestUtil.createAndGetIOweDebt(person1.getId());
         mDebtsLocalDataSource.savePersonDebt(debt1, person1);
         PersonDebt personDebt1 = new PersonDebt(person1, debt1);
@@ -259,7 +259,7 @@ public class DebtsLocalDataSourceTest {
     @Test
     public void shouldBeAbleToDeleteAllOwedDebtsByType() {
 
-        Person person1 = TestUtil.getPerson();
+        Person person1 = TestUtil.createAndGetPerson();
         Debt debt1 = TestUtil.createAndGetOwedDebt(person1.getId());
         mDebtsLocalDataSource.savePersonDebt(debt1, person1);
 
@@ -277,7 +277,7 @@ public class DebtsLocalDataSourceTest {
     @Test
     public void shouldBeAbleToDeleteAllIOweDebtsByType() {
 
-        Person person1 = TestUtil.getPerson();
+        Person person1 = TestUtil.createAndGetPerson();
         Debt debt1 = TestUtil.createAndGetIOweDebt(person1.getId());
         mDebtsLocalDataSource.savePersonDebt(debt1, person1);
 
@@ -296,7 +296,7 @@ public class DebtsLocalDataSourceTest {
     @Test
     public void shouldBeAbleToUpdatePersonDebtWithOutPhoneNumber() {
 
-        Person person1 = TestUtil.getPerson();
+        Person person1 = TestUtil.createAndGetPerson();
         Debt debt1 = TestUtil.createAndGetOwedDebt(person1.getId());
         mDebtsLocalDataSource.savePersonDebt(debt1, person1);
 
@@ -318,7 +318,7 @@ public class DebtsLocalDataSourceTest {
     @Test
     public void shouldCreateNewUserOnUpdateWithPhoneNumberIfNotAlreadyInDatabase() {
 
-        Person person1 = TestUtil.getPerson();
+        Person person1 = TestUtil.createAndGetPerson();
         Debt debt1 = TestUtil.createAndGetOwedDebt(person1.getId());
         mDebtsLocalDataSource.savePersonDebt(debt1, person1);
 

@@ -51,7 +51,7 @@ public class DebtsRepositoryTest {
         mDebtsRepository.savePersonDebt(debt1, person1);
 
         verify(mDebtsLocalDataSource).savePersonDebt(eq(debt1), eq(person1));
-        assertThat(mDebtsRepository.getCachedDebts().size(), is(1));
+        assertThat(mDebtsRepository.getCacheOwed().size(), is(1));
 
         // save i owe debt
         Person person2 = TestUtil.createPerson("Nkeiru Ineh", "070414741");
@@ -60,7 +60,7 @@ public class DebtsRepositoryTest {
         mDebtsRepository.savePersonDebt(debt2, person2);
 
         verify(mDebtsLocalDataSource).savePersonDebt(eq(debt2), eq(person2));
-        assertThat(mDebtsRepository.getCachedDebts().size(), is(2));
+        assertThat(mDebtsRepository.getCacheOwed().size(), is(2));
     }
 
     @Test
@@ -105,7 +105,7 @@ public class DebtsRepositoryTest {
 
         verify(mDebtsLocalDataSource).deleteAllPersonDebts();
 
-        assertTrue(mDebtsRepository.mCachedDebts.size() == 0);
+        assertTrue(mDebtsRepository.mCacheOwed.size() == 0);
     }
 
     @Test
@@ -131,7 +131,7 @@ public class DebtsRepositoryTest {
 
         verify(mDebtsLocalDataSource).deletePersonDebt(eq(personDebt));
 
-        assertTrue(mDebtsRepository.mCachedDebts.size() == 0);
+        assertTrue(mDebtsRepository.mCacheOwed.size() == 0);
     }
 
     @Test

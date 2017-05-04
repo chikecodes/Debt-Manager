@@ -33,7 +33,7 @@ public class IOweLoader extends AsyncTaskLoader<List<PersonDebt>> implements Per
         // App is busy until further notice
         EspressoIdlingResource.increment();
 
-        return mDebtsRepository.getAllPersonDebts();
+        return mDebtsRepository.getAllPersonDebtsByType(Debt.DEBT_TYPE_IOWE);
     }
 
     @Override
@@ -50,14 +50,14 @@ public class IOweLoader extends AsyncTaskLoader<List<PersonDebt>> implements Per
     @Override
     protected void onStartLoading() {
         // Deliver any previously loaded data immediately if available.
-        if(mDebtsRepository.cachedDebtsAvailable()) {
-            deliverResult(mDebtsRepository.getAllPersonDebts());
+        if(mDebtsRepository.cachedIOweDebtsAvailable()) {
+            deliverResult(mDebtsRepository.getAllPersonDebtsByType(Debt.DEBT_TYPE_IOWE));
         }
 
         // Begin monitoring the underlying data source
         mDebtsRepository.addContentObserver(this);
 
-        if(takeContentChanged() || !mDebtsRepository.cachedDebtsAvailable()) {
+        if(takeContentChanged() || !mDebtsRepository.cachedIOweDebtsAvailable()) {
             // When a change has  been delivered or the repository cache isn't available, we force
             // a load.
             forceLoad();

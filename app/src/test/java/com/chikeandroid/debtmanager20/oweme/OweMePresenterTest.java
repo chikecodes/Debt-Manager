@@ -8,7 +8,9 @@ import android.support.v4.content.Loader;
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
 import com.chikeandroid.debtmanager20.oweme.loader.OweMeLoader;
+import com.chikeandroid.debtmanager20.util.TestUtil;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,8 +22,9 @@ import org.mockito.MockitoAnnotations;
 import java.util.List;
 import java.util.UUID;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -46,14 +49,16 @@ public class OweMePresenterTest {
     @Mock
     private LoaderManager mLoaderManager;
 
+    @Mock
+    private PersonDebtsRepository mRepository;
+
     private OweMePresenter mOweMePresenter;
 
     @Before
     public void setUpOweMeDebtsPresenter() {
         MockitoAnnotations.initMocks(this);
 
-        mOweMePresenter = new OweMePresenter(mOweMeDebtsView,
-                mLoaderManager, mOweMeLoader);
+        mOweMePresenter = new OweMePresenter(mOweMeDebtsView, mRepository, mLoaderManager, mOweMeLoader);
 
         Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534");
 
@@ -105,6 +110,18 @@ public class OweMePresenterTest {
         mOweMePresenter.onLoadFinished(mock(Loader.class), null);
 
         verify(mOweMeDebtsView).showLoadingDebtsError();
+    }
+
+    @Test
+    public void shouldBeAbleToDeleteDebt() {
+
+        Person person = TestUtil.createAndGetPerson();
+        Debt debt = TestUtil.createAndGetOwedDebt(person.getId());
+        PersonDebt personDebt = new PersonDebt(person, debt);
+
+        mOweMePresenter.deletePersonDebt(personDebt);
+
+        verify(mRepository).deletePersonDebt(eq(personDebt));
     }
 
 }

@@ -46,7 +46,7 @@ public class DebtsRepositoryTest {
     public void shouldBeAbleToSaveOwedDebtToLocalDataSource() {
 
         // save debt owed
-        Person person1 = TestUtil.getPerson();
+        Person person1 = TestUtil.createAndGetPerson();
         Debt debt1 = TestUtil.createAndGetOwedDebt(person1.getId());
         mDebtsRepository.savePersonDebt(debt1, person1);
 
@@ -95,7 +95,7 @@ public class DebtsRepositoryTest {
     @Test
     public void shouldBeAbleToDeleteAllOwedDebts() {
 
-        Person person1 = TestUtil.getPerson();
+        Person person1 = TestUtil.createAndGetPerson();
         Debt debt1 = TestUtil.createAndGetOwedDebt(person1.getId());
         mDebtsRepository.savePersonDebt(debt1, person1);
         verify(mDebtsLocalDataSource).savePersonDebt(eq(debt1), eq(person1));
@@ -126,7 +126,7 @@ public class DebtsRepositoryTest {
     @Test
     public void shouldBeAbleToDeleteAPersonDebtFromLocalDataSource() {
 
-        Person person1 = TestUtil.getPerson();
+        Person person1 = TestUtil.createAndGetPerson();
         Debt debt1 = TestUtil.createAndGetOwedDebt(person1.getId());
         mDebtsRepository.savePersonDebt(debt1, person1);
 
@@ -156,7 +156,7 @@ public class DebtsRepositoryTest {
     public void shouldBeAbleToDeleteDebtsByTypeFromLocalDataSource() {
 
         // Owed debt
-        Person person1 = TestUtil.getPerson();
+        Person person1 = TestUtil.createAndGetPerson();
         Debt debt1 = TestUtil.createAndGetOwedDebt(person1.getId());
         mDebtsRepository.savePersonDebt(debt1, person1);
 
@@ -175,7 +175,7 @@ public class DebtsRepositoryTest {
     @Test
     public void shouldBeAbleToUpdateDebtFromLocalDataSource() {
 
-        Person person1 = TestUtil.getPerson();
+        Person person1 = TestUtil.createAndGetPerson();
         Debt debt1 = TestUtil.createAndGetOwedDebt(person1.getId());
         mDebtsRepository.savePersonDebt(debt1, person1);
 

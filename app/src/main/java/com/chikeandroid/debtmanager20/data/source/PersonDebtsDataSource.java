@@ -15,7 +15,7 @@ import java.util.List;
 
 public interface PersonDebtsDataSource {
 
-    PersonDebt getPersonDebt(@NonNull String debtId);
+    PersonDebt getPersonDebt(@NonNull String debtId, @NonNull int debtType);
 
     List<PersonDebt> getAllPersonDebts();
 

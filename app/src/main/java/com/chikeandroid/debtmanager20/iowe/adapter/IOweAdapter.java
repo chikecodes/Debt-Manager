@@ -1,7 +1,6 @@
 package com.chikeandroid.debtmanager20.iowe.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +10,6 @@ import android.view.ViewGroup;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.ListItemDebtBinding;
 import com.chikeandroid.debtmanager20.debtdetail.DebtDetailActivity;
-import com.chikeandroid.debtmanager20.debtdetail.DebtDetailFragment;
 import com.chikeandroid.debtmanager20.iowe.IOweDiffCallback;
 
 import java.util.List;
@@ -62,6 +60,7 @@ public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
 
         public final ListItemDebtBinding mListItemDebtBinding;
         String mDebtId;
+        int mDebtType;
 
         public ViewHolder(ListItemDebtBinding binding) {
             super(binding.getRoot());
@@ -71,14 +70,13 @@ public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
 
         public void bind(PersonDebt personDebt) {
             mDebtId = personDebt.getDebt().getId();
+            mDebtType = personDebt.getDebt().getDebtType();
             mListItemDebtBinding.setPersonDebt(personDebt);
         }
 
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(mContext, DebtDetailActivity.class);
-            intent.putExtra(DebtDetailFragment.EXTRA_DEBT_ID, mDebtId);
-            mContext.startActivity(intent);
+            DebtDetailActivity.start(mContext, mDebtId, mDebtType);
         }
     }
 }

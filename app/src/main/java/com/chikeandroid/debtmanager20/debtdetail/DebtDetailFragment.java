@@ -25,7 +25,6 @@ import android.widget.Button;
 import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.addeditdebt.AddEditDebtActivity;
-import com.chikeandroid.debtmanager20.addeditdebt.AddEditDebtFragment;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.FragmentDebtDetailBinding;
 import com.chikeandroid.debtmanager20.util.StringUtil;
@@ -42,11 +41,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class DebtDetailFragment extends Fragment implements DebtDetailContract.View {
 
     public static final String EXTRA_DEBT_ID = "com.chikeandroid.debtmanager20.debtdetail.DebtDetailFragment.extra_debt_id";
+    public static final String EXTRA_DEBT_TYPE = "com.chikeandroid.debtmanager20.debtdetail.DebtDetailFragment.extra_debt_type";
+
     public static final String ARG_DEBT_ID = "com.chikeandroid.debtmanager20.debtdetail.DebtDetailFragment.argument_debt_id";
+    public static final String ARG_DEBT_TYPE = "com.chikeandroid.debtmanager20.debtdetail.DebtDetailFragment.argument_debt_type";
 
     private PersonDebt mPersonDebt;
     private FragmentDebtDetailBinding mFragmentDebtDetailBinding;
     private String mDebtId;
+    private int mDebtType;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private String mPhoneNumber;
 
@@ -55,9 +58,10 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
 
     private DebtDetailContract.Presenter mPresenter;
 
-    public static DebtDetailFragment newInstance(String debtId) {
+    public static DebtDetailFragment newInstance(String debtId, int debtType) {
         Bundle args = new Bundle();
         args.putString(ARG_DEBT_ID, debtId);
+        args.putInt(ARG_DEBT_TYPE, debtType);
         DebtDetailFragment debtDetailFragment = new DebtDetailFragment();
         debtDetailFragment.setArguments(args);
         return debtDetailFragment;
@@ -69,9 +73,10 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
         setHasOptionsMenu(true);
         if (getArguments() != null) {
             mDebtId = getArguments().getString(ARG_DEBT_ID);
+            mDebtType = getArguments().getInt(ARG_DEBT_TYPE);
         }
         DaggerDebtDetailComponent.builder()
-                .debtDetailPresenterModule(new DebtDetailPresenterModule(this, mDebtId))
+                .debtDetailPresenterModule(new DebtDetailPresenterModule(this, mDebtId, mDebtType))
                 .applicationComponent(((DebtManagerApplication) getActivity().getApplication()).getComponent()).build()
                 .inject(this);
     }
@@ -188,9 +193,7 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
     }
 
     private void openEditDebtUi() {
-        Intent intent = new Intent(getActivity(), AddEditDebtActivity.class);
-        intent.putExtra(AddEditDebtFragment.ARGUMENT_EDIT_DEBT, mPersonDebt);
-        startActivityForResult(intent, AddEditDebtActivity.REQUEST_EDIT_DEBT);
+        AddEditDebtActivity.startFromDebtDetailScreen(getActivity(), mPersonDebt, this);
     }
 
     @Override

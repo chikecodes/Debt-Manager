@@ -35,7 +35,7 @@ public final class TestUtil {
         return new Person(UUID.randomUUID().toString(), name, phoneNumber);
     }
 
-    public static Person getPerson() {
+    public static Person createAndGetPerson() {
         return createPerson(NAME1, PHONE_NUMBER1);
     }
 

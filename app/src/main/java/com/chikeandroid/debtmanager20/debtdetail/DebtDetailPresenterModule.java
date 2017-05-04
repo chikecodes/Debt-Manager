@@ -23,11 +23,13 @@ public class DebtDetailPresenterModule {
     private final DebtDetailContract.View mView;
     private final Fragment mContext;
     private final String mDebtId;
+    private final int mDebtType;
 
-    public DebtDetailPresenterModule(DebtDetailContract.View view, @Nullable String debtId) {
+    public DebtDetailPresenterModule(DebtDetailContract.View view, @Nullable String debtId, int debtType) {
         mView = view;
         mContext = (Fragment) view;
         mDebtId = debtId;
+        mDebtType = debtType;
     }
 
     @Provides
@@ -42,7 +44,7 @@ public class DebtDetailPresenterModule {
 
     @Provides
     DebtLoader providesOweMeDebtLoader(Context context, PersonDebtsRepository repository) {
-        return new DebtLoader(context, repository, mDebtId);
+        return new DebtLoader(context, repository, mDebtId, mDebtType);
     }
 
     @Provides

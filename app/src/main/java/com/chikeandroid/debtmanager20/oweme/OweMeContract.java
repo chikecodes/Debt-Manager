@@ -25,5 +25,6 @@ public interface OweMeContract {
 
     interface Presenter extends BasePresenter {
 
+        void deletePersonDebt(PersonDebt personDebt);
     }
 }

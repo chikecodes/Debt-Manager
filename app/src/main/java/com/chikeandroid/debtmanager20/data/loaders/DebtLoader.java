@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.content.AsyncTaskLoader;
 
+import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
 
@@ -18,19 +19,23 @@ public class DebtLoader extends AsyncTaskLoader<PersonDebt> implements PersonDeb
 
 
     private final String mDebtId;
+    private final int mDebtType;
 
     private final PersonDebtsRepository mDebtsRepository;
 
-    public DebtLoader(Context context, @NonNull PersonDebtsRepository repository, @NonNull String debtId) {
+    public DebtLoader(Context context, @NonNull PersonDebtsRepository repository,
+                      @NonNull String debtId, @NonNull int debtType) {
         super(context);
         checkNotNull(repository);
         mDebtsRepository = repository;
         mDebtId = debtId;
+        mDebtType = debtType;
     }
 
     @Override
     public PersonDebt loadInBackground() {
-        return mDebtsRepository.getPersonDebt(mDebtId);
+
+        return mDebtsRepository.getPersonDebt(mDebtId, mDebtType);
     }
 
     @Override
@@ -47,14 +52,23 @@ public class DebtLoader extends AsyncTaskLoader<PersonDebt> implements PersonDeb
     @Override
     protected void onStartLoading() {
         // Deliver any previously loaded data immediately if available.
-        if(mDebtsRepository.cachedDebtsAvailable()) {
-            deliverResult(mDebtsRepository.getCachedDebt(mDebtId));
+        boolean cacheAvailable = false;
+        if(mDebtType == Debt.DEBT_TYPE_IOWE) {
+            if(mDebtsRepository.cachedIOweDebtsAvailable()) {
+                deliverResult(mDebtsRepository.getCachedIOweDebt(mDebtId));
+            }
+            cacheAvailable = mDebtsRepository.cachedIOweDebtsAvailable();
+        }else if(mDebtType == Debt.DEBT_TYPE_OWED) {
+            if(mDebtsRepository.cachedOwedDebtsAvailable()) {
+                deliverResult(mDebtsRepository.getCachedOwedDebt(mDebtId));
+            }
+            cacheAvailable = mDebtsRepository.cachedOwedDebtsAvailable();
         }
 
         // Begin monitoring the underlying data source
         mDebtsRepository.addContentObserver(this);
 
-        if(takeContentChanged() || !mDebtsRepository.cachedDebtsAvailable()) {
+        if(takeContentChanged() || !cacheAvailable) {
             // When a change has  been delivered or the repository cache isn't available, we force
             // a load.
             forceLoad();

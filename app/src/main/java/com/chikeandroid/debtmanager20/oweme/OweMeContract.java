@@ -1,5 +1,7 @@
 package com.chikeandroid.debtmanager20.oweme;
 
+import android.support.annotation.NonNull;
+
 import com.chikeandroid.debtmanager20.base.BasePresenter;
 import com.chikeandroid.debtmanager20.base.BaseView;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
@@ -26,5 +28,7 @@ public interface OweMeContract {
     interface Presenter extends BasePresenter {
 
         void deletePersonDebt(PersonDebt personDebt);
+
+        void batchDeletePersonDebts(@NonNull List<PersonDebt> personDebts, @NonNull int debtType);
     }
 }

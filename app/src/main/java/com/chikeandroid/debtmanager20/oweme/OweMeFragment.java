@@ -1,21 +1,29 @@
 package com.chikeandroid.debtmanager20.oweme;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.R;
+import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.OweMeFragmentBinding;
+import com.chikeandroid.debtmanager20.debtdetail.DebtDetailActivity;
 import com.chikeandroid.debtmanager20.oweme.adapter.OweMeAdapter;
 import com.chikeandroid.debtmanager20.util.ViewUtil;
 
@@ -30,9 +38,12 @@ import javax.inject.Inject;
  */
 public class OweMeFragment extends Fragment implements OweMeContract.View {
 
+    private android.view.ActionMode mActionMode;
+
     private static final String TAG = "OweMeDebtsFragment";
     private OweMeAdapter mOweMeAdapter;
     private TextView mTextViewEmptyDebts;
+    private ActionModeCallback mActionModeCallback = new ActionModeCallback();
 
     @Inject
     OweMePresenter mOweMePresenter;
@@ -47,12 +58,11 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
         return new OweMeFragment();
     }
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mOweMeAdapter = new OweMeAdapter(getActivity(), new ArrayList<PersonDebt>(0));
+        mOweMeAdapter = new OweMeAdapter(getActivity(), new ArrayList<PersonDebt>(0), this);
     }
 
     @Override
@@ -88,12 +98,32 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
         OweMeFragmentBinding binding = DataBindingUtil.inflate(inflater, R.layout.owe_me_fragment, container, false);
         final View view = binding.getRoot();
 
-        RecyclerView recyclerViewOweMeDebts = binding.rvOweme;
-        recyclerViewOweMeDebts.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerViewOweMeDebts.setAdapter(mOweMeAdapter);
+        RecyclerView recyclerView = binding.rvOweme;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(mOweMeAdapter);
         mTextViewEmptyDebts = binding.tvNoDebts;
 
-        Log.d(TAG, "onCreateView()");
+
+        mOweMeAdapter.setOnItemClickListener(new OweMeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, PersonDebt personDebt, int position) {
+                if(mActionMode != null) {
+                    myToggleSelection(position, view);
+                    return;
+                }
+                DebtDetailActivity.start(getActivity(), personDebt.getDebt().getId(),
+                        personDebt.getDebt().getDebtType());
+            }
+        });
+
+        mOweMeAdapter.setOnItemLongClickListener(new OweMeAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemClick(View view, PersonDebt personDebt, int position) {
+                mActionMode = getActivity().startActionMode(mActionModeCallback);
+                myToggleSelection(position, view);
+            }
+        });
+
         return view;
     }
 
@@ -136,5 +166,102 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
         Log.d(TAG, "onStop: ");
     }
 
+    private void myToggleSelection(int position, View view) {
+        mOweMeAdapter.toggleSelection(position, view);
+        String title = mOweMeAdapter.getSelectedItemCount() + " selected";
+        Log.d(TAG, "size is : " + mOweMeAdapter.getSelectedItemCount());
+        mActionMode.setTitle(title);
 
+    }
+
+    int man = 0;
+
+    // Define the callback when ActionMode is activated
+    private class ActionModeCallback implements ActionMode.Callback {
+
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.setTitle("Actions");
+            mode.getMenuInflater().inflate(R.menu.actions_debt, menu);
+            //((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+            return true;
+        }
+
+        // Called each time the action mode is shown.
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false; // Return false if nothing is done
+        }
+
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_delete:
+
+                    if(mOweMeAdapter.getSelectedItemCount() > 0) {
+                        openConfirmDialog();
+
+                    }
+                   // mode.finish();
+                    return false;
+                default:
+                    return false;
+            }
+        }
+
+        // Called when the user exits the action mode
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode.finish();
+            mActionMode = null;
+            mOweMeAdapter.clearSelections();
+        }
+    }
+
+    private void openConfirmDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                .setMessage("Are you sure you want to delete?")
+                .setPositiveButton(getString(R.string.dialog_delete), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        batchDelete();
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).create();
+
+        dialog.show();
+    }
+
+    public void batchDelete() {
+
+        ProgressDialog progressDialog = ViewUtil.getProgressDialog(getActivity(), "Deleting...");
+        progressDialog.show();
+
+        int debtsDeleted = 0;
+
+        List<PersonDebt> deletePersonDebts = new ArrayList<>();
+        for(int i = 0; i < mOweMeAdapter.getSelectedItemCount(); i++) {
+            int position = mOweMeAdapter.getSelectedItems().keyAt(i);
+            PersonDebt personDebt = mOweMeAdapter.getPersonDebt(position);
+            deletePersonDebts.add(personDebt);
+            debtsDeleted++;
+        }
+
+        mPresenter.batchDeletePersonDebts(deletePersonDebts, Debt.DEBT_TYPE_OWED);
+
+        if(debtsDeleted == mOweMeAdapter.getSelectedItemCount()) {
+            ViewUtil.showToast(getActivity(), "Debts deleted successfully");
+        }
+
+        progressDialog.dismiss();
+        mActionMode.finish();
+    }
 }

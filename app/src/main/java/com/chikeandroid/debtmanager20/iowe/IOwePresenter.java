@@ -64,7 +64,7 @@ public class IOwePresenter implements IOweContract.Presenter, LoaderManager.Load
         // the data from the server API, so we check before decrementing, otherwise
         // it throws "Counter has been corrupted!" exception.
         if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-            EspressoIdlingResource.decrement(); // Set app as idle.
+           // EspressoIdlingResource.decrement(); // Set app as idle.
         }
 
         // set view loading indicator to false

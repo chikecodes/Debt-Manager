@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
@@ -191,5 +192,31 @@ public class DebtsRepositoryTest {
         PersonDebt personDebt1 = mDebtsRepository.getPersonDebt(debt1.getId(), Debt.DEBT_TYPE_OWED);
 
         assertEquals(personDebt1, personDebt);
+    }
+
+    @Test
+    public void shouldBeAbleToBatchDeleteFromLocalDataSource() {
+
+        Person person1 = TestUtil.createAndGetPerson();
+        Debt debt1 = TestUtil.createAndGetOwedDebt(person1.getId());
+        mDebtsRepository.savePersonDebt(debt1, person1);
+        PersonDebt personDebt1 = new PersonDebt(person1, debt1);
+
+        Person person2 = TestUtil.createPerson("Emeka Onu", "07045124589");
+        Debt debt2 = TestUtil.createDebt(person2.getId(), 400, Debt.DEBT_TYPE_OWED,
+                Debt.DEBT_STATUS_ACTIVE, "note 4345");
+        mDebtsRepository.savePersonDebt(debt2, person2);
+        PersonDebt personDebt2 = new PersonDebt(person2, debt2);
+
+        List<PersonDebt> personDebts = new ArrayList<>();
+        personDebts.add(personDebt1);
+        personDebts.add(personDebt2);
+
+        mDebtsRepository.batchDelete(personDebts, Debt.DEBT_TYPE_OWED);
+
+        verify(mDebtsLocalDataSource).deletePersonDebt(eq(personDebt1));
+        verify(mDebtsLocalDataSource).deletePersonDebt(eq(personDebt2));
+
+        assertThat(mDebtsRepository.mCacheOwed.size(), is(0));
     }
 }

@@ -1,14 +1,22 @@
 package com.chikeandroid.debtmanager20.addeditdebt;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.base.SingleFragmentActivity;
+import com.chikeandroid.debtmanager20.data.PersonDebt;
 
 import javax.inject.Inject;
 
 /**
  * Created by Chike on 3/16/2017.
+ * Displays the AddEditDebt Screen
+ * Might have extras:
+ * - Boolean: ARGUMENT_EDIT_DEBT
  */
 
 public class AddEditDebtActivity extends SingleFragmentActivity {
@@ -18,6 +26,19 @@ public class AddEditDebtActivity extends SingleFragmentActivity {
 
     @Inject
     AddEditDebtPresenter mAddEditDebtPresenter;
+
+    public static void start(@NonNull Activity context, @NonNull int requestCode) {
+
+        Intent intent = new Intent(context, AddEditDebtActivity.class);
+        context.startActivityForResult(intent, requestCode);
+    }
+
+    public static void startFromDebtDetailScreen(@NonNull Context context, @NonNull PersonDebt personDebt,
+                                                 @NonNull Fragment fragment) {
+        Intent intent = new Intent(context, AddEditDebtActivity.class);
+        intent.putExtra(AddEditDebtFragment.ARGUMENT_EDIT_DEBT, personDebt);
+        fragment.startActivityForResult(intent, AddEditDebtActivity.REQUEST_EDIT_DEBT);
+    }
 
     @Override
     protected Fragment createFragment() {

@@ -48,8 +48,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(MainActivity.this, AddEditDebtActivity.class);
-                startActivityForResult(intent, AddEditDebtActivity.REQUEST_ADD_DEBT);
+                AddEditDebtActivity.start(MainActivity.this, AddEditDebtActivity.REQUEST_ADD_DEBT);
             }
         });
 

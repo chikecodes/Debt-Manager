@@ -2,6 +2,7 @@ package com.chikeandroid.debtmanager20.util;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -131,5 +132,14 @@ public final class ViewUtil {
         } else {
             view.setVisibility(View.VISIBLE);
         }
+    }
+
+    public static ProgressDialog getProgressDialog(final @NonNull Context context, final @NonNull String message) {
+
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage(message);
+        progressDialog.setCancelable(false);
+
+        return progressDialog;
     }
 }

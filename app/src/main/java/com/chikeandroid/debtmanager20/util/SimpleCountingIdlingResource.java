@@ -1,6 +1,7 @@
 package com.chikeandroid.debtmanager20.util;
 
 import android.support.test.espresso.IdlingResource;
+import android.util.Log;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -42,6 +43,7 @@ public class SimpleCountingIdlingResource implements IdlingResource {
      */
     public void increment() {
         counter.getAndIncrement();
+        Log.d("kolo", counter + "");
     }
 
 
@@ -59,6 +61,7 @@ public class SimpleCountingIdlingResource implements IdlingResource {
      */
     public void decrement() {
         int counterVal = counter.decrementAndGet();
+        Log.d("kolo", counterVal + "");
         if (counterVal == 0 && null != mResourceCallback) {
             // we've gone from non-zero to zero. That means we're idle now! Tell espresso.
             mResourceCallback.onTransitionToIdle();

@@ -38,4 +38,6 @@ public interface PersonDebtsDataSource {
     Person getPerson(@NonNull String personId);
 
     void deletePerson(@NonNull String personId);
+
+    void batchDelete(@NonNull List<PersonDebt> personDebts, @NonNull int debtType);
 }

@@ -30,6 +30,7 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -121,6 +122,33 @@ public class OweMeScreenTest {
         onView(withText(dateCreated + " (Created)")).check(matches(isDisplayed()));
         onView(withText(dateDue + " (Due Date)")).check(matches(isDisplayed()));
 
+    }
+
+    @Test
+    public void shouldBeAbleToDeleteOnLongClick() {
+
+        createDebt(NAME, PHONE_NUMBER, AMOUNT, COMMENT, Debt.DEBT_TYPE_OWED);
+
+        createDebt("Mary Jane", "0124535476", 8000, "comment 098", Debt.DEBT_TYPE_OWED);
+
+       // createDebt("Chuka Smith", "10245784", 9000, "comment 4543", Debt.DEBT_TYPE_OWED);
+
+        onView(withText(NAME)).perform(longClick());
+
+        onView(withText("Mary Jane")).perform(click());
+
+       /// onView(withText("Chuka Smith")).perform(click());
+
+        onView(withId(R.id.action_delete)).perform(click());
+
+        // confirm dialog
+        onView(withId(android.R.id.message)).check(matches(isDisplayed()));
+
+        onView(withId(android.R.id.button1)).perform(click());
+
+        onView(withText(NAME)).check(doesNotExist());
+        onView(withText("Mary Jane")).check(doesNotExist());
+        //onView(withText("Chuka Smith")).check(doesNotExist());
     }
 
     @Test

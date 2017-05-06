@@ -7,7 +7,6 @@ import android.support.v4.content.AsyncTaskLoader;
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
-import com.chikeandroid.debtmanager20.util.EspressoIdlingResource;
 
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class IOweLoader extends AsyncTaskLoader<List<PersonDebt>> implements Per
     public List<PersonDebt> loadInBackground() {
 
         // App is busy until further notice
-        EspressoIdlingResource.increment();
+       // EspressoIdlingResource.increment();
 
         return mDebtsRepository.getAllPersonDebtsByType(Debt.DEBT_TYPE_IOWE);
     }

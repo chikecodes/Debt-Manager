@@ -288,6 +288,11 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
     }
 
     @Override
+    public void batchDelete(@NonNull List<PersonDebt> personDebts, @NonNull int debtType) {
+        // batch delete PersonDebts from local database
+    }
+
+    @Override
     public void deletePerson(@NonNull String personId) {
         checkNotNull(personId);
         SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();

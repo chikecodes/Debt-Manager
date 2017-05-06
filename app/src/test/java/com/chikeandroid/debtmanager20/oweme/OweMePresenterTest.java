@@ -19,6 +19,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -102,6 +103,14 @@ public class OweMePresenterTest {
 
         verify(mOweMeDebtsView).showDebts(mShowDebtsArgumentCaptor.capture());
         assertThat(mShowDebtsArgumentCaptor.getValue().size(), is(3));
+    }
+
+    @Test
+    public void shouldBeAbleToLoadAllDebtsFromRepositoryAndShowEmptyViewIfNotAvailable() {
+
+        mOweMePresenter.onLoadFinished(mock(Loader.class), new ArrayList<PersonDebt>());
+
+        verify(mOweMeDebtsView).showEmptyView();
     }
 
     @Test

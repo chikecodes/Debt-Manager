@@ -283,14 +283,33 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         checkNotNull(personDebt);
         mDebtsLocalDataSource.deletePersonDebt(personDebt);
 
+        removePersonDebtFromCache(personDebt);
+
+        // Update the UI
+        notifyContentObserver(personDebt.getDebt().getDebtType());
+    }
+
+    @Override
+    public void batchDelete(@NonNull List<PersonDebt> personDebts, @NonNull int debtType) {
+
+        checkNotNull(personDebts);
+        checkNotNull(debtType);
+
+        for(PersonDebt personDebt : personDebts) {
+            mDebtsLocalDataSource.deletePersonDebt(personDebt);
+            removePersonDebtFromCache(personDebt);
+        }
+
+        // Update the UI
+        notifyContentObserver(debtType);
+    }
+
+    private void removePersonDebtFromCache(PersonDebt personDebt) {
         if(personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_OWED) {
             mCacheOwed.remove(personDebt.getDebt().getId());
         }else if(personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_IOWE) {
             mCacheIOwe.remove(personDebt.getDebt().getId());
         }
-
-        // Update the UI
-        notifyContentObserver(personDebt.getDebt().getDebtType());
     }
 
     @Override

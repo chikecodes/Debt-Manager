@@ -8,6 +8,7 @@ import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.data.source.PersonDebtsDataSource;
 import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
+import com.chikeandroid.debtmanager20.util.EspressoIdlingResource;
 
 import javax.inject.Inject;
 
@@ -40,6 +41,8 @@ public class AddEditDebtPresenter implements AddEditDebtContract.Presenter {
 
     @Override
     public void saveDebt(Person person, Debt debt) {
+
+        EspressoIdlingResource.increment();
 
         if(isUpdateDebt()) {
             updatePersonDebt(person, debt);

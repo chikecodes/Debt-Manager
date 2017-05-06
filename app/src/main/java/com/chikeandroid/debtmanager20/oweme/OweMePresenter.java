@@ -118,4 +118,12 @@ public class OweMePresenter implements OweMeContract.Presenter, LoaderManager.Lo
             mPersonDebtsRepository.deletePersonDebt(personDebt);
         }
     }
+
+    @Override
+    public void batchDeletePersonDebts(@NonNull List<PersonDebt> personDebts, @NonNull int debtType) {
+
+        if(!personDebts.isEmpty()) {
+            mPersonDebtsRepository.batchDelete(personDebts, debtType);
+        }
+    }
 }

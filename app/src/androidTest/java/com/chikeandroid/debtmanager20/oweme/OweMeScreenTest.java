@@ -121,23 +121,22 @@ public class OweMeScreenTest {
 
         onView(withText(dateCreated + " (Created)")).check(matches(isDisplayed()));
         onView(withText(dateDue + " (Due Date)")).check(matches(isDisplayed()));
-
     }
 
     @Test
-    public void shouldBeAbleToDeleteOnLongClick() {
+    public void shouldBeAbleToSelectAndDeleteMultipleDebtsListItemOnLongClick() {
 
         createDebt(NAME, PHONE_NUMBER, AMOUNT, COMMENT, Debt.DEBT_TYPE_OWED);
 
         createDebt("Mary Jane", "0124535476", 8000, "comment 098", Debt.DEBT_TYPE_OWED);
 
-       // createDebt("Chuka Smith", "10245784", 9000, "comment 4543", Debt.DEBT_TYPE_OWED);
+        createDebt("Chuka Smith", "10245784", 9000, "comment 4543", Debt.DEBT_TYPE_OWED);
 
         onView(withText(NAME)).perform(longClick());
 
         onView(withText("Mary Jane")).perform(click());
 
-       /// onView(withText("Chuka Smith")).perform(click());
+        onView(withText("Chuka Smith")).perform(click());
 
         onView(withId(R.id.action_delete)).perform(click());
 
@@ -148,7 +147,7 @@ public class OweMeScreenTest {
 
         onView(withText(NAME)).check(doesNotExist());
         onView(withText("Mary Jane")).check(doesNotExist());
-        //onView(withText("Chuka Smith")).check(doesNotExist());
+        onView(withText("Chuka Smith")).check(doesNotExist());
     }
 
     @Test

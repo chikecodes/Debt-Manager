@@ -54,13 +54,11 @@ public class IOwePresenter implements IOweContract.Presenter, LoaderManager.Load
 
     @Override
     public void start() {
-        // presenter start callback
         mLoaderManager.initLoader(IOWe_QUERY, null, this);
     }
 
     @Override
     public Loader<List<PersonDebt>> onCreateLoader(int id, Bundle args) {
-       // set loading indicator
         return mLoader;
     }
 
@@ -71,7 +69,7 @@ public class IOwePresenter implements IOweContract.Presenter, LoaderManager.Load
         // the data from the server API, so we check before decrementing, otherwise
         // it throws "Counter has been corrupted!" exception.
         if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
-           // EspressoIdlingResource.decrement(); // Set app as idle.
+            EspressoIdlingResource.decrement(); // Set app as idle.
         }
 
         // set view loading indicator to false
@@ -111,11 +109,6 @@ public class IOwePresenter implements IOweContract.Presenter, LoaderManager.Load
     @Override
     public void stop() {
         // presenter callback stop
-    }
-
-    @Override
-    public void openDebtDetails(@NonNull Debt debt) {
-
     }
 
     @Override

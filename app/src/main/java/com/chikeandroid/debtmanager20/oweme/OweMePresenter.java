@@ -113,14 +113,6 @@ public class OweMePresenter implements OweMeContract.Presenter, LoaderManager.Lo
     }
 
     @Override
-    public void deletePersonDebt(PersonDebt personDebt) {
-
-        if(personDebt != null) {
-            mPersonDebtsRepository.deletePersonDebt(personDebt);
-        }
-    }
-
-    @Override
     public void batchDeletePersonDebts(@NonNull List<PersonDebt> personDebts, @NonNull int debtType) {
 
         if(!personDebts.isEmpty()) {

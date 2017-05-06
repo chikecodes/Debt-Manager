@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.chikeandroid.debtmanager20.base.BasePresenter;
 import com.chikeandroid.debtmanager20.base.BaseView;
-import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 
 import java.util.List;
@@ -20,8 +19,6 @@ public interface IOweContract {
 
         void showDebts(List<PersonDebt> debts);
 
-        void showDebtDetailsUi(String debtId);
-
         void showLoadingDebtsError();
 
         void showEmptyView();
@@ -30,8 +27,6 @@ public interface IOweContract {
     }
 
     interface Presenter extends BasePresenter {
-
-        void openDebtDetails(@NonNull Debt debt);
 
         void batchDeletePersonDebts(@NonNull List<PersonDebt> personDebts, @NonNull int debtType);
     }

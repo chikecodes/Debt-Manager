@@ -152,11 +152,6 @@ public class IOweFragment extends Fragment implements IOweContract.View {
         Log.d(TAG, "debts size is " + debts.size());
     }
 
-    @Override
-    public void showDebtDetailsUi(String debtId) {
-        // open debt detail ui
-    }
-
     private void myToggleSelection(int position, View view) {
         mIOweAdapter.toggleSelection(position, view);
         String title = mIOweAdapter.getSelectedItemCount() + " selected";

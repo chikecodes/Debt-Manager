@@ -28,8 +28,6 @@ public interface OweMeContract {
 
     interface Presenter extends BasePresenter {
 
-        void deletePersonDebt(PersonDebt personDebt);
-
         void batchDeletePersonDebts(@NonNull List<PersonDebt> personDebts, @NonNull int debtType);
     }
 }

@@ -8,6 +8,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by Chike on 3/23/2017.
+ * Immutable model class for a PersonDebt.
  */
 
 public final class PersonDebt implements Parcelable {

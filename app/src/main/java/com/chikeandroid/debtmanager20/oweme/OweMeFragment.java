@@ -1,6 +1,7 @@
 package com.chikeandroid.debtmanager20.oweme;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -24,8 +25,12 @@ import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.OweMeFragmentBinding;
 import com.chikeandroid.debtmanager20.debtdetail.DebtDetailActivity;
+import com.chikeandroid.debtmanager20.event.MainViewPagerSwipeEvent;
 import com.chikeandroid.debtmanager20.oweme.adapter.OweMeAdapter;
 import com.chikeandroid.debtmanager20.util.ViewUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +67,7 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mOweMeAdapter = new OweMeAdapter(getActivity(), new ArrayList<PersonDebt>(0), this);
+        mOweMeAdapter = new OweMeAdapter(getActivity(), new ArrayList<PersonDebt>(0));
     }
 
     @Override
@@ -78,6 +83,24 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
         Log.d(TAG, "onStart()");
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void onEvent(MainViewPagerSwipeEvent event) {
+        if(event != null && mActionMode != null) {
+            mActionMode.finish();
+        }
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -135,7 +158,6 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
         }
 
         mOweMeAdapter.updatePersonDebtListItems(debts);
-        Log.d(TAG, "debts size is " + debts.size());
     }
 
     @Override
@@ -173,8 +195,6 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
         mActionMode.setTitle(title);
 
     }
-
-    int man = 0;
 
     // Define the callback when ActionMode is activated
     private class ActionModeCallback implements ActionMode.Callback {

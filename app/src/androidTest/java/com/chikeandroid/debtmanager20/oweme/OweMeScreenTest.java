@@ -31,6 +31,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.longClick;
+import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -170,6 +171,21 @@ public class OweMeScreenTest {
         onView(withText(NAME)).check(doesNotExist());
 
         onView(withId(R.id.rv_oweme)).check(new RecyclerViewItemCountAssertion(2));
+    }
+
+    @Test
+    public void shouldNotShowActionModeWhenViewPagerIsSwiped() {
+
+        createDebt(NAME, PHONE_NUMBER, AMOUNT, COMMENT, Debt.DEBT_TYPE_OWED);
+
+        onView(withText(NAME)).perform(longClick());
+
+        onView(withId(R.id.action_delete)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.view_pager_main)).perform(swipeLeft());
+
+        //onView(withText("Selected")).check(matches(not(isDisplayed())));
+        onView(withId(R.id.action_delete)).check(doesNotExist());
     }
 
     private void createDebt(String name, String phoneNumber, double amount, String comment, int debtType) {

@@ -34,6 +34,8 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.longClick;
+import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -121,6 +123,49 @@ public class IOweScreenTest {
         onView(withText(dateCreated + " (Created)")).check(matches(isDisplayed()));
         onView(withText(dateDue + " (Due Date)")).check(matches(isDisplayed()));
 
+    }
+
+    @Test
+    public void shouldBeAbleToSelectAndDeleteMultipleDebtsListItemOnLongClick() {
+
+        createDebt(NAME, PHONE_NUMBER, AMOUNT, COMMENT, Debt.DEBT_TYPE_IOWE);
+
+        createDebt("Mary Jane", "0124535476", 8000, "comment 098", Debt.DEBT_TYPE_IOWE);
+
+        createDebt("Chuka Smith", "10245784", 9000, "comment 4543", Debt.DEBT_TYPE_IOWE);
+
+        onView(withText(NAME)).perform(longClick());
+
+        onView(withText("Mary Jane")).perform(click());
+
+        onView(withText("Chuka Smith")).perform(click());
+
+        // action mode delete
+        onView(withId(R.id.action_delete)).perform(click());
+
+        // confirm dialog
+        onView(withId(android.R.id.message)).check(matches(isDisplayed()));
+
+        onView(withId(android.R.id.button1)).perform(click());
+
+        onView(withText(NAME)).check(doesNotExist());
+        onView(withText("Mary Jane")).check(doesNotExist());
+        onView(withText("Chuka Smith")).check(doesNotExist());
+    }
+
+    @Test
+    public void shouldNotShowActionModeWhenViewPagerIsSwiped() {
+
+        createDebt(NAME, PHONE_NUMBER, AMOUNT, COMMENT, Debt.DEBT_TYPE_IOWE);
+
+        onView(withText(NAME)).perform(longClick());
+
+        onView(withId(R.id.action_delete)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.view_pager_main)).perform(swipeLeft());
+
+        //onView(withText("Selected")).check(matches(not(isDisplayed())));
+        onView(withId(R.id.action_delete)).check(doesNotExist());
     }
 
     @Test

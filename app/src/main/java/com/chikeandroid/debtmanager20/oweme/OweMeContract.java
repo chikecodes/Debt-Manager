@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Created by Chike on 3/13/2017.
+ * This specifies the contract between the view and the presenter.
  */
 
 public interface OweMeContract {

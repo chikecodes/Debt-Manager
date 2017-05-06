@@ -7,6 +7,8 @@ import android.support.v4.content.Loader;
 
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsDataSource;
+import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
 import com.chikeandroid.debtmanager20.iowe.loader.IOweLoader;
 import com.chikeandroid.debtmanager20.util.EspressoIdlingResource;
 
@@ -17,6 +19,7 @@ import javax.inject.Inject;
 
 /**
  * Created by Chike on 3/14/2017.
+ * Listens to user actions from the UI ({@link IOweFragment}), retrieves the data and updates the
  */
 
 public class IOwePresenter implements IOweContract.Presenter, LoaderManager.LoaderCallbacks<List<PersonDebt>> {
@@ -29,14 +32,18 @@ public class IOwePresenter implements IOweContract.Presenter, LoaderManager.Load
     @NonNull
     private final LoaderManager mLoaderManager;
 
+    @NonNull
+    private final PersonDebtsDataSource mPersonDebtsRepository;
+
     private final IOweLoader mLoader;
 
     private List<PersonDebt> mCurrentDebts;
 
     @Inject
-    IOwePresenter(IOweContract.View view, LoaderManager loaderManager, IOweLoader loader) {
+    IOwePresenter(IOweContract.View view, PersonDebtsRepository debtsRepository, LoaderManager loaderManager, IOweLoader loader) {
         mLoader = loader;
         mIOweView = view;
+        mPersonDebtsRepository = debtsRepository;
         mLoaderManager = loaderManager;
     }
 
@@ -109,5 +116,13 @@ public class IOwePresenter implements IOweContract.Presenter, LoaderManager.Load
     @Override
     public void openDebtDetails(@NonNull Debt debt) {
 
+    }
+
+    @Override
+    public void batchDeletePersonDebts(@NonNull List<PersonDebt> personDebts, @NonNull int debtType) {
+
+        if(!personDebts.isEmpty()) {
+            mPersonDebtsRepository.batchDelete(personDebts, debtType);
+        }
     }
 }

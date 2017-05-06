@@ -129,6 +129,8 @@ dependencies {
         }
     }
 
+    compile "org.greenrobot:eventbus:$rootProject.eventbusVersion"
+
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 

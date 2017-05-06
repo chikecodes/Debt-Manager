@@ -19,6 +19,7 @@ import javax.inject.Inject;
 
 /**
  * Created by Chike on 3/13/2017.
+ * Listens to user actions from the UI ({@link OweMeFragment}), retrieves the data and updates the
  */
 
 public class OweMePresenter implements OweMeContract.Presenter, LoaderManager.LoaderCallbacks<List<PersonDebt>> {

@@ -17,9 +17,12 @@ import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.addeditdebt.AddEditDebtActivity;
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.databinding.ActivityMainBinding;
+import com.chikeandroid.debtmanager20.event.MainViewPagerSwipeEvent;
 import com.chikeandroid.debtmanager20.home.adapter.HomeFragmentPagerAdapter;
 import com.chikeandroid.debtmanager20.util.EspressoIdlingResource;
 import com.chikeandroid.debtmanager20.util.ViewUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -50,6 +53,23 @@ public class MainActivity extends AppCompatActivity {
 
                 AddEditDebtActivity.start(MainActivity.this, AddEditDebtActivity.REQUEST_ADD_DEBT);
             }
+        });
+
+        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+
+            // optional
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                EventBus.getDefault().post(new MainViewPagerSwipeEvent("Swiped"));
+            }
+
+            // optional
+            @Override
+            public void onPageSelected(int position) { }
+
+            // optional
+            @Override
+            public void onPageScrollStateChanged(int state) { }
         });
 
     }

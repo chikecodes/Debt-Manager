@@ -1,7 +1,6 @@
 package com.chikeandroid.debtmanager20.oweme.adapter;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
@@ -13,38 +12,52 @@ import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.ListItemDebtBinding;
 import com.chikeandroid.debtmanager20.oweme.OweMeDiffCallback;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by Chike on 4/25/2017.
+ * OweMe RecyclerView Adapter
  */
 
 public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> {
 
     private SparseBooleanArray mSelectedItems;
-    private HashMap<Integer, Object> mSelectedPersonDebts;
     private final List<PersonDebt> mPersonDebts;
-    private final Context mContext;
     private final LayoutInflater mLayoutInflater;
-    private Fragment mFragment;
+    private RecyclerView mRecyclerView;
 
-    RecyclerView mRecyclerView;
+    public OweMeAdapter(Context context, List<PersonDebt> personDebts) {
+        mPersonDebts = personDebts;
+        mLayoutInflater = LayoutInflater.from(context);
+        mSelectedItems = new SparseBooleanArray();
+    }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-
         mRecyclerView = recyclerView;
     }
 
-    public OweMeAdapter(Context context, List<PersonDebt> personDebts, Fragment fragment) {
-        mPersonDebts = personDebts;
-        mContext = context;
-        mLayoutInflater = LayoutInflater.from(context);
-        mFragment = fragment;
-        mSelectedItems = new SparseBooleanArray();
-        mSelectedPersonDebts = new HashMap<>();
+    // for item click listener
+    private OnItemClickListener mOnItemClickListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, PersonDebt personDebt, int position);
+    }
+
+    public void setOnItemClickListener(final OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
+    }
+
+    // for item long click listener
+    private OnItemLongClickListener mOnItemLongClickListener;
+
+    public interface OnItemLongClickListener {
+        void onItemClick(View view, PersonDebt personDebt, int position);
+    }
+
+    public void setOnItemLongClickListener(final OnItemLongClickListener mOnItemLongClickListener) {
+        this.mOnItemLongClickListener = mOnItemLongClickListener;
     }
 
     @Override
@@ -86,28 +99,6 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
         this.mPersonDebts.clear();
         this.mPersonDebts.addAll(personDebts);
         diffResult.dispatchUpdatesTo(this);
-    }
-
-    // for item click listener
-    private OnItemClickListener mOnItemClickListener;
-
-    public interface OnItemClickListener {
-        void onItemClick(View view, PersonDebt personDebt, int position);
-    }
-
-    public void setOnItemClickListener(final OnItemClickListener onItemClickListener) {
-        this.mOnItemClickListener = onItemClickListener;
-    }
-
-    // for item long click listener
-    private OnItemLongClickListener mOnItemLongClickListener;
-
-    public interface OnItemLongClickListener {
-        void onItemClick(View view, PersonDebt personDebt, int position);
-    }
-
-    public void setOnItemLongClickListener(final OnItemLongClickListener mOnItemLongClickListener) {
-        this.mOnItemLongClickListener = mOnItemLongClickListener;
     }
 
     @Override

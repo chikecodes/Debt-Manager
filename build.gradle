@@ -42,5 +42,6 @@ ext {
     circleImageVersion = "2.1.0"
     daggerVersion = '2.10'
     stethoVersion = '1.4.2'
+    eventbusVersion = '3.0.0'
 
 }

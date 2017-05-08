@@ -67,14 +67,14 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final PersonDebt personDebt = mPersonDebts.get(position);
         holder.bind(personDebt);
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 if(mOnItemLongClickListener != null) {
-                    mOnItemLongClickListener.onItemClick(view, personDebt, position);
+                    mOnItemLongClickListener.onItemClick(view, personDebt, holder.getAdapterPosition());
                 }
                 return true;
             }
@@ -84,7 +84,7 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
                 if(mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemClick(view, personDebt, position);
+                    mOnItemClickListener.onItemClick(view, personDebt, holder.getAdapterPosition());
                 }
             }
         });

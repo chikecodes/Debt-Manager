@@ -77,7 +77,6 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume()");
         mPresenter.start();
     }
 
@@ -200,13 +199,11 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
     public void onStop() {
         super.onStop();
         mPresenter.stop();
-        Log.d(TAG, "onStop: ");
     }
 
     private void myToggleSelection(int position, View view) {
         mOweMeAdapter.toggleSelection(position, view);
         String title = mOweMeAdapter.getSelectedItemCount() + " selected";
-        Log.d(TAG, "size is : " + mOweMeAdapter.getSelectedItemCount());
         mActionMode.setTitle(title);
 
     }

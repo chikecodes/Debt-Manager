@@ -27,12 +27,16 @@ import com.chikeandroid.debtmanager20.databinding.OweMeFragmentBinding;
 import com.chikeandroid.debtmanager20.debtdetail.DebtDetailActivity;
 import com.chikeandroid.debtmanager20.event.MainViewPagerSwipeEvent;
 import com.chikeandroid.debtmanager20.oweme.adapter.OweMeAdapter;
+import com.chikeandroid.debtmanager20.util.TimeUtil;
 import com.chikeandroid.debtmanager20.util.ViewUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -156,6 +160,17 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
         if(mTextViewEmptyDebts.getVisibility() == View.VISIBLE) {
             mTextViewEmptyDebts.setVisibility(View.GONE);
         }
+
+        Collections.sort(debts, new Comparator<PersonDebt>() {
+            @Override
+            public int compare(PersonDebt personDebt1, PersonDebt personDebt2) {
+
+                Date personDebt1CreatedDate = TimeUtil.millis2Date(personDebt1.getDebt().getCreatedDate());
+                Date personDebt2CreatedDate = TimeUtil.millis2Date(personDebt2.getDebt().getCreatedDate());
+
+                return personDebt2CreatedDate.compareTo(personDebt1CreatedDate);
+            }
+        });
 
         mOweMeAdapter.updatePersonDebtListItems(debts);
     }

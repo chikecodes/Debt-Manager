@@ -76,6 +76,10 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         return mCacheIOwe != null && !mCacheIOweIsDirty;
     }
 
+    public boolean cachedPeopleAvailable() {
+        return mCachePersons != null && !mCachePersonIsDirty;
+    }
+
     public List<PersonDebt> getCacheOwed() {
         return mCacheOwed == null ? null : new ArrayList<>(mCacheOwed.values());
     }

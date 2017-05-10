@@ -1,45 +1,42 @@
-package com.chikeandroid.debtmanager20.oweme.loader;
+package com.chikeandroid.debtmanager20.people.loader;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.content.AsyncTaskLoader;
 
 import com.chikeandroid.debtmanager20.data.Debt;
-import com.chikeandroid.debtmanager20.data.PersonDebt;
+import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
 import com.chikeandroid.debtmanager20.util.EspressoIdlingResource;
 
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
- * Created by Chike on 4/15/2017.
- * Custom {@link android.content.Loader} for a list of {@link PersonDebt}, using the
+ * Created by Chike on 5/10/2017.
+ * Custom {@link android.content.Loader} for a list of {@link Person}, using the
  * {@link PersonDebtsRepository} as its source. This Loader is a {@link AsyncTaskLoader} so it queries
  * the data asynchronously.
  */
-public class OweMeLoader extends AsyncTaskLoader<List<PersonDebt>> implements PersonDebtsRepository.DebtsRepositoryObserver {
+public class PeopleLoader extends AsyncTaskLoader<List<Person>> implements PersonDebtsRepository.DebtsRepositoryObserver {
 
-    private final PersonDebtsRepository mDebtsRepository;
+    private final PersonDebtsRepository mPersonDebtsRepository;
 
-    public OweMeLoader(Context context, @NonNull PersonDebtsRepository repository) {
+    public PeopleLoader(Context context, @NonNull PersonDebtsRepository personDebtsRepository) {
         super(context);
-        checkNotNull(repository);
-        mDebtsRepository = repository;
+        mPersonDebtsRepository = personDebtsRepository;
     }
 
     @Override
-    public List<PersonDebt> loadInBackground() {
+    public List<Person> loadInBackground() {
 
         // App is busy until further notice
         EspressoIdlingResource.increment();
 
-        return mDebtsRepository.getAllPersonDebtsByType(Debt.DEBT_TYPE_OWED);
+        return mPersonDebtsRepository.getAllPersons();
     }
 
     @Override
-    public void deliverResult(List<PersonDebt> data) {
+    public void deliverResult(List<Person> data) {
         if(isReset()) {
             return;
         }
@@ -52,14 +49,14 @@ public class OweMeLoader extends AsyncTaskLoader<List<PersonDebt>> implements Pe
     @Override
     protected void onStartLoading() {
         // Deliver any previously loaded data immediately if available.
-        if(mDebtsRepository.cachedOwedDebtsAvailable()) {
-            deliverResult(mDebtsRepository.getAllPersonDebtsByType(Debt.DEBT_TYPE_OWED));
+        if(mPersonDebtsRepository.cachedPeopleAvailable()) {
+            deliverResult(mPersonDebtsRepository.getAllPersons());
         }
 
         // Begin monitoring the underlying data source
-        mDebtsRepository.addContentObserver(this);
+        mPersonDebtsRepository.addContentObserver(this);
 
-        if(takeContentChanged() || !mDebtsRepository.cachedOwedDebtsAvailable()) {
+        if(takeContentChanged() || !mPersonDebtsRepository.cachedPeopleAvailable()) {
             // When a change has  been delivered or the repository cache isn't available, we force
             // a load.
             forceLoad();
@@ -68,7 +65,7 @@ public class OweMeLoader extends AsyncTaskLoader<List<PersonDebt>> implements Pe
 
     @Override
     public void onDebtsChanged(int debtType) {
-        if(debtType == Debt.DEBT_TYPE_OWED) {
+        if(debtType == Debt.DEBT_TYPE_OWED || debtType == Debt.DEBT_TYPE_IOWE) {
             if (isStarted()) {
                 forceLoad();
             }
@@ -83,6 +80,6 @@ public class OweMeLoader extends AsyncTaskLoader<List<PersonDebt>> implements Pe
     @Override
     protected void onReset() {
         onStopLoading();
-        mDebtsRepository.removeContentObserver(this);
+        mPersonDebtsRepository.removeContentObserver(this);
     }
 }

@@ -132,6 +132,8 @@ dependencies {
     compile "org.greenrobot:eventbus:$rootProject.eventbusVersion"
 
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile "com.balysv:material-ripple:$rootProject.materialRippleVersion"
+
 }
 
 apply from: '/code_quality_tools/quality.gradle'

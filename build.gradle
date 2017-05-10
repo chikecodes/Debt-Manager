@@ -43,5 +43,6 @@ ext {
     daggerVersion = '2.10'
     stethoVersion = '1.4.2'
     eventbusVersion = '3.0.0'
+    materialRippleVersion = '1.0.2'
 
 }

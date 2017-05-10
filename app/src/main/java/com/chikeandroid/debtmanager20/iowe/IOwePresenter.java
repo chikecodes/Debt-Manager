@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
-import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.data.source.PersonDebtsDataSource;
 import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
@@ -85,9 +84,7 @@ public class IOwePresenter implements IOweContract.Presenter, LoaderManager.Load
         List<PersonDebt> debtsToShow = new ArrayList<>();
         if(mCurrentDebts != null) {
             for(PersonDebt personDebt : mCurrentDebts) {
-                if(personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_IOWE) {
-                    debtsToShow.add(personDebt);
-                }
+                debtsToShow.add(personDebt);
             }
         }
 

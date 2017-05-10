@@ -7,16 +7,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.data.Person;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Created by Chike on 3/14/2017.
+ * Display a List of {@link Person}s .
  */
-
 public class PeopleFragment extends Fragment implements PeopleContract.View {
+
+    @Inject
+    PeoplePresenter mPeoplePresenter;
+
+    private PeopleContract.Presenter mPresenter;
 
     public PeopleFragment() {
         // Required empty public constructor
@@ -24,6 +32,16 @@ public class PeopleFragment extends Fragment implements PeopleContract.View {
 
     public static PeopleFragment newInstance() {
         return new PeopleFragment();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        DaggerPeopleComponent.builder()
+                .peoplePresenterModule(new PeoplePresenterModule(this))
+                .applicationComponent(((DebtManagerApplication) getActivity().getApplication()).getComponent())
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -42,27 +60,27 @@ public class PeopleFragment extends Fragment implements PeopleContract.View {
     }
 
     @Override
+    public void setPresenter(PeopleContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
     public void showPeople(List<Person> persons) {
-        // show list of people to ui
+
     }
 
     @Override
-    public void showNoPerson() {
-        // show no person available message
+    public void showEmptyView() {
+
     }
 
     @Override
-    public void showLoadingPersonError() {
-        // show error getting person
+    public void showLoadingPeopleError() {
+
     }
 
     @Override
     public boolean isActive() {
         return isAdded();
-    }
-
-    @Override
-    public void setPresenter(PeopleContract.Presenter presenter) {
-        // set presenter for this view
     }
 }

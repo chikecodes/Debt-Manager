@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+    <com.balysv.materialripple.MaterialRippleLayout
+            android:id="@+id/lyt_parent"
+            style="@style/RippleStyleWhite"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/person_recycler_item_size"
+            android:layout_margin="@dimen/spacing_medium"
+            android:minHeight="@dimen/person_recycler_item_size">
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_person" />
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_overlay"
+                    android:padding="@dimen/spacing_middle">
+
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:orientation="vertical">
+
+                    <TextView
+                            android:id="@+id/name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Chike Mgbemena"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold" />
+
+                    <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_medium"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                        <!--<ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_clock"
+                                android:tint="@android:color/white" />-->
+
+                        <TextView
+                                android:id="@+id/duration"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/spacing_small"
+                                android:layout_marginStart="@dimen/spacing_small"
+                                android:text="56,000"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                                android:textColor="@android:color/white" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </com.balysv.materialripple.MaterialRippleLayout>
+</RelativeLayout>

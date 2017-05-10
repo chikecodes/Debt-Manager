@@ -32,7 +32,6 @@ import static org.mockito.Mockito.verify;
  * Created by Chike on 4/16/2017.
  * Unit tests for the implementation of {@link OweMePresenter
  */
-
 public class OweMePresenterTest {
 
     private List<PersonDebt> mPersonDebts;

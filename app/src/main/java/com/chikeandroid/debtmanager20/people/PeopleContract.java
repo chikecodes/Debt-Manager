@@ -1,7 +1,5 @@
 package com.chikeandroid.debtmanager20.people;
 
-import android.support.annotation.NonNull;
-
 import com.chikeandroid.debtmanager20.base.BasePresenter;
 import com.chikeandroid.debtmanager20.base.BaseView;
 import com.chikeandroid.debtmanager20.data.Person;
@@ -10,6 +8,7 @@ import java.util.List;
 
 /**
  * Created by Chike on 3/14/2017.
+ * This specifies the contract between the view {@link PeopleFragment} and the presenter {@link PeoplePresenter}.
  */
 
 public interface PeopleContract {
@@ -18,17 +17,15 @@ public interface PeopleContract {
 
         void showPeople(List<Person> persons);
 
-        void showNoPerson();
+        void showEmptyView();
 
-        void showLoadingPersonError();
+        void showLoadingPeopleError();
 
         boolean isActive();
     }
 
     interface Presenter extends BasePresenter {
 
-        void loadPersons(boolean forceUpdate);
 
-        void openPersonDebtDetails(@NonNull Person person);
     }
 }

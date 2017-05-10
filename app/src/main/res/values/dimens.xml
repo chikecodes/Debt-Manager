@@ -34,4 +34,6 @@
     <dimen name="editorial_headline">22sp</dimen>
 
     <dimen name="body_line_spacing_extra">2dp</dimen>
+
+    <dimen name="person_recycler_item_size">192dp</dimen>
 </resources>

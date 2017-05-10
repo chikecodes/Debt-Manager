@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
-import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.data.source.PersonDebtsDataSource;
 import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
@@ -21,7 +20,6 @@ import javax.inject.Inject;
  * Created by Chike on 3/13/2017.
  * Listens to user actions from the UI ({@link OweMeFragment}), retrieves the data and updates the
  */
-
 public class OweMePresenter implements OweMeContract.Presenter, LoaderManager.LoaderCallbacks<List<PersonDebt>> {
 
     private final static int OWE_ME_DEBTS_QUERY = 1;
@@ -91,14 +89,13 @@ public class OweMePresenter implements OweMeContract.Presenter, LoaderManager.Lo
         List<PersonDebt> debtsToShow = new ArrayList<>();
         if(mCurrentDebts != null) {
             for(PersonDebt personDebt : mCurrentDebts) {
-                if(personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_OWED) {
-                    debtsToShow.add(personDebt);
-                }
+                debtsToShow.add(personDebt);
             }
         }
 
         processDebts(debtsToShow);
     }
+
     private void processDebts(List<PersonDebt> debts) {
         if(debts.isEmpty()) {
             mOweMeDebtsView.showEmptyView();

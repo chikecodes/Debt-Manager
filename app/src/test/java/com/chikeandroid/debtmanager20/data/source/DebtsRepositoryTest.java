@@ -219,4 +219,12 @@ public class DebtsRepositoryTest {
 
         assertThat(mDebtsRepository.mCacheOwed.size(), is(0));
     }
+
+    @Test
+    public void shouldBeAbleToGetAllPersonsFromLocalDataSource() {
+
+        mDebtsRepository.getAllPersons();
+
+        verify(mDebtsLocalDataSource).getAllPersons();
+    }
 }

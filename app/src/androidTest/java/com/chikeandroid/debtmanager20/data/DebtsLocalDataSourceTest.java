@@ -340,4 +340,36 @@ public class DebtsLocalDataSourceTest {
         // means that a new person was created
         assertThat(personDebt.getPerson(), is(not(newPerson)));
     }
+
+    @Test
+    public void shouldBeAbleToGetPersons() {
+
+        // Owed Debts
+        Person person1 = TestUtil.createAndGetPerson();
+        Debt debt1 = TestUtil.createAndGetOwedDebt(person1.getId());
+        mDebtsLocalDataSource.savePersonDebt(debt1, person1);
+
+        Person person2 = TestUtil.createPerson("Mary Jane", "08012345447");
+        Debt debt2 = TestUtil.createDebt(person2.getId(), AMOUNT, Debt.DEBT_TYPE_OWED,
+                Debt.DEBT_STATUS_ACTIVE, "Shirt money");
+        mDebtsLocalDataSource.savePersonDebt(debt2, person2);
+
+        List<Person> persons = mDebtsLocalDataSource.getAllPersons();
+        assertNotNull(persons);
+        assertTrue(persons.size() >= 2);
+
+        boolean person1Found = false;
+        boolean person2Found = false;
+        for (Person person : persons) {
+            if (person.getId().equals(person1.getId())) {
+                person1Found = true;
+            }
+            if (person.getId().equals(person2.getId())) {
+                person2Found = true;
+            }
+        }
+        assertTrue(person1Found);
+        assertTrue(person2Found);
+
+    }
 }

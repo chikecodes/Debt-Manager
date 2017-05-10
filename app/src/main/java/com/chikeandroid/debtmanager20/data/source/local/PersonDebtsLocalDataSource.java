@@ -293,6 +293,41 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
     }
 
     @Override
+    public List<Person> getAllPersons() {
+
+        SQLiteDatabase db = mDebtsDbHelper.getReadableDatabase();
+
+        List<Person> persons = new ArrayList<>();
+        Cursor cursor = db.query(PersonsEntry.TABLE_NAME, PersonsEntry.getAllColumns(), null, null, null, null, null);
+
+        if(cursor != null && cursor.getCount() > 0) {
+
+            while(cursor.moveToNext()) {
+
+                String personId = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_ENTRY_ID));
+                String personName = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_NAME));
+                String personPhoneNumber = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_PHONE_NO));
+
+                Person person = new Person(personId, personName, personPhoneNumber);
+
+                persons.add(person);
+
+            }
+        }
+        if(cursor != null) {
+            cursor.close();
+        }
+
+        db.close();
+
+        if(persons.isEmpty()) {
+            return new ArrayList<>();
+        }else {
+            return persons;
+        }
+    }
+
+    @Override
     public void deletePerson(@NonNull String personId) {
         checkNotNull(personId);
         SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();

@@ -35,6 +35,7 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
      */
     Map<String, PersonDebt> mCacheOwed;
     Map<String, PersonDebt> mCacheIOwe;
+    Map<String, Person> mCachePersons;
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested. This variable
@@ -42,6 +43,7 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
      */
     boolean mCacheOwedIsDirty;
     boolean mCacheIOweIsDirty;
+    boolean mCachePersonIsDirty;
 
     @Inject
     public PersonDebtsRepository(@Local PersonDebtsDataSource debtsLocalDataSource) {
@@ -80,6 +82,10 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
 
     public List<PersonDebt> getCacheIOwe() {
         return mCacheIOwe == null ? null : new ArrayList<>(mCacheIOwe.values());
+    }
+
+    public List<Person> getCachePersons() {
+        return mCachePersons == null ? null : new ArrayList<>(mCachePersons.values());
     }
 
     public PersonDebt getCachedOwedDebt(String debtId) {
@@ -226,6 +232,25 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         }
     }
 
+    private void processLoadedPersons(List<Person> persons) {
+
+        if(persons == null) {
+            mCachePersons = null;
+            mCachePersonIsDirty = false;
+            return;
+        }
+
+        if(mCachePersons == null) {
+            mCachePersons = new LinkedHashMap<>();
+        }
+        mCachePersons.clear();
+
+        for(Person person : persons) {
+            mCachePersons.put(person.getId(), person);
+        }
+        mCachePersonIsDirty = false;
+    }
+
     @Override
     public void savePersonDebt(@NonNull Debt debt, @NonNull Person person) {
         checkNotNull(debt);
@@ -302,6 +327,27 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
 
         // Update the UI
         notifyContentObserver(debtType);
+    }
+
+    @Override
+    public List<Person> getAllPersons() {
+        List<Person> persons = null;
+
+        if (!mCachePersonIsDirty) {
+            if (mCachePersons == null) {
+                persons = mDebtsLocalDataSource.getAllPersons();
+            } else {
+                persons = new ArrayList<>();
+                for (Person person : getCachePersons()) {
+                    persons.add(person);
+                }
+                return persons;
+            }
+        }
+
+        processLoadedPersons(persons);
+
+        return persons;
     }
 
     private void removePersonDebtFromCache(PersonDebt personDebt) {

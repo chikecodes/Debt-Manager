@@ -100,6 +100,14 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         return mCacheIOwe.get(debtId);
     }
 
+    private List<Debt> getPersonDebts(String phoneNumber) {
+        if(mCachePersons != null && mCachePersons.size() > 0) {
+            return mCachePersons.get(phoneNumber).getDebts();
+        }else {
+            return new ArrayList<>();
+        }
+    }
+
     @Override
     public PersonDebt getPersonDebt(@NonNull String debtId, @NonNull int debtType) {
         checkNotNull(debtId);
@@ -143,6 +151,16 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
             return null;
         }else {
             return mCacheIOwe.get(debtId);
+        }
+    }
+
+    @Nullable
+    public Person getPerson(@NonNull String phoneNumber) {
+        checkNotNull(phoneNumber);
+        if(mCachePersons == null || mCachePersons.isEmpty()) {
+            return null;
+        }else {
+            return mCachePersons.get(phoneNumber);
         }
     }
 
@@ -250,7 +268,7 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         mCachePersons.clear();
 
         for(Person person : persons) {
-            mCachePersons.put(person.getId(), person);
+            mCachePersons.put(person.getPhoneNumber(), person);
         }
         mCachePersonIsDirty = false;
     }
@@ -263,6 +281,23 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         mDebtsLocalDataSource.savePersonDebt(debt, person);
 
         // Do in memory cache update to keep the app UI up to date
+        Person cachePerson = getPerson(person.getPhoneNumber());
+        if(cachePerson != null) {
+            cachePerson.addDebt(debt);
+
+            // remove person
+            mCachePersons.remove(cachePerson.getPhoneNumber());
+
+            // then update
+            mCachePersons.put(cachePerson.getPhoneNumber(), cachePerson);
+        }else {
+            person.addDebt(debt);
+            if(mCachePersons == null) {
+                mCachePersons = new LinkedHashMap<>();
+            }
+            mCachePersons.put(person.getPhoneNumber(), person);
+        }
+
         if(debt.getDebtType() == Debt.DEBT_TYPE_OWED) {
             if (mCacheOwed == null) {
                 mCacheOwed = new LinkedHashMap<>();
@@ -334,12 +369,12 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
     }
 
     @Override
-    public List<Person> getAllPersons() {
+    public List<Person> getAllPersonWithDebts() {
         List<Person> persons = null;
 
         if (!mCachePersonIsDirty) {
             if (mCachePersons == null) {
-                persons = mDebtsLocalDataSource.getAllPersons();
+                persons = mDebtsLocalDataSource.getAllPersonWithDebts();
             } else {
                 persons = new ArrayList<>();
                 for (Person person : getCachePersons()) {
@@ -355,11 +390,33 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
     }
 
     private void removePersonDebtFromCache(PersonDebt personDebt) {
-        if(personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_OWED) {
+
+        if(personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_OWED && mCacheOwed.size() > 0) {
             mCacheOwed.remove(personDebt.getDebt().getId());
-        }else if(personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_IOWE) {
+        }else if(personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_IOWE && mCacheIOwe.size() > 0) {
             mCacheIOwe.remove(personDebt.getDebt().getId());
         }
+
+        // delete person if he/she has only one debt
+        String personPhoneNumber = personDebt.getPerson().getPhoneNumber();
+        if (personHasOneDebt(personPhoneNumber)) {
+            // delete person from cache
+            mCachePersons.remove(personPhoneNumber);
+        }
+
+        Person person = mCachePersons.get(personDebt.getPerson().getPhoneNumber());
+        // if Person not null, means person still has more debts
+        // update persons cache with new debts
+        if(person != null) {
+            person.getDebts().remove(personDebt.getDebt());
+            mCachePersons.remove(person.getPhoneNumber());
+            mCachePersons.put(person.getPhoneNumber(), person);
+        }
+    }
+
+    private boolean personHasOneDebt(String personPhoneNumber) {
+        checkNotNull(personPhoneNumber);
+        return getPersonDebts(personPhoneNumber).size() == 1;
     }
 
     @Override
@@ -400,13 +457,6 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
 
     @Override
     public String saveNewPerson(@NonNull Person person) {
-        return null;
-    }
-
-    @Override
-    public Person getPerson(@NonNull String personId) {
-        checkNotNull(personId);
-
         return null;
     }
 

@@ -342,7 +342,7 @@ public class DebtsLocalDataSourceTest {
     }
 
     @Test
-    public void shouldBeAbleToGetPersons() {
+    public void shouldBeAbleToGetAllPersonWithDebts() {
 
         // Owed Debts
         Person person1 = TestUtil.createAndGetPerson();
@@ -354,9 +354,11 @@ public class DebtsLocalDataSourceTest {
                 Debt.DEBT_STATUS_ACTIVE, "Shirt money");
         mDebtsLocalDataSource.savePersonDebt(debt2, person2);
 
-        List<Person> persons = mDebtsLocalDataSource.getAllPersons();
+        List<Person> persons = mDebtsLocalDataSource.getAllPersonWithDebts();
         assertNotNull(persons);
         assertTrue(persons.size() >= 2);
+        assertTrue(persons.get(0).getDebts().size() == 1);
+        assertTrue(persons.get(1).getDebts().size() == 1);
 
         boolean person1Found = false;
         boolean person2Found = false;

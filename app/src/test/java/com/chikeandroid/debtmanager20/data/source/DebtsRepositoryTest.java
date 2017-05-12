@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.core.Is.is;
@@ -142,6 +143,54 @@ public class DebtsRepositoryTest {
     }
 
     @Test
+    public void shouldBeAbleToDeleteAPersonAlsoWhenDeletingPersonDebtIfPersonHasDebtsSizeOfOne() {
+
+        Person person1 = TestUtil.createAndGetPerson();
+        Debt debt1 = TestUtil.createAndGetOwedDebt(person1.getId());
+        mDebtsRepository.savePersonDebt(debt1, person1);
+
+        Debt debt2 = TestUtil.createDebt(person1.getId(), 600000, Debt.DEBT_TYPE_OWED,
+                Debt.DEBT_STATUS_ACTIVE, "note 7774");
+        mDebtsRepository.savePersonDebt(debt2, person1);
+
+        Debt debt3 = TestUtil.createDebt(person1.getId(), 5455555, Debt.DEBT_TYPE_OWED,
+                Debt.DEBT_STATUS_ACTIVE, "note 2343");
+        mDebtsRepository.savePersonDebt(debt3, person1);
+
+        PersonDebt personDebt = new PersonDebt(person1, debt1);
+        mDebtsRepository.deletePersonDebt(personDebt);
+
+        PersonDebt personDebt2 = new PersonDebt(person1, debt2);
+        mDebtsRepository.deletePersonDebt(personDebt2);
+
+        PersonDebt personDebt3 = new PersonDebt(person1, debt3);
+        mDebtsRepository.deletePersonDebt(personDebt3);
+
+        assertTrue(mDebtsRepository.mCacheOwed.size() == 0);
+        assertTrue(mDebtsRepository.mCachePersons.size() == 0);
+    }
+
+    @Test
+    public void shouldNotDeleteAPersonWhenDeletingPersonDebtIfPersonHasDebtsSizeOfMoreThanOne() {
+
+        Person person1 = TestUtil.createAndGetPerson();
+        Debt debt1 = TestUtil.createAndGetOwedDebt(person1.getId());
+        mDebtsRepository.savePersonDebt(debt1, person1);
+
+        Debt debt2 = TestUtil.createDebt(person1.getId(), 600000, Debt.DEBT_TYPE_OWED,
+                Debt.DEBT_STATUS_ACTIVE, "note 7774");
+        mDebtsRepository.savePersonDebt(debt2, person1);
+
+        PersonDebt personDebt = new PersonDebt(person1, debt1);
+        mDebtsRepository.deletePersonDebt(personDebt);
+
+        verify(mDebtsLocalDataSource).deletePersonDebt(eq(personDebt));
+
+        Person person = mDebtsRepository.getPerson(person1.getPhoneNumber());
+        assertNotNull(person);
+    }
+
+    @Test
     public void shouldBeAbleToGetAllDebtsByTypeFromLocalDataSource() {
 
         mDebtsRepository.getAllPersonDebtsByType(Debt.DEBT_TYPE_IOWE);
@@ -223,8 +272,8 @@ public class DebtsRepositoryTest {
     @Test
     public void shouldBeAbleToGetAllPersonsFromLocalDataSource() {
 
-        mDebtsRepository.getAllPersons();
+        mDebtsRepository.getAllPersonWithDebts();
 
-        verify(mDebtsLocalDataSource).getAllPersons();
+        verify(mDebtsLocalDataSource).getAllPersonWithDebts();
     }
 }

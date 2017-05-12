@@ -35,11 +35,11 @@ public interface PersonDebtsDataSource {
 
     String saveNewPerson(@NonNull Person person);
 
-    Person getPerson(@NonNull String personId);
-
     void deletePerson(@NonNull String personId);
 
     void batchDelete(@NonNull List<PersonDebt> personDebts, @NonNull int debtType);
 
-    List<Person> getAllPersons();
+    List<Person> getAllPersonWithDebts();
+
+    Person getPerson(@NonNull String personId);
 }

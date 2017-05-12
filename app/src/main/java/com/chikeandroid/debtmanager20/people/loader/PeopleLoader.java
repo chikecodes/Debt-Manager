@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.content.AsyncTaskLoader;
 
-import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
 import com.chikeandroid.debtmanager20.util.EspressoIdlingResource;
@@ -32,7 +31,7 @@ public class PeopleLoader extends AsyncTaskLoader<List<Person>> implements Perso
         // App is busy until further notice
         EspressoIdlingResource.increment();
 
-        return mPersonDebtsRepository.getAllPersons();
+        return mPersonDebtsRepository.getAllPersonWithDebts();
     }
 
     @Override
@@ -50,7 +49,7 @@ public class PeopleLoader extends AsyncTaskLoader<List<Person>> implements Perso
     protected void onStartLoading() {
         // Deliver any previously loaded data immediately if available.
         if(mPersonDebtsRepository.cachedPeopleAvailable()) {
-            deliverResult(mPersonDebtsRepository.getAllPersons());
+            deliverResult(mPersonDebtsRepository.getAllPersonWithDebts());
         }
 
         // Begin monitoring the underlying data source
@@ -65,11 +64,12 @@ public class PeopleLoader extends AsyncTaskLoader<List<Person>> implements Perso
 
     @Override
     public void onDebtsChanged(int debtType) {
-        if(debtType == Debt.DEBT_TYPE_OWED || debtType == Debt.DEBT_TYPE_IOWE) {
+       /* if(debtType == Debt.DEBT_TYPE_OWED || debtType == Debt.DEBT_TYPE_IOWE) {
             if (isStarted()) {
                 forceLoad();
             }
-        }
+        }*/
+        forceLoad();
     }
 
     @Override

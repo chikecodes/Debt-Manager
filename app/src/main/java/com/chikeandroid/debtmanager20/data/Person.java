@@ -31,6 +31,7 @@ public final class Person implements Parcelable {
         mId = id;
         mFullname = fullname;
         mPhoneNumber = phoneNumber;
+        mDebts = new ArrayList<>();
     }
 
     public boolean isEmpty() {
@@ -56,6 +57,9 @@ public final class Person implements Parcelable {
         mDebts = debts;
     }
 
+    public void addDebt(@NonNull Debt debt) {
+        mDebts.add(debt);
+    }
     public void setFullname(@NonNull String fullname) {
         mFullname = fullname;
     }

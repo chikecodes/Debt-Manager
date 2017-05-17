@@ -252,15 +252,15 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
 
         String debtId = personDebt.getDebt().getId();
 
-        SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();
-
-        db.delete(DebtsEntry.TABLE_NAME, DebtsEntry.COLUMN_ENTRY_ID + "= ?", new String[]{debtId});
-
         // delete person if he has only one debt
         String personId = personDebt.getPerson().getId();
         if (personHasOneDebt(personId)) {
-            deletePerson(personId);
+             deletePerson(personId);
         }
+
+        SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();
+
+        db.delete(DebtsEntry.TABLE_NAME, DebtsEntry.COLUMN_ENTRY_ID + " = ?", new String[]{debtId});
 
         db.close();
     }
@@ -356,18 +356,18 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
 
     private boolean personHasOneDebt(String personId) {
         checkNotNull(personId);
-        SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();
+        SQLiteDatabase db = mDebtsDbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + DebtsEntry.TABLE_NAME + DebtsDbHelper.WHERE +
-                DebtsEntry.COLUMN_PERSON_ID + DebtsDbHelper.WHERE_EQUAL_TO, new String[]{personId});
+        Cursor cursor = db.query(DebtsEntry.TABLE_NAME, DebtsEntry.getAllColumns(),
+                DebtsEntry.COLUMN_PERSON_ID + " =?", new String[]{personId}, null, null, null);
 
-        if (cursor != null && cursor.getCount() > 0) {
+        if (cursor.moveToFirst()) {
             cursor.close();
-            return false;
+            return true;
         }
 
         cursor.close();
-        return true;
+        return false;
     }
 
     @Override

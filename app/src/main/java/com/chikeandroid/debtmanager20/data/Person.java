@@ -90,25 +90,17 @@ public final class Person implements Parcelable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Person person = (Person) o;
 
-        if (!mId.equals(person.mId)) {
+        if (!mId.equals(person.mId)) return false;
+        if (!mFullname.equals(person.mFullname)) return false;
+        if (!mPhoneNumber.equals(person.mPhoneNumber)) return false;
+        if (mImageUri != null ? !mImageUri.equals(person.mImageUri) : person.mImageUri != null)
             return false;
-        }
-        if (!mFullname.equals(person.mFullname)) {
-            return false;
-        }
-        if (mPhoneNumber != null ? !mPhoneNumber.equals(person.mPhoneNumber) : person.mPhoneNumber != null) { //NOPMD
-            return false;
-        }
-        return mDebts != null ? mDebts.equals(person.mDebts) : person.mDebts == null; //NOPMD
+        return mDebts != null ? mDebts.equals(person.mDebts) : person.mDebts == null;
 
     }
 
@@ -116,8 +108,9 @@ public final class Person implements Parcelable {
     public int hashCode() {
         int result = mId.hashCode();
         result = 31 * result + mFullname.hashCode();
-        result = 31 * result + (mPhoneNumber != null ? mPhoneNumber.hashCode() : 0); //NOPMD
-        result = 31 * result + (mDebts != null ? mDebts.hashCode() : 0); //NOPMD
+        result = 31 * result + mPhoneNumber.hashCode();
+        result = 31 * result + (mImageUri != null ? mImageUri.hashCode() : 0);
+        result = 31 * result + (mDebts != null ? mDebts.hashCode() : 0);
         return result;
     }
 
@@ -132,18 +125,19 @@ public final class Person implements Parcelable {
         dest.writeString(this.mId);
         dest.writeString(this.mFullname);
         dest.writeString(this.mPhoneNumber);
-        dest.writeList(this.mDebts);
+        dest.writeString(this.mImageUri);
+        dest.writeTypedList(this.mDebts);
     }
 
     protected Person(Parcel in) {
         this.mId = in.readString();
         this.mFullname = in.readString();
         this.mPhoneNumber = in.readString();
-        this.mDebts = new ArrayList<>();
-        in.readList(this.mDebts, Debt.class.getClassLoader());
+        this.mImageUri = in.readString();
+        this.mDebts = in.createTypedArrayList(Debt.CREATOR);
     }
 
-    public static final Parcelable.Creator<Person> CREATOR = new Parcelable.Creator<Person>() {
+    public static final Creator<Person> CREATOR = new Creator<Person>() {
         @Override
         public Person createFromParcel(Parcel source) {
             return new Person(source);

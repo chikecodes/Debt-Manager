@@ -213,6 +213,11 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
                 mFragmentAddDebtBinding.rbOwedToMe.setChecked(false);
                 mFragmentAddDebtBinding.rbOwedByMe.setChecked(true);
             }
+
+            Glide.with(getActivity())
+                    .load(mPersonDebt.getPerson().getImageUri())
+                    .placeholder(R.drawable.ic_avatar)
+                    .into(mImageViewDebtor);
         }
     }
 

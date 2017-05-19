@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -340,38 +339,33 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
 
     private void retrieveContactNumber() {
 
-        String contactNumber = null;
-
         // Using the contact ID now we will get contact phone number
         Cursor cursorPhone = getActivity().getContentResolver().query(mContactUri, new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER},
                 null, null, null);
 
-        if (cursorPhone.moveToFirst()) {
-            contactNumber = cursorPhone.getString(cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+        if (cursorPhone != null && cursorPhone.moveToFirst()) {
+            String contactNumber = cursorPhone.getString(cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             mEditTextPhoneNumber.setText(contactNumber);
-        }
 
-        cursorPhone.close();
+            cursorPhone.close();
+        }
     }
 
     private void retrieveContactName() {
 
-        String contactName = null;
-
         // querying contact data store
         Cursor cursor = getActivity().getContentResolver().query(mContactUri, null, null, null, null);
-
-        if (cursor.moveToFirst()) {
-            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+        if (cursor != null && cursor.moveToFirst()) {
+            String contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
             mEditTextName.setText(contactName);
+
+            cursor.close();
         }
-        cursor.close();
     }
 
     public void retrieveContactPhoto() {
         Cursor cursor = getActivity().getContentResolver().query(mContactUri, null, null, null, null);
-        Bitmap bitmap = null;
-        if (cursor.getCount() > 0) {
+        if (cursor != null && cursor.getCount() > 0) {
 
             if (cursor.moveToFirst()) {
                 mContactImageUri = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
@@ -382,8 +376,9 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
                         .dontAnimate()
                         .into(mImageViewDebtor);
             }
+
+            cursor.close();
         }
-        cursor.close();
     }
 
     private void showDatePickerDialog(final int buttonId, long dateTimeStamp) {

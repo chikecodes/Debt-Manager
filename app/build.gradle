@@ -134,6 +134,8 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile "com.balysv:material-ripple:$rootProject.materialRippleVersion"
 
+    // Glide
+    compile "com.github.bumptech.glide:glide:$rootProject.glideVersion"
 }
 
 apply from: '/code_quality_tools/quality.gradle'

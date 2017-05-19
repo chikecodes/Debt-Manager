@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.bumptech.glide.Glide;
 import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.addeditdebt.AddEditDebtActivity;
@@ -104,8 +105,7 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
             @Override
             public void onClick(View view) {
                 if(!StringUtil.isEmpty(mPhoneNumber)) {
-                    String dial = "tel:" + mPhoneNumber;
-                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
+                    callDebtor();
                 }
             }
         });
@@ -115,8 +115,7 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
             @Override
             public void onClick(View view) {
                 if(!StringUtil.isEmpty(mPhoneNumber)) {
-                    String sms = "smsto:" + mPhoneNumber;
-                    startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(sms)));
+                    smsDebtor();
                 }
             }
         });
@@ -196,9 +195,14 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
         AddEditDebtActivity.startFromDebtDetailScreen(getActivity(), mPersonDebt, this);
     }
 
-    @Override
-    public void callDebtor() {
-        // open dialer to call Person
+    private void callDebtor() {
+        String dial = "tel:" + mPhoneNumber;
+        startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
+    }
+
+    private void smsDebtor() {
+        String sms = "smsto:" + mPhoneNumber;
+        startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(sms)));
     }
 
     @Override
@@ -213,6 +217,11 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
         mPhoneNumber = personDebt.getPerson().getPhoneNumber();
         mFragmentDebtDetailBinding.setPersonDebt(mPersonDebt);
         mCollapsingToolbarLayout.setTitle(StringUtil.commaNumber(mPersonDebt.getDebt().getAmount()));
+
+        Glide.with(getActivity())
+                .load(personDebt.getPerson().getImageUri())
+                .dontAnimate()
+                .into(mFragmentDebtDetailBinding.image);
     }
 
     @Override

@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.ListItemDebtBinding;
 import com.chikeandroid.debtmanager20.debtdetail.DebtDetailActivity;
@@ -125,6 +127,12 @@ public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
             mDebtId = personDebt.getDebt().getId();
             mDebtType = personDebt.getDebt().getDebtType();
             mListItemDebtBinding.setPersonDebt(personDebt);
+
+            Glide.with(mContext)
+                    .load(personDebt.getPerson().getImageUri())
+                    .placeholder(R.drawable.ic_avatar)
+                    .dontAnimate()
+                    .into(mListItemDebtBinding.ivUser);
         }
 
         @Override

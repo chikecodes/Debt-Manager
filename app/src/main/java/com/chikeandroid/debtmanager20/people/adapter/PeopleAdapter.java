@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.databinding.ListItemPersonBinding;
 import com.chikeandroid.debtmanager20.people.PeopleDiffCallback;
@@ -21,10 +23,12 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
 
     private final List<Person> mPersons;
     private final LayoutInflater mLayoutInflater;
+    private final Context mContext;
 
     public PeopleAdapter(Context context, List<Person> persons) {
         mPersons = persons;
         mLayoutInflater = LayoutInflater.from(context);
+        mContext = context;
     }
 
     // for item click listener
@@ -106,6 +110,12 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         public void bind(Person person) {
             mPersonId = person.getId();
             mListItemDebtBinding.setPerson(person);
+
+            Glide.with(mContext)
+                    .load(person.getImageUri())
+                    .placeholder(R.drawable.ic_avatar)
+                    .dontAnimate()
+                    .into(mListItemDebtBinding.image);
         }
     }
 

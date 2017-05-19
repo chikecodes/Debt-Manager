@@ -32,7 +32,7 @@ public final class TestUtil {
 
     public static Person createPerson(String name, String phoneNumber) {
 
-        return new Person(UUID.randomUUID().toString(), name, phoneNumber);
+        return new Person(UUID.randomUUID().toString(), name, phoneNumber, "");
     }
 
     public static Person createAndGetPerson() {

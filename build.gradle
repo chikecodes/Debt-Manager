@@ -25,9 +25,9 @@ task clean(type: Delete) {
 ext {
     // Sdk and tools
     minSdkVersion = 16
-    targetSdkVersion = 25
-    compileSdkVersion = 25
-    buildToolsVersion = "25.0.2"
+    targetSdkVersion = "android-O"
+    compileSdkVersion = "android-O"
+    buildToolsVersion = "26.0.0-rc1"
 
     // App dependencies
     supportLibraryVersion = "25.3.1"
@@ -44,5 +44,6 @@ ext {
     stethoVersion = '1.4.2'
     eventbusVersion = '3.0.0'
     materialRippleVersion = '1.0.2'
+    glideVersion = '3.7.0'
 
 }

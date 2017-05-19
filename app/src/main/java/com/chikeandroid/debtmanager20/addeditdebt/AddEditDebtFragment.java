@@ -1,19 +1,26 @@
 package com.chikeandroid.debtmanager20.addeditdebt;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,9 +31,11 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.data.Person;
@@ -53,6 +62,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class AddEditDebtFragment extends Fragment implements AddEditDebtContract.View {
 
     public static final String ARGUMENT_EDIT_DEBT = "com.chikeandroid.debtmanager20.debtdetail.DebtDetailFragment.EDIT_DEBT";
+    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 101;
 
     private EditText mEditTextAmount;
     private EditText mEditTextName;
@@ -66,6 +76,9 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
     private long mDebtCreatedAt;
     private long mDebtDue;
     private PersonDebt mPersonDebt;
+    private Uri mContactUri;
+    private String mContactImageUri;
+    private ImageView mImageViewDebtor;
 
     private AddEditDebtContract.Presenter mPresenter;
     private FragmentAddDebtBinding mFragmentAddDebtBinding;
@@ -109,6 +122,9 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
         setHasOptionsMenu(true);
         setRetainInstance(true);
 
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_CONTACTS},
+                MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+
         return mFragmentAddDebtBinding.getRoot();
     }
 
@@ -125,7 +141,7 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
                 showDatePickerDialog(mButtonDateCreated.getId(), mDebtCreatedAt);
             }
         });
-
+        mImageViewDebtor = mFragmentAddDebtBinding.ivDebtorPhoto;
         mEditTextComment = mFragmentAddDebtBinding.etComment;
         mEditTextAmount = mFragmentAddDebtBinding.etAmount;
         mEditTextName = mFragmentAddDebtBinding.etFullName;
@@ -161,8 +177,11 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
         imageButtonContacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent pickContactIntent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
-                startActivityForResult(pickContactIntent, REQUEST_CONTACT);
+
+                if(checkPermission(Manifest.permission.READ_CONTACTS)) {
+                    Intent pickContactIntent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+                    startActivityForResult(pickContactIntent, REQUEST_CONTACT);
+                }
             }
         });
     }
@@ -208,6 +227,23 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
         }
     }
 
+    private boolean checkPermission(String permission) {
+        int checkPermission = ContextCompat.checkSelfPermission(getActivity(), permission);
+        return (checkPermission == PackageManager.PERMISSION_GRANTED);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
+                if(grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+
+                }
+                return;
+            }
+        }
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
@@ -241,7 +277,7 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
                 }
 
                 Person person = new Person(personId, mEditTextName.getText().toString(),
-                        mEditTextPhoneNumber.getText().toString());
+                        mEditTextPhoneNumber.getText().toString(), mContactImageUri);
 
                 Debt debt = new Debt.Builder(debtId, person.getId(),
                         Double.valueOf(mEditTextAmount.getText().toString()), mDebtCreatedAt,
@@ -289,20 +325,66 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
             return;
         }
         if(requestCode == REQUEST_CONTACT) {
-            Uri contactUri = data.getData();
-            String[] queryFields = new String[] {
-                    ContactsContract.Contacts.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER
-            };
-            Cursor c = getActivity().getContentResolver().query(contactUri, queryFields, null, null, null);
-            if(c.getCount() == 0) {
-                c.close();
-                return;
-            }
-            c.moveToFirst();
-            mEditTextName.setText(c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
-            mEditTextPhoneNumber.setText(c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
-            c.close();
+            mContactUri = data.getData();
+
+            retrieveContactName();
+            retrieveContactNumber();
+            retrieveContactPhoto();
         }
+    }
+
+    private void retrieveContactNumber() {
+
+        String contactNumber = null;
+
+        // Using the contact ID now we will get contact phone number
+        Cursor cursorPhone = getActivity().getContentResolver().query(mContactUri, new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER},
+                null, null, null);
+
+        if (cursorPhone.moveToFirst()) {
+            contactNumber = cursorPhone.getString(cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            mEditTextPhoneNumber.setText(contactNumber);
+        }
+
+        cursorPhone.close();
+    }
+
+    private void retrieveContactName() {
+
+        String contactName = null;
+
+        // querying contact data store
+        Cursor cursor = getActivity().getContentResolver().query(mContactUri, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+            mEditTextName.setText(contactName);
+        }
+        cursor.close();
+    }
+
+    public void retrieveContactPhoto() {
+        Cursor cursor = getActivity().getContentResolver().query(mContactUri, null, null, null, null);
+        Bitmap bitmap = null;
+        if (cursor.getCount() > 0) {
+
+            if (cursor.moveToFirst()) {
+                mContactImageUri = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
+
+                if (mContactImageUri != null) {
+                    Log.d("kolo", "uri is " + Uri.parse(mContactImageUri).getPath());
+
+                       /* bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(image_uri));
+                        mImageViewDebtor.setImageBitmap(bitmap);*/
+
+                        Glide.with(getActivity())
+                                .load(mContactImageUri)
+                                .placeholder(R.drawable.ic_avatar)
+                                .into(mImageViewDebtor);
+                }
+            }
+        }
+        cursor.close();
     }
 
     private void showDatePickerDialog(final int buttonId, long dateTimeStamp) {

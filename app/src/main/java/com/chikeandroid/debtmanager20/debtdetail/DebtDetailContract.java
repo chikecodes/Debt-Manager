@@ -16,8 +16,6 @@ public interface DebtDetailContract {
 
         boolean isActive();
 
-        void callDebtor();
-
         void addPartialPayment();
 
         void showPersonDebt(@NonNull PersonDebt personDebt);

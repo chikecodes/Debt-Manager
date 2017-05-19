@@ -112,8 +112,9 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
         String personName = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_NAME));
         String personPhoneNo = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_PHONE_NO));
         String personEntryId = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.ALIAS_PERSON_ID));
+        String personImageUri = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_IMAGE_URI));
 
-        return new Person(personEntryId, personName, personPhoneNo);
+        return new Person(personEntryId, personName, personPhoneNo, personImageUri);
     }
 
     private Debt getDebtFromCursor(Cursor cursor) {
@@ -179,8 +180,10 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
                 .append(DebtsEntry.COLUMN_DATE_DUE).append(comma).append(DebtsEntry.COLUMN_DATE_ENTERED)
                 .append(comma).append(DebtsEntry.COLUMN_NOTE).append(comma).append(DebtsEntry.COLUMN_STATUS)
                 .append(comma).append(DebtsEntry.COLUMN_TYPE).append(comma).append(PersonsEntry.COLUMN_NAME)
-                .append(comma).append(PersonsEntry.TABLE_NAME).append(dot).append(PersonsEntry.COLUMN_ENTRY_ID).append(alias)
-                .append(PersonsEntry.ALIAS_PERSON_ID).append(comma).append(PersonsEntry.COLUMN_PHONE_NO)
+                .append(comma)
+                .append(PersonsEntry.COLUMN_IMAGE_URI).append(comma).append(PersonsEntry.TABLE_NAME)
+                .append(dot).append(PersonsEntry.COLUMN_ENTRY_ID).append(alias).append(PersonsEntry.ALIAS_PERSON_ID)
+                .append(comma).append(PersonsEntry.COLUMN_PHONE_NO)
                 .append(" FROM ").append(DebtsEntry.TABLE_NAME).append(" INNER JOIN ").append(PersonsEntry.TABLE_NAME)
                 .append(" ON ").append(DebtsEntry.TABLE_NAME).append(dot).append(DebtsEntry.COLUMN_PERSON_ID)
                 .append(" = ").append(PersonsEntry.TABLE_NAME).append(dot).append(PersonsEntry.COLUMN_ENTRY_ID);
@@ -210,6 +213,7 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
             personValues.put(PersonsEntry.COLUMN_ENTRY_ID, person.getId());
             personValues.put(PersonsEntry.COLUMN_NAME, person.getFullname());
             personValues.put(PersonsEntry.COLUMN_PHONE_NO, person.getPhoneNumber());
+            personValues.put(PersonsEntry.COLUMN_IMAGE_URI, person.getImageUri());
             db.insert(PersonsEntry.TABLE_NAME, null, personValues);
         }
 
@@ -285,8 +289,9 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
                 String personId = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_ENTRY_ID));
                 String personName = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_NAME));
                 String personPhoneNumber = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_PHONE_NO));
+                String personImageUri = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_IMAGE_URI));
 
-                Person person = new Person(personId, personName, personPhoneNumber);
+                Person person = new Person(personId, personName, personPhoneNumber, personImageUri);
 
                 person.setDebts(getPersonDebts(personId));
                 persons.add(person);
@@ -447,8 +452,9 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
             String entryId = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_ENTRY_ID));
             String fullName = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_NAME));
             String phoneNo = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_PHONE_NO));
+            String personImageUri = cursor.getString(cursor.getColumnIndexOrThrow(PersonsEntry.COLUMN_IMAGE_URI));
 
-            person = new Person(entryId, fullName, phoneNo);
+            person = new Person(entryId, fullName, phoneNo, personImageUri);
         }
 
         if (cursor != null) {

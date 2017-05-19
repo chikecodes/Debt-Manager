@@ -5,6 +5,7 @@ import com.google.common.base.Strings;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +26,17 @@ public final class Person implements Parcelable {
     @NonNull
     private String mPhoneNumber;
 
+    @Nullable
+    private String mImageUri;
+
     private List<Debt> mDebts;
 
-    public Person(@NonNull String id, @NonNull String fullname, @NonNull String phoneNumber) {
+    public Person(@NonNull String id, @NonNull String fullname, @NonNull String phoneNumber,
+                  @Nullable String imageUri) {
         mId = id;
         mFullname = fullname;
         mPhoneNumber = phoneNumber;
+        mImageUri = imageUri;
         mDebts = new ArrayList<>();
     }
 
@@ -71,6 +77,15 @@ public final class Person implements Parcelable {
     @NonNull
     public String getId() {
         return mId;
+    }
+
+    @Nullable
+    public String getImageUri() {
+        return mImageUri;
+    }
+
+    public void setImageUri(@Nullable String imageUri) {
+        mImageUri = imageUri;
     }
 
     @Override

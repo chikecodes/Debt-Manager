@@ -47,7 +47,8 @@ public class DebtsDbHelper extends SQLiteOpenHelper{
                     PersonsEntry._ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT," +
                     PersonsEntry.COLUMN_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
                     PersonsEntry.COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
-                    PersonsEntry.COLUMN_PHONE_NO + TEXT_TYPE +
+                    PersonsEntry.COLUMN_PHONE_NO + TEXT_TYPE + COMMA_SEP +
+                    PersonsEntry.COLUMN_IMAGE_URI + TEXT_TYPE +
                     " )";
 
     public DebtsDbHelper(Context context) {

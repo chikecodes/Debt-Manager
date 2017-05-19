@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.ListItemDebtBinding;
 import com.chikeandroid.debtmanager20.oweme.OweMeDiffCallback;
@@ -25,9 +27,11 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
     private final List<PersonDebt> mPersonDebts;
     private final LayoutInflater mLayoutInflater;
     private RecyclerView mRecyclerView;
+    private Context mContext;
 
     public OweMeAdapter(Context context, List<PersonDebt> personDebts) {
         mPersonDebts = personDebts;
+        mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
         mSelectedItems = new SparseBooleanArray();
     }
@@ -119,6 +123,12 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
         public void bind(PersonDebt personDebt) {
             mDebtId = personDebt.getDebt().getId();
             mListItemDebtBinding.setPersonDebt(personDebt);
+
+            Glide.with(mContext)
+                    .load(personDebt.getPerson().getImageUri())
+                    .placeholder(R.drawable.ic_avatar)
+                    .dontAnimate()
+                    .into(mListItemDebtBinding.ivUser);
         }
     }
 

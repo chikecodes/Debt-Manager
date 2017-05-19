@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
@@ -31,6 +30,13 @@
                     android:layout_marginTop="@dimen/spacing_xlarge"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin">
+
+                <ImageView
+                        android:id="@+id/iv_debtor_photo"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_avatar"/>
 
                 <RadioGroup
                         android:id="@+id/rg_debt_type"

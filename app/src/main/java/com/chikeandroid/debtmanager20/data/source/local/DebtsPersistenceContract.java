@@ -49,13 +49,15 @@ public class DebtsPersistenceContract {
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_ENTRY_ID = "entry_id";
         public static final String COLUMN_PHONE_NO = "phone_no";
+        public static final String COLUMN_IMAGE_URI = "image_uri";
 
         // returns all columns as array
         public static String[] getAllColumns() {
             String[] columns = {
                     COLUMN_NAME,
                     COLUMN_ENTRY_ID,
-                    COLUMN_PHONE_NO
+                    COLUMN_PHONE_NO,
+                    COLUMN_IMAGE_URI
             };
 
             return columns;

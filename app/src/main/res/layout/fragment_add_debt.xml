@@ -31,8 +31,8 @@
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin">
 
-                <ImageView
-                        android:id="@+id/iv_debtor_photo"
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_debtor"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_gravity="center_horizontal"

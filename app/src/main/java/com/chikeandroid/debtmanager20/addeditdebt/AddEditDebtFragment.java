@@ -20,7 +20,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -141,7 +140,7 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
                 showDatePickerDialog(mButtonDateCreated.getId(), mDebtCreatedAt);
             }
         });
-        mImageViewDebtor = mFragmentAddDebtBinding.ivDebtorPhoto;
+        mImageViewDebtor = mFragmentAddDebtBinding.ivDebtor;
         mEditTextComment = mFragmentAddDebtBinding.etComment;
         mEditTextAmount = mFragmentAddDebtBinding.etAmount;
         mEditTextName = mFragmentAddDebtBinding.etFullName;
@@ -217,6 +216,7 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
             Glide.with(getActivity())
                     .load(mPersonDebt.getPerson().getImageUri())
                     .placeholder(R.drawable.ic_avatar)
+                    .dontAnimate()
                     .into(mImageViewDebtor);
         }
     }
@@ -376,17 +376,11 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
             if (cursor.moveToFirst()) {
                 mContactImageUri = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
 
-                if (mContactImageUri != null) {
-                    Log.d("kolo", "uri is " + Uri.parse(mContactImageUri).getPath());
-
-                       /* bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Uri.parse(image_uri));
-                        mImageViewDebtor.setImageBitmap(bitmap);*/
-
-                        Glide.with(getActivity())
-                                .load(mContactImageUri)
-                                .placeholder(R.drawable.ic_avatar)
-                                .into(mImageViewDebtor);
-                }
+                Glide.with(getActivity())
+                        .load(mContactImageUri)
+                        .placeholder(R.drawable.ic_avatar)
+                        .dontAnimate()
+                        .into(mImageViewDebtor);
             }
         }
         cursor.close();

@@ -1,11 +1,14 @@
-package com.chikeandroid.debtmanager20.data;
+package com.chikeandroid.debtmanager20.data.source.local;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.chikeandroid.debtmanager20.data.source.local.PersonDebtsLocalDataSource;
+import com.chikeandroid.debtmanager20.data.Debt;
+import com.chikeandroid.debtmanager20.data.Person;
+import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.util.TestUtil;
 
+import org.hamcrest.MatcherAssert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,7 +58,7 @@ public class DebtsLocalDataSourceTest {
         Person person = TestUtil.createAndGetPerson();
         Debt debt = TestUtil.createAndGetOwedDebt(person.getId());
         mDebtsLocalDataSource.savePersonDebt(debt, person);
-        assertThat(new PersonDebt(person, debt), is(mDebtsLocalDataSource.getPersonDebt(debt.getId(), Debt.DEBT_TYPE_OWED)));
+        MatcherAssert.assertThat(new PersonDebt(person, debt), is(mDebtsLocalDataSource.getPersonDebt(debt.getId(), Debt.DEBT_TYPE_OWED)));
 
         // I Owe debts
         Person person2 = TestUtil.createPerson("Mary Jane", "07038666534");
@@ -372,6 +375,52 @@ public class DebtsLocalDataSourceTest {
         }
         assertTrue(person1Found);
         assertTrue(person2Found);
+    }
 
+    @Test
+    public void shouldBeAbleToGetAllDebtsFromPerson() {
+
+        Person person1 = TestUtil.createAndGetPerson();
+        Debt debt1 = TestUtil.createAndGetOwedDebt(person1.getId());
+        mDebtsLocalDataSource.savePersonDebt(debt1, person1);
+
+        Debt debt2 = TestUtil.createDebt(person1.getId(), 50000, Debt.DEBT_TYPE_OWED,
+                Debt.DEBT_STATUS_ACTIVE, "Shirt money");
+        mDebtsLocalDataSource.savePersonDebt(debt2, person1);
+
+        Debt debt3 = TestUtil.createDebt(person1.getId(), 60000, Debt.DEBT_TYPE_OWED,
+                Debt.DEBT_STATUS_ACTIVE, "Food money");
+        mDebtsLocalDataSource.savePersonDebt(debt3, person1);
+
+        Debt debt4 = TestUtil.createDebt(person1.getId(), 30000, Debt.DEBT_TYPE_OWED,
+                Debt.DEBT_STATUS_ACTIVE, "Flexing money");
+        mDebtsLocalDataSource.savePersonDebt(debt4, person1);
+
+        List<Debt> debts = mDebtsLocalDataSource.getPersonDebts(person1);
+        assertTrue(debts.size() == 4);
+
+        boolean debt1found = false;
+        boolean debt2found = false;
+        boolean debt3found = false;
+        boolean debt4found = false;
+
+        for (Debt debt : debts) {
+            if (debt.getId().equals(debt1.getId())) {
+                debt1found = true;
+            }
+            if (debt.getId().equals(debt2.getId())) {
+                debt2found = true;
+            }
+            if (debt.getId().equals(debt3.getId())) {
+                debt3found = true;
+            }
+            if (debt.getId().equals(debt4.getId())) {
+                debt4found = true;
+            }
+        }
+        assertTrue(debt1found);
+        assertTrue(debt2found);
+        assertTrue(debt3found);
+        assertTrue(debt4found);
     }
 }

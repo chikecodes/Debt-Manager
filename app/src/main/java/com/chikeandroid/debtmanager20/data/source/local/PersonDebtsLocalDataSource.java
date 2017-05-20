@@ -293,7 +293,7 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
 
                 Person person = new Person(personId, personName, personPhoneNumber, personImageUri);
 
-                person.setDebts(getPersonDebts(personId));
+                person.setDebts(getPersonDebts(person));
                 persons.add(person);
 
             }
@@ -312,12 +312,14 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
         }
     }
 
-    private List<Debt> getPersonDebts(@NonNull String personId) {
+    @Override
+    public List<Debt> getPersonDebts(@NonNull Person person) {
+        checkNotNull(person);
 
         SQLiteDatabase db = mDebtsDbHelper.getReadableDatabase();
         List<Debt> debts = new ArrayList<>();
         Cursor cursor = db.query(DebtsEntry.TABLE_NAME, DebtsEntry.getAllColumns(),
-                DebtsEntry.COLUMN_PERSON_ID + " = ?", new String[]{personId}, null, null, null);
+                DebtsEntry.COLUMN_PERSON_ID + " = ?", new String[]{person.getId()}, null, null, null);
 
         if (cursor != null && cursor.getCount() > 0) {
 
@@ -331,7 +333,7 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
                 int debtType1 = cursor.getInt(cursor.getColumnIndexOrThrow(DebtsEntry.COLUMN_TYPE));
                 String entryId = cursor.getString(cursor.getColumnIndexOrThrow(DebtsEntry.COLUMN_ENTRY_ID));
 
-                Debt debt = new Debt.Builder(entryId, personId, amount, dateEntered, debtType1, status)
+                Debt debt = new Debt.Builder(entryId, person.getId(), amount, dateEntered, debtType1, status)
                         .dueDate(dateDue)
                         .note(note)
                         .build();
@@ -440,7 +442,7 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
     public Person getPerson(@NonNull String personId) {
         checkNotNull(personId);
 
-        SQLiteDatabase db = mDebtsDbHelper.getWritableDatabase();
+        SQLiteDatabase db = mDebtsDbHelper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM " + PersonsEntry.TABLE_NAME + DebtsDbHelper.WHERE +
                 PersonsEntry.COLUMN_ENTRY_ID + DebtsDbHelper.WHERE_EQUAL_TO, new String[]{personId});

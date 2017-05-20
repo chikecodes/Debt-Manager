@@ -42,4 +42,6 @@ public interface PersonDebtsDataSource {
     List<Person> getAllPersonWithDebts();
 
     Person getPerson(@NonNull String personId);
+
+    List<Debt> getPersonDebts(@NonNull Person person);
 }

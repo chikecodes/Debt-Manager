@@ -59,7 +59,8 @@ public class OweMePresenterTest {
 
         mOweMePresenter = new OweMePresenter(mOweMeDebtsView, mRepository, mLoaderManager, mOweMeLoader);
 
-        Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534");
+        Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534",
+                "image_uri");
         Debt debt1 = new Debt.Builder(UUID.randomUUID().toString(), person1.getId(), 5000.87,
                 System.currentTimeMillis(), Debt.DEBT_TYPE_OWED, Debt.DEBT_STATUS_PARTIAL)
                 .dueDate(System.currentTimeMillis())
@@ -67,7 +68,8 @@ public class OweMePresenterTest {
                 .build();
         PersonDebt personDebt1 = new PersonDebt(person1, debt1);
 
-        Person person2 = new Person(UUID.randomUUID().toString(), "Chinedu Mandu", "08047541254");
+        Person person2 = new Person(UUID.randomUUID().toString(), "Chinedu Mandu", "08047541254",
+                "image_uri");
         Debt debt2 = new Debt.Builder(UUID.randomUUID().toString(), person2.getId(), 87000.00,
                 System.currentTimeMillis(), Debt.DEBT_TYPE_OWED, Debt.DEBT_STATUS_PARTIAL)
                 .dueDate(System.currentTimeMillis())
@@ -75,7 +77,7 @@ public class OweMePresenterTest {
                 .build();
         PersonDebt personDebt2 = new PersonDebt(person2, debt2);
 
-        Person person3 = new Person(UUID.randomUUID().toString(), "Mary Jane", "040125789653");
+        Person person3 = new Person(UUID.randomUUID().toString(), "Mary Jane", "040125789653", "image_uri");
         Debt debt3 = new Debt.Builder(UUID.randomUUID().toString(), person3.getId(), 443420044.23,
                 System.currentTimeMillis(), Debt.DEBT_TYPE_OWED, Debt.DEBT_STATUS_PARTIAL)
                 .dueDate(System.currentTimeMillis())

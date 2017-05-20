@@ -55,9 +55,9 @@ public class PeoplePresenterTest {
         MockitoAnnotations.initMocks(this);
 
         mPeoplePresenter = new PeoplePresenter(mPeopleView, mRepository, mLoaderManager, mPeopleLoader);
-        Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534");
-        Person person2 = new Person(UUID.randomUUID().toString(), "Chinedu Mandu", "08047541254");
-        Person person3 = new Person(UUID.randomUUID().toString(), "Mary Jane", "040125789653");
+        Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534", "image_uri");
+        Person person2 = new Person(UUID.randomUUID().toString(), "Chinedu Mandu", "08047541254", "image_uri");
+        Person person3 = new Person(UUID.randomUUID().toString(), "Mary Jane", "040125789653", "image_uri");
         mPersons = Lists.newArrayList(person1, person2, person3);
     }
 

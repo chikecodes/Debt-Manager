@@ -115,7 +115,6 @@ public class DebtsRepositoryTest {
         assertTrue(mDebtsRepository.mCacheOwed.size() == 0);
     }
 
-
     @Test
     public void shouldBeAbleToGetDebtFromLocalDataSource() {
 
@@ -275,5 +274,13 @@ public class DebtsRepositoryTest {
         mDebtsRepository.getAllPersonWithDebts();
 
         verify(mDebtsLocalDataSource).getAllPersonWithDebts();
+    }
+
+    @Test
+    public void shouldBeAbleToGetPersonDebtsFromLocalDatSource() {
+
+        Person person = TestUtil.createAndGetPerson();
+        mDebtsRepository.getPersonDebts(person);
+        verify(mDebtsLocalDataSource).getPersonDebts(person);
     }
 }

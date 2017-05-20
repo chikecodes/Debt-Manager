@@ -36,6 +36,7 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
     Map<String, PersonDebt> mCacheOwed;
     Map<String, PersonDebt> mCacheIOwe;
     Map<String, Person> mCachePersons;
+    Person mPerson;
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested. This variable
@@ -100,12 +101,12 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         return mCacheIOwe.get(debtId);
     }
 
-    private List<Debt> getPersonDebts(String phoneNumber) {
+    @Override
+    public List<Debt> getPersonDebts(@NonNull Person person) {
         if(mCachePersons != null && mCachePersons.size() > 0) {
-            return mCachePersons.get(phoneNumber).getDebts();
-        }else {
-            return new ArrayList<>();
+            return mCachePersons.get(person.getPhoneNumber()).getDebts();
         }
+        return mDebtsLocalDataSource.getPersonDebts(person);
     }
 
     @Override
@@ -254,25 +255,6 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         }
     }
 
-    private void processLoadedPersons(List<Person> persons) {
-
-        if(persons == null) {
-            mCachePersons = null;
-            mCachePersonIsDirty = false;
-            return;
-        }
-
-        if(mCachePersons == null) {
-            mCachePersons = new LinkedHashMap<>();
-        }
-        mCachePersons.clear();
-
-        for(Person person : persons) {
-            mCachePersons.put(person.getPhoneNumber(), person);
-        }
-        mCachePersonIsDirty = false;
-    }
-
     @Override
     public void savePersonDebt(@NonNull Debt debt, @NonNull Person person) {
         checkNotNull(debt);
@@ -389,6 +371,25 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         return persons;
     }
 
+    private void processLoadedPersons(List<Person> persons) {
+
+        if(persons == null) {
+            mCachePersons = null;
+            mCachePersonIsDirty = false;
+            return;
+        }
+
+        if(mCachePersons == null) {
+            mCachePersons = new LinkedHashMap<>();
+        }
+        mCachePersons.clear();
+
+        for(Person person : persons) {
+            mCachePersons.put(person.getPhoneNumber(), person);
+        }
+        mCachePersonIsDirty = false;
+    }
+
     private void removePersonDebtFromCache(PersonDebt personDebt) {
 
         if(personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_OWED && mCacheOwed.size() > 0) {
@@ -399,7 +400,7 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
 
         // delete person if he/she has only one debt
         String personPhoneNumber = personDebt.getPerson().getPhoneNumber();
-        if (personHasOneDebt(personPhoneNumber)) {
+        if (personHasOneDebt(personDebt.getPerson())) {
             // delete person from cache
             mCachePersons.remove(personPhoneNumber);
         }
@@ -414,9 +415,9 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         }
     }
 
-    private boolean personHasOneDebt(String personPhoneNumber) {
-        checkNotNull(personPhoneNumber);
-        return getPersonDebts(personPhoneNumber).size() == 1;
+    private boolean personHasOneDebt(Person person) {
+        checkNotNull(person);
+        return getPersonDebts(person).size() == 1;
     }
 
     @Override

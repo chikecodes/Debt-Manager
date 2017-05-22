@@ -71,7 +71,7 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mOweMeAdapter = new OweMeAdapter(getActivity(), new ArrayList<PersonDebt>(0));
+        mOweMeAdapter = new OweMeAdapter(this, new ArrayList<PersonDebt>(0));
     }
 
     @Override

@@ -101,7 +101,7 @@ public class IOweFragment extends Fragment implements IOweContract.View {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mIOweAdapter = new IOweAdapter(getActivity(), new ArrayList<PersonDebt>(0));
+        mIOweAdapter = new IOweAdapter(this, new ArrayList<PersonDebt>(0));
     }
 
     @Override

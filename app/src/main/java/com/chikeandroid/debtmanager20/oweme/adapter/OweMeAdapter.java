@@ -1,6 +1,6 @@
 package com.chikeandroid.debtmanager20.oweme.adapter;
 
-import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
@@ -27,13 +27,13 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
     private final List<PersonDebt> mPersonDebts;
     private final LayoutInflater mLayoutInflater;
     private RecyclerView mRecyclerView;
-    private Context mContext;
+    private Fragment mFragment;
 
-    public OweMeAdapter(Context context, List<PersonDebt> personDebts) {
+    public OweMeAdapter(Fragment fragment, List<PersonDebt> personDebts) {
         mPersonDebts = personDebts;
-        mContext = context;
-        mLayoutInflater = LayoutInflater.from(context);
+        mLayoutInflater = LayoutInflater.from(fragment.getActivity());
         mSelectedItems = new SparseBooleanArray();
+        mFragment = fragment;
     }
 
     @Override
@@ -94,6 +94,12 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
         });
 
         holder.itemView.setActivated(mSelectedItems.get(position, false));
+
+        Glide.with(mFragment)
+                .load(personDebt.getPerson().getImageUri())
+                .placeholder(R.drawable.ic_avatar)
+                .dontAnimate()
+                .into(holder.mListItemDebtBinding.ivUser);
     }
 
     public void updatePersonDebtListItems(List<PersonDebt> personDebts) {
@@ -123,12 +129,6 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
         public void bind(PersonDebt personDebt) {
             mDebtId = personDebt.getDebt().getId();
             mListItemDebtBinding.setPersonDebt(personDebt);
-
-            Glide.with(mContext)
-                    .load(personDebt.getPerson().getImageUri())
-                    .placeholder(R.drawable.ic_avatar)
-                    .dontAnimate()
-                    .into(mListItemDebtBinding.ivUser);
         }
     }
 

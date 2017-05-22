@@ -1,6 +1,6 @@
 package com.chikeandroid.debtmanager20.iowe.adapter;
 
-import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide;
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 import com.chikeandroid.debtmanager20.databinding.ListItemDebtBinding;
-import com.chikeandroid.debtmanager20.debtdetail.DebtDetailActivity;
 import com.chikeandroid.debtmanager20.iowe.IOweDiffCallback;
 
 import java.util.List;
@@ -26,14 +25,14 @@ public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
 
     private SparseBooleanArray mSelectedItems;
     private final List<PersonDebt> mPersonDebts;
-    private final Context mContext;
     private final LayoutInflater mLayoutInflater;
     private RecyclerView mRecyclerView;
+    private Fragment mFragment;
 
-    public IOweAdapter(Context context, List<PersonDebt> personDebts) {
+    public IOweAdapter(Fragment fragment, List<PersonDebt> personDebts) {
         mPersonDebts = personDebts;
-        mContext = context;
-        mLayoutInflater = LayoutInflater.from(context);
+        mFragment = fragment;
+        mLayoutInflater = LayoutInflater.from(fragment.getActivity());
         mSelectedItems = new SparseBooleanArray();
     }
 
@@ -111,7 +110,7 @@ public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
         return mPersonDebts.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         public final ListItemDebtBinding mListItemDebtBinding;
         String mDebtId;
@@ -120,7 +119,6 @@ public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
         public ViewHolder(ListItemDebtBinding binding) {
             super(binding.getRoot());
             mListItemDebtBinding = binding;
-            itemView.setOnClickListener(this);
         }
 
         public void bind(PersonDebt personDebt) {
@@ -128,16 +126,11 @@ public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
             mDebtType = personDebt.getDebt().getDebtType();
             mListItemDebtBinding.setPersonDebt(personDebt);
 
-            Glide.with(mContext)
+            Glide.with(mFragment)
                     .load(personDebt.getPerson().getImageUri())
                     .placeholder(R.drawable.ic_avatar)
                     .dontAnimate()
                     .into(mListItemDebtBinding.ivUser);
-        }
-
-        @Override
-        public void onClick(View view) {
-            DebtDetailActivity.start(mContext, mDebtId, mDebtType);
         }
     }
 

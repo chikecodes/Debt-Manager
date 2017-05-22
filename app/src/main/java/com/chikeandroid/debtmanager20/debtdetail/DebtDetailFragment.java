@@ -37,6 +37,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by Chike on 4/20/2017.
+ * Displays a Debt Detail screen
  */
 
 public class DebtDetailFragment extends Fragment implements DebtDetailContract.View {

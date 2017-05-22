@@ -17,6 +17,7 @@ import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.databinding.PeopleFragmentBinding;
 import com.chikeandroid.debtmanager20.people.adapter.PeopleAdapter;
+import com.chikeandroid.debtmanager20.persondetail.PersonDetailActivity;
 import com.chikeandroid.debtmanager20.util.ViewUtil;
 
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class PeopleFragment extends Fragment implements PeopleContract.View {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mPeopleAdapter = new PeopleAdapter(getActivity(), new ArrayList<Person>(0));
+        mPeopleAdapter = new PeopleAdapter(this, getActivity(), new ArrayList<Person>(0));
     }
 
     @Override
@@ -88,7 +89,7 @@ public class PeopleFragment extends Fragment implements PeopleContract.View {
         mPeopleAdapter.setOnItemClickListener(new PeopleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, Person person, int position) {
-
+                PersonDetailActivity.start(getActivity(), person);
             }
         });
 

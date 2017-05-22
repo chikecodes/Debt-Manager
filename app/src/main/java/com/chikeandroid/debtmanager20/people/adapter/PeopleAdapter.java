@@ -1,6 +1,7 @@
 package com.chikeandroid.debtmanager20.people.adapter;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,11 +25,13 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     private final List<Person> mPersons;
     private final LayoutInflater mLayoutInflater;
     private final Context mContext;
+    private final Fragment mFragment;
 
-    public PeopleAdapter(Context context, List<Person> persons) {
+    public PeopleAdapter(Fragment fragment, Context context, List<Person> persons) {
         mPersons = persons;
         mLayoutInflater = LayoutInflater.from(context);
         mContext = context;
+        mFragment = fragment;
     }
 
     // for item click listener
@@ -63,7 +66,8 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Person person = mPersons.get(position);
         holder.bind(person);
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+
+        holder.mListItemDebtBinding.lytParent.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 if(mOnItemLongClickListener != null) {
@@ -73,7 +77,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
             }
         });
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.mListItemDebtBinding.lytParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(mOnItemClickListener != null) {
@@ -111,7 +115,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
             mPersonId = person.getId();
             mListItemDebtBinding.setPerson(person);
 
-            Glide.with(mContext)
+            Glide.with(mFragment)
                     .load(person.getImageUri())
                     .placeholder(R.drawable.ic_avatar)
                     .dontAnimate()

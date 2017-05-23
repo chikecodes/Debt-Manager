@@ -56,7 +56,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by Chike on 3/16/2017.
  * Add debt screen .
  */
-
 public class AddEditDebtFragment extends Fragment implements AddEditDebtContract.View {
 
     public static final String ARGUMENT_EDIT_DEBT = "com.chikeandroid.debtmanager20.debtdetail.DebtDetailFragment.EDIT_DEBT";
@@ -163,9 +162,9 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int checkedId) {
 
-                if(checkedId == R.id.rb_owed_by_me) {
+                if (checkedId == R.id.rb_owed_by_me) {
                     mDebtType = Debt.DEBT_TYPE_IOWE;
-                }else if(checkedId == R.id.rb_owed_to_me) {
+                }else if (checkedId == R.id.rb_owed_to_me) {
                     mDebtType = Debt.DEBT_TYPE_OWED;
                 }
             }
@@ -176,7 +175,7 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
             @Override
             public void onClick(View view) {
 
-                if(checkPermission(Manifest.permission.READ_CONTACTS)) {
+                if (checkPermission(Manifest.permission.READ_CONTACTS)) {
                     Intent pickContactIntent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
                     startActivityForResult(pickContactIntent, REQUEST_CONTACT);
                 }
@@ -187,7 +186,7 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
     private void setViewsTextFromBundle() {
 
         Bundle bundle = getArguments();
-        if(bundle != null) {
+        if (bundle != null) {
             mPersonDebt = bundle.getParcelable(ARGUMENT_EDIT_DEBT);
             checkNotNull(mPersonDebt);
             mDebtDue = mPersonDebt.getDebt().getDueDate();
@@ -204,16 +203,17 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
             mButtonDateCreated.setText(createdDateString);
             mActionBarTitle = "Edit Debt";
 
-            if(mPersonDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_OWED) {
+            if (mPersonDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_OWED) {
                 mFragmentAddDebtBinding.rbOwedToMe.setChecked(true);
                 mFragmentAddDebtBinding.rbOwedByMe.setChecked(false);
-            }else if(mPersonDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_IOWE) {
+            }else if (mPersonDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_IOWE) {
                 mFragmentAddDebtBinding.rbOwedToMe.setChecked(false);
                 mFragmentAddDebtBinding.rbOwedByMe.setChecked(true);
             }
 
+            mContactImageUri = mPersonDebt.getPerson().getImageUri();
             Glide.with(getActivity())
-                    .load(mPersonDebt.getPerson().getImageUri())
+                    .load(mContactImageUri)
                     .placeholder(R.drawable.ic_avatar)
                     .dontAnimate()
                     .into(mImageViewDebtor);
@@ -233,18 +233,14 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
 
     private boolean checkPermission(String permission) {
         int checkPermission = ContextCompat.checkSelfPermission(getActivity(), permission);
-        return (checkPermission == PackageManager.PERMISSION_GRANTED);
+        return checkPermission == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
-                if(grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-
-                }
-                return;
-            }
+        if (requestCode == MY_PERMISSIONS_REQUEST_READ_CONTACTS && grantResults.length <= 0 &&
+                grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                ViewUtil.showToast(getActivity(), "Permission denied");
         }
     }
 
@@ -260,10 +256,10 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
 
         int itemId = item.getItemId();
 
-        if(itemId == android.R.id.home) {
+        if (itemId == android.R.id.home) {
             getActivity().finish();
-        }else if(itemId == R.id.action_save_debt) {
-            if(ValidationUtil.isInValid(new EditTextFullNameValidator(mEditTextName, getActivity()),
+        }else if (itemId == R.id.action_save_debt) {
+            if (ValidationUtil.isInValid(new EditTextFullNameValidator(mEditTextName, getActivity()),
                     new EditTextPhoneNumberValidator(mEditTextPhoneNumber, getActivity()),
                     new EditTextIntegerValidator(mEditTextAmount, getActivity())
             )) {
@@ -275,7 +271,7 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
                 String personId = UUID.randomUUID().toString();
                 String debtId = UUID.randomUUID().toString();
                 // update
-                if(mPersonDebt != null) {
+                if (mPersonDebt != null) {
                     personId = mPersonDebt.getPerson().getId();
                     debtId = mPersonDebt.getDebt().getId();
                 }
@@ -325,10 +321,10 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode != Activity.RESULT_OK) {
+        if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        if(requestCode == REQUEST_CONTACT) {
+        if (requestCode == REQUEST_CONTACT) {
             mContactUri = data.getData();
 
             retrieveContactName();
@@ -397,11 +393,11 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
 
                 String dateString = TimeUtil.millis2String(mCalendar.getTimeInMillis());
 
-                if(buttonId == mButtonDateDue.getId()) {
+                if (buttonId == mButtonDateDue.getId()) {
                     mButtonDateDue.setText(String.format(getString(R.string.due_date), dateString));
                     mDebtDue = mCalendar.getTimeInMillis();
 
-                }else if(buttonId == mButtonDateCreated.getId()) {
+                }else if (buttonId == mButtonDateCreated.getId()) {
                     mButtonDateCreated.setText(String.format(getString(R.string.created_date), dateString));
                     mDebtCreatedAt = mCalendar.getTimeInMillis();
                 }

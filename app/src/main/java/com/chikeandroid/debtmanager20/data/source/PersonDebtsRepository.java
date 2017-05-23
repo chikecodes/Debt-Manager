@@ -8,6 +8,7 @@ import com.chikeandroid.debtmanager20.data.Person;
 import com.chikeandroid.debtmanager20.data.PersonDebt;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,6 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
     Map<String, PersonDebt> mCacheOwed;
     Map<String, PersonDebt> mCacheIOwe;
     Map<String, Person> mCachePersons;
-    Person mPerson;
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested. This variable
@@ -52,19 +52,19 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
     }
 
     public void addContentObserver(DebtsRepositoryObserver observer) {
-        if(!mObservers.contains(observer)) {
+        if (!mObservers.contains(observer)) {
             mObservers.add(observer);
         }
     }
 
     public void removeContentObserver(DebtsRepositoryObserver observer) {
-        if(mObservers.contains(observer)) {
+        if (mObservers.contains(observer)) {
             mObservers.remove(observer);
         }
     }
 
     private void notifyContentObserver(int debtType) {
-        for(DebtsRepositoryObserver observer : mObservers) {
+        for (DebtsRepositoryObserver observer : mObservers) {
             observer.onDebtsChanged(debtType);
         }
     }
@@ -103,7 +103,7 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
 
     @Override
     public List<Debt> getPersonDebts(@NonNull Person person) {
-        if(mCachePersons != null && mCachePersons.size() > 0) {
+        if (mCachePersons != null && mCachePersons.isEmpty() && mCachePersons.get(person.getPhoneNumber()) != null) {
             return mCachePersons.get(person.getPhoneNumber()).getDebts();
         }
         return mDebtsLocalDataSource.getPersonDebts(person);
@@ -115,15 +115,15 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         checkNotNull(debtType);
 
         PersonDebt cachedPersonDebt = null;
-        if(debtType == Debt.DEBT_TYPE_OWED) {
+        if (debtType == Debt.DEBT_TYPE_OWED) {
 
             cachedPersonDebt = getDebtOwedById(debtId);
-        }else if(debtType == Debt.DEBT_TYPE_IOWE) {
+        }else if (debtType == Debt.DEBT_TYPE_IOWE) {
             cachedPersonDebt = getDebtIOweById(debtId);
         }
 
         // Respond immediately with cache if we have one
-        if(cachedPersonDebt != null) {
+        if (cachedPersonDebt != null) {
             return cachedPersonDebt;
         }
 
@@ -138,7 +138,7 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
     @Nullable
     private PersonDebt getDebtOwedById(@NonNull String debtId) {
         checkNotNull(debtId);
-        if(mCacheOwed == null || mCacheOwed.isEmpty()) {
+        if (mCacheOwed == null || mCacheOwed.isEmpty()) {
             return null;
         }else {
             return mCacheOwed.get(debtId);
@@ -148,7 +148,7 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
     @Nullable
     private PersonDebt getDebtIOweById(@NonNull String debtId) {
         checkNotNull(debtId);
-        if(mCacheIOwe == null || mCacheIOwe.isEmpty()) {
+        if (mCacheIOwe == null || mCacheIOwe.isEmpty()) {
             return null;
         }else {
             return mCacheIOwe.get(debtId);
@@ -158,7 +158,7 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
     @Nullable
     public Person getPerson(@NonNull String phoneNumber) {
         checkNotNull(phoneNumber);
-        if(mCachePersons == null || mCachePersons.isEmpty()) {
+        if (mCachePersons == null || mCachePersons.isEmpty()) {
             return null;
         }else {
             return mCachePersons.get(phoneNumber);
@@ -192,29 +192,29 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         checkNotNull(debtType);
 
         List<PersonDebt> personDebts = null;
-        if(debtType == Debt.DEBT_TYPE_OWED) {
-            if (!mCacheOwedIsDirty) {
-                if (mCacheOwed == null) {
+        if (debtType == Debt.DEBT_TYPE_OWED) {
+            if (!mCacheOwedIsDirty && mCacheOwed == null) {
                     personDebts = mDebtsLocalDataSource.getAllPersonDebtsByType(Debt.DEBT_TYPE_OWED);
-                } else {
-                    personDebts = new ArrayList<>();
-                    for (PersonDebt personDebt : getCacheOwed()) {
-                        personDebts.add(personDebt);
-                    }
-                    return personDebts;
-                }
             }
-        }else if(debtType == Debt.DEBT_TYPE_IOWE) {
-            if (!mCacheIOweIsDirty) {
-                if (mCacheIOwe == null) {
-                    personDebts = mDebtsLocalDataSource.getAllPersonDebtsByType(Debt.DEBT_TYPE_IOWE);
-                } else {
-                    personDebts = new ArrayList<>();
-                    for (PersonDebt personDebt : getCacheIOwe()) {
-                          personDebts.add(personDebt);
-                    }
-                    return personDebts;
+
+            if (!mCacheOwedIsDirty && mCacheIOwe != null) {
+                personDebts = new ArrayList<>();
+                for (PersonDebt personDebt : getCacheOwed()) {
+                    personDebts.add(personDebt);
                 }
+                return personDebts;
+            }
+        }else if (debtType == Debt.DEBT_TYPE_IOWE) {
+            if (!mCacheIOweIsDirty && mCacheIOwe == null) {
+                personDebts = mDebtsLocalDataSource.getAllPersonDebtsByType(Debt.DEBT_TYPE_IOWE);
+            }
+
+            if (!mCacheIOweIsDirty && mCacheIOwe != null) {
+                personDebts = new ArrayList<>();
+                for (PersonDebt personDebt : getCacheIOwe()) {
+                    personDebts.add(personDebt);
+                }
+                return personDebts;
             }
         }
 
@@ -225,30 +225,30 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
 
     private void processLoadedDebts(List<PersonDebt> personDebts, @NonNull int debtType) {
 
-        if(personDebts == null) {
+        if (personDebts == null) {
             mCacheOwed = null;
             mCacheOwedIsDirty = false;
             return;
         }
 
-        if(debtType == Debt.DEBT_TYPE_OWED) {
+        if (debtType == Debt.DEBT_TYPE_OWED) {
             if (mCacheOwed == null) {
                 mCacheOwed = new LinkedHashMap<>();
             }
             mCacheOwed.clear();
 
-            for(PersonDebt personDebt : personDebts) {
+            for (PersonDebt personDebt : personDebts) {
                 mCacheOwed.put(personDebt.getDebt().getId(), personDebt);
             }
             mCacheOwedIsDirty = false;
 
-        }else if(debtType == Debt.DEBT_TYPE_IOWE) {
+        }else if (debtType == Debt.DEBT_TYPE_IOWE) {
             if (mCacheIOwe == null) {
                 mCacheIOwe = new LinkedHashMap<>();
             }
             mCacheIOwe.clear();
 
-            for(PersonDebt personDebt : personDebts) {
+            for (PersonDebt personDebt : personDebts) {
                 mCacheIOwe.put(personDebt.getDebt().getId(), personDebt);
             }
             mCacheIOweIsDirty = false;
@@ -264,7 +264,13 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
 
         // Do in memory cache update to keep the app UI up to date
         Person cachePerson = getPerson(person.getPhoneNumber());
-        if(cachePerson != null) {
+        if (cachePerson == null) {
+            person.addDebt(debt);
+            if (mCachePersons == null) {
+                mCachePersons = new LinkedHashMap<>();
+            }
+            mCachePersons.put(person.getPhoneNumber(), person);
+        }else {
             cachePerson.addDebt(debt);
 
             // remove person
@@ -272,21 +278,15 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
 
             // then update
             mCachePersons.put(cachePerson.getPhoneNumber(), cachePerson);
-        }else {
-            person.addDebt(debt);
-            if(mCachePersons == null) {
-                mCachePersons = new LinkedHashMap<>();
-            }
-            mCachePersons.put(person.getPhoneNumber(), person);
         }
 
-        if(debt.getDebtType() == Debt.DEBT_TYPE_OWED) {
+        if (debt.getDebtType() == Debt.DEBT_TYPE_OWED) {
             if (mCacheOwed == null) {
                 mCacheOwed = new LinkedHashMap<>();
             }
             PersonDebt personDebt = new PersonDebt(person, debt);
             mCacheOwed.put(debt.getId(), personDebt);
-        }else if(debt.getDebtType() == Debt.DEBT_TYPE_IOWE) {
+        }else if (debt.getDebtType() == Debt.DEBT_TYPE_IOWE) {
             if (mCacheIOwe == null) {
                 mCacheIOwe = new LinkedHashMap<>();
             }
@@ -309,12 +309,12 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
 
         mDebtsLocalDataSource.deleteAllPersonDebts();
 
-        if(mCacheOwed == null) {
+        if (mCacheOwed == null) {
             mCacheOwed = new LinkedHashMap<>();
         }
         mCacheOwed.clear();
 
-        if(mCacheIOwe == null) {
+        if (mCacheIOwe == null) {
             mCacheIOwe = new LinkedHashMap<>();
         }
         mCacheIOwe.clear();
@@ -341,7 +341,7 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         checkNotNull(personDebts);
         checkNotNull(debtType);
 
-        for(PersonDebt personDebt : personDebts) {
+        for (PersonDebt personDebt : personDebts) {
             mDebtsLocalDataSource.deletePersonDebt(personDebt);
             removePersonDebtFromCache(personDebt);
         }
@@ -373,18 +373,18 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
 
     private void processLoadedPersons(List<Person> persons) {
 
-        if(persons == null) {
+        if (persons == null) {
             mCachePersons = null;
             mCachePersonIsDirty = false;
             return;
         }
 
-        if(mCachePersons == null) {
+        if (mCachePersons == null) {
             mCachePersons = new LinkedHashMap<>();
         }
         mCachePersons.clear();
 
-        for(Person person : persons) {
+        for (Person person : persons) {
             mCachePersons.put(person.getPhoneNumber(), person);
         }
         mCachePersonIsDirty = false;
@@ -392,9 +392,9 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
 
     private void removePersonDebtFromCache(PersonDebt personDebt) {
 
-        if(personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_OWED && mCacheOwed.size() > 0) {
+        if (personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_OWED && mCacheOwed.isEmpty()) {
             mCacheOwed.remove(personDebt.getDebt().getId());
-        }else if(personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_IOWE && mCacheIOwe.size() > 0) {
+        }else if (personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_IOWE && mCacheIOwe.isEmpty()) {
             mCacheIOwe.remove(personDebt.getDebt().getId());
         }
 
@@ -408,7 +408,7 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         Person person = mCachePersons.get(personDebt.getPerson().getPhoneNumber());
         // if Person not null, means person still has more debts
         // update persons cache with new debts
-        if(person != null) {
+        if (person != null) {
             person.getDebts().remove(personDebt.getDebt());
             mCachePersons.remove(person.getPhoneNumber());
             mCachePersons.put(person.getPhoneNumber(), person);
@@ -426,14 +426,10 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         checkNotNull(debtType);
         mDebtsLocalDataSource.deleteAllPersonDebtsByType(debtType);
 
-        if(debtType == Debt.DEBT_TYPE_OWED) {
-            if (mCacheOwed != null) {
-                mCacheOwed.clear();
-            }
-        }else if(debtType == Debt.DEBT_TYPE_IOWE) {
-            if (mCacheIOwe != null) {
-                mCacheIOwe.clear();
-            }
+        if (debtType == Debt.DEBT_TYPE_OWED && mCacheOwed != null) {
+            mCacheOwed.clear();
+        }else if (debtType == Debt.DEBT_TYPE_IOWE && mCacheIOwe != null) {
+            mCacheIOwe.clear();
         }
     }
 
@@ -444,13 +440,37 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         mDebtsLocalDataSource.updatePersonDebt(personDebt);
 
         Debt debt = personDebt.getDebt();
-        if(debt.getDebtType() == Debt.DEBT_TYPE_OWED) {
+        if (debt.getDebtType() == Debt.DEBT_TYPE_OWED) {
             mCacheOwed.remove(debt.getId());
             mCacheOwed.put(debt.getId(), personDebt);
-        }else if(debt.getDebtType() == Debt.DEBT_TYPE_IOWE) {
+        }else if (debt.getDebtType() == Debt.DEBT_TYPE_IOWE) {
             mCacheIOwe.remove(debt.getId());
             mCacheIOwe.put(debt.getId(), personDebt);
         }
+
+        // update person cache
+        Person personCache = mCachePersons.get(personDebt.getPerson().getPhoneNumber());
+
+        String debtId = personDebt.getDebt().getId();
+
+        for (Iterator<Debt> iter = personCache.getDebts().iterator(); iter.hasNext();) {
+
+            Debt debt1 = iter.next();
+            if (debt1.getId().equals(debtId)) {
+                iter.remove();
+            }
+        }
+
+        personCache.getDebts().add(personDebt.getDebt());
+
+        Person newPerson = new Person(personDebt.getPerson().getId(), personDebt.getPerson().getFullname(),
+                personDebt.getPerson().getPhoneNumber(), personDebt.getPerson().getImageUri());
+
+        newPerson.setDebts(personCache.getDebts());
+
+        mCachePersons.remove(personDebt.getPerson().getPhoneNumber());
+
+        mCachePersons.put(personDebt.getPerson().getPhoneNumber(), newPerson);
 
         //update the UI
         notifyContentObserver(personDebt.getDebt().getDebtType());

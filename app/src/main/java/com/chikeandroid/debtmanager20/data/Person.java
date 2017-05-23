@@ -90,17 +90,28 @@ public final class Person implements Parcelable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Person person = (Person) o;
 
-        if (!mId.equals(person.mId)) return false;
-        if (!mFullname.equals(person.mFullname)) return false;
-        if (!mPhoneNumber.equals(person.mPhoneNumber)) return false;
-        if (mImageUri != null ? !mImageUri.equals(person.mImageUri) : person.mImageUri != null)
+        if (!mId.equals(person.mId)) {
             return false;
-        return mDebts != null ? mDebts.equals(person.mDebts) : person.mDebts == null;
+        }
+        if (!mFullname.equals(person.mFullname)) {
+            return false;
+        }
+        if (!mPhoneNumber.equals(person.mPhoneNumber)) {
+            return false;
+        }
+        if (mImageUri != null ? !mImageUri.equals(person.mImageUri) : person.mImageUri != null) { //NOPMD
+            return false;
+        }
+        return mDebts != null ? mDebts.equals(person.mDebts) : person.mDebts == null; //NOPMD
 
     }
 
@@ -109,8 +120,8 @@ public final class Person implements Parcelable {
         int result = mId.hashCode();
         result = 31 * result + mFullname.hashCode();
         result = 31 * result + mPhoneNumber.hashCode();
-        result = 31 * result + (mImageUri != null ? mImageUri.hashCode() : 0);
-        result = 31 * result + (mDebts != null ? mDebts.hashCode() : 0);
+        result = 31 * result + (mImageUri != null ? mImageUri.hashCode() : 0); //NOPMD
+        result = 31 * result + (mDebts != null ? mDebts.hashCode() : 0); //NOPMD
         return result;
     }
 

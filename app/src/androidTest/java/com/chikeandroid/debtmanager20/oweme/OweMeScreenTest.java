@@ -13,7 +13,6 @@ import com.chikeandroid.debtmanager20.DebtManagerApplication;
 import com.chikeandroid.debtmanager20.R;
 import com.chikeandroid.debtmanager20.data.Debt;
 import com.chikeandroid.debtmanager20.home.MainActivity;
-import com.chikeandroid.debtmanager20.oweme.adapter.OweMeAdapter;
 import com.chikeandroid.debtmanager20.util.RecyclerViewItemCountAssertion;
 import com.chikeandroid.debtmanager20.util.StringUtil;
 import com.chikeandroid.debtmanager20.util.TimeUtil;
@@ -40,6 +39,18 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.chikeandroid.debtmanager20.util.TestUtil.AMOUNT1;
+import static com.chikeandroid.debtmanager20.util.TestUtil.AMOUNT2;
+import static com.chikeandroid.debtmanager20.util.TestUtil.AMOUNT3;
+import static com.chikeandroid.debtmanager20.util.TestUtil.NAME1;
+import static com.chikeandroid.debtmanager20.util.TestUtil.NAME2;
+import static com.chikeandroid.debtmanager20.util.TestUtil.NAME3;
+import static com.chikeandroid.debtmanager20.util.TestUtil.NOTE1;
+import static com.chikeandroid.debtmanager20.util.TestUtil.NOTE2;
+import static com.chikeandroid.debtmanager20.util.TestUtil.NOTE3;
+import static com.chikeandroid.debtmanager20.util.TestUtil.PHONE_NUMBER1;
+import static com.chikeandroid.debtmanager20.util.TestUtil.PHONE_NUMBER2;
+import static com.chikeandroid.debtmanager20.util.TestUtil.PHONE_NUMBER3;
 
 /**
  * Created by Chike on 4/17/2017.
@@ -47,11 +58,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
  */
 @RunWith(AndroidJUnit4.class)
 public class OweMeScreenTest {
-
-    private final static String NAME = "chike mgbemena";
-    private final static String PHONE_NUMBER = "070381115342";
-    private final static double AMOUNT = 5000;
-    private final static String COMMENT = "comment 123";
 
     private final static int CREATED_YEAR = 2017;
     private final static int CREATED_MONTH = 10;
@@ -94,11 +100,11 @@ public class OweMeScreenTest {
     @Test
     public void shouldBeAbleToAddANewDebtToOweMeList() {
 
-        createDebt(NAME, PHONE_NUMBER, AMOUNT, COMMENT, Debt.DEBT_TYPE_OWED);
+        createDebt(NAME1, PHONE_NUMBER1, AMOUNT1, NOTE1, Debt.DEBT_TYPE_OWED);
 
         // onView(ViewMatchers.withId(R.id.rv_oweme)).perform(RecyclerViewActions.scrollToHolder(withTitle("Chike Mgbemena")));
 
-        onView(withText(NAME)).check(matches(isDisplayed()));
+        onView(withText(NAME1)).check(matches(isDisplayed()));
 
         // Click on the RecyclerView item at position 2
         // onView(withId(R.id.rv_oweme)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
@@ -108,14 +114,14 @@ public class OweMeScreenTest {
     @Test
     public void shouldOpenDebtDetailUiWhenDebtIsClicked() {
 
-        createDebt(NAME, PHONE_NUMBER, AMOUNT, COMMENT, Debt.DEBT_TYPE_OWED);
+        createDebt(NAME1, PHONE_NUMBER1, AMOUNT1, NOTE1, Debt.DEBT_TYPE_OWED);
 
-        onView(withText(NAME)).perform(click());
+        onView(withText(NAME1)).perform(click());
 
-        onView(withText(NAME)).check(matches(isDisplayed()));
+        onView(withText(NAME1)).check(matches(isDisplayed()));
         onView(isAssignableFrom(CollapsingToolbarLayout.class)).check(matches(
-                withCollapsingToolbarLayoutTitle(Matchers.<CharSequence>is(StringUtil.commaNumber(AMOUNT)))));
-        onView(withText(COMMENT)).check(matches(isDisplayed()));
+                withCollapsingToolbarLayoutTitle(Matchers.<CharSequence>is(StringUtil.commaNumber(AMOUNT1)))));
+        onView(withText(NOTE1)).check(matches(isDisplayed()));
 
         String dateCreated = TimeUtil.dateToString(CREATED_YEAR, CREATED_MONTH - 1, CREATED_DAY_OF_MONTH);
         String dateDue = TimeUtil.dateToString(DUE_YEAR, DUE_MONTH - 1, DUE_DAY_OF_MONTH);
@@ -127,17 +133,17 @@ public class OweMeScreenTest {
     @Test
     public void shouldBeAbleToSelectAndDeleteMultipleDebtsListItemOnLongClick() {
 
-        createDebt(NAME, PHONE_NUMBER, AMOUNT, COMMENT, Debt.DEBT_TYPE_OWED);
+        createDebt(NAME1, PHONE_NUMBER1, AMOUNT1, NOTE1, Debt.DEBT_TYPE_OWED);
 
-        createDebt("Mary Jane", "0124535476", 8000, "comment 098", Debt.DEBT_TYPE_OWED);
+        createDebt(NAME2, PHONE_NUMBER2, AMOUNT2, NOTE2, Debt.DEBT_TYPE_OWED);
 
-        createDebt("Chuka Smith", "10245784", 9000, "comment 4543", Debt.DEBT_TYPE_OWED);
+        createDebt(NAME3, PHONE_NUMBER3, AMOUNT3, NOTE3, Debt.DEBT_TYPE_OWED);
 
-        onView(withText(NAME)).perform(longClick());
+        onView(withText(NAME1)).perform(longClick());
 
-        onView(withText("Mary Jane")).perform(click());
+        onView(withText(NAME2)).perform(click());
 
-        onView(withText("Chuka Smith")).perform(click());
+        onView(withText(NAME3)).perform(click());
 
         onView(withId(R.id.action_delete)).perform(click());
 
@@ -146,21 +152,21 @@ public class OweMeScreenTest {
 
         onView(withId(android.R.id.button1)).perform(click());
 
-        onView(withText(NAME)).check(doesNotExist());
-        onView(withText("Mary Jane")).check(doesNotExist());
-        onView(withText("Chuka Smith")).check(doesNotExist());
+        onView(withText(NAME1)).check(doesNotExist());
+        onView(withText(NAME2)).check(doesNotExist());
+        onView(withText(NAME3)).check(doesNotExist());
     }
 
     @Test
     public void shouldBeAbleToDeleteDebtOnDetailScreenAndThenNotShowInList() {
 
-        createDebt(NAME, PHONE_NUMBER, AMOUNT, COMMENT, Debt.DEBT_TYPE_OWED);
+        createDebt(NAME1, PHONE_NUMBER1, AMOUNT1, NOTE1, Debt.DEBT_TYPE_OWED);
 
-        createDebt("Mary Jane", "0124535476", 8000, "comment 098", Debt.DEBT_TYPE_OWED);
+        createDebt(NAME3, PHONE_NUMBER2, AMOUNT2, NOTE2, Debt.DEBT_TYPE_OWED);
 
-        createDebt("Chuka Smith", "10245784", 9000, "comment 4543", Debt.DEBT_TYPE_OWED);
+        createDebt(NAME3, PHONE_NUMBER3, AMOUNT3, NOTE3, Debt.DEBT_TYPE_OWED);
 
-        onView(withText(NAME)).perform(click());
+        onView(withText(NAME1)).perform(click());
 
         onView(withId(R.id.action_delete)).perform(click());
 
@@ -168,7 +174,7 @@ public class OweMeScreenTest {
 
         onView(withId(android.R.id.button1)).perform(click());
 
-        onView(withText(NAME)).check(doesNotExist());
+        onView(withText(NAME1)).check(doesNotExist());
 
         onView(withId(R.id.rv_oweme)).check(new RecyclerViewItemCountAssertion(2));
     }
@@ -176,9 +182,9 @@ public class OweMeScreenTest {
     @Test
     public void shouldNotShowActionModeWhenViewPagerIsSwiped() {
 
-        createDebt(NAME, PHONE_NUMBER, AMOUNT, COMMENT, Debt.DEBT_TYPE_OWED);
+        createDebt(NAME1, PHONE_NUMBER1, AMOUNT1, NOTE1, Debt.DEBT_TYPE_OWED);
 
-        onView(withText(NAME)).perform(longClick());
+        onView(withText(NAME1)).perform(longClick());
 
         onView(withId(R.id.action_delete)).check(matches(isDisplayed()));
 
@@ -217,7 +223,7 @@ public class OweMeScreenTest {
     }
 
     /**
-     * Matches the {@link OweMeAdapter.ViewHolder}s in the middle of the list.
+     * Matches the OweMeAdapter.ViewHolders in the middle of the list.
      */
    /* private static Matcher<DebtsAdapter.ViewHolder> isInTheMiddle() {
         return new TypeSafeMatcher<DebtsAdapter.ViewHolder>() {

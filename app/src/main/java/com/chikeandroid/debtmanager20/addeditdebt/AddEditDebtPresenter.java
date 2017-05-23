@@ -44,7 +44,7 @@ public class AddEditDebtPresenter implements AddEditDebtContract.Presenter {
 
         EspressoIdlingResource.increment();
 
-        if(isUpdateDebt()) {
+        if (isUpdateDebt()) {
             updatePersonDebt(person, debt);
         } else {
             createPersonDebt(person, debt);
@@ -52,7 +52,7 @@ public class AddEditDebtPresenter implements AddEditDebtContract.Presenter {
     }
 
     private void updatePersonDebt(Person person, Debt debt) {
-        if(!isUpdateDebt()) {
+        if (!isUpdateDebt()) {
             throw new RuntimeException("updatePersonDebt() was called but debt is new.");
         }
         PersonDebt personDebt = new PersonDebt(person, debt);
@@ -62,7 +62,7 @@ public class AddEditDebtPresenter implements AddEditDebtContract.Presenter {
 
     private void createPersonDebt(Person person, Debt debt) {
 
-        if(person.isEmpty() && debt.isEmpty()) {
+        if (person.isEmpty() && debt.isEmpty()) {
             mAddDebtsView.showEmptyDebtError();
         } else {
             mDebtsRepository.savePersonDebt(debt, person);

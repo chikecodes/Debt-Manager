@@ -25,6 +25,11 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".home.MainActivity" />
         </activity>
+        <activity android:name=".persondetail.PersonDetailActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".home.MainActivity" />
+        </activity>
         <activity
                 android:name=".debtdetail.DebtDetailActivity"
                 android:theme="@style/AppTheme.NoActionBar">

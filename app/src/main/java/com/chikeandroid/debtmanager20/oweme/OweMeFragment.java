@@ -47,12 +47,11 @@ import javax.inject.Inject;
  */
 public class OweMeFragment extends Fragment implements OweMeContract.View {
 
-    private android.view.ActionMode mActionMode;
-
+    private ActionMode mActionMode;
     private static final String TAG = "OweMeDebtsFragment";
     private OweMeAdapter mOweMeAdapter;
     private TextView mTextViewEmptyDebts;
-    private ActionModeCallback mActionModeCallback = new ActionModeCallback();
+    private final ActionModeCallback mActionModeCallback = new ActionModeCallback();
 
     @Inject
     OweMePresenter mOweMePresenter;
@@ -100,7 +99,7 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
 
     @Subscribe
     public void onEvent(MainViewPagerSwipeEvent event) {
-        if(event != null && mActionMode != null) {
+        if (event != null && mActionMode != null) {
             mActionMode.finish();
         }
     }
@@ -133,7 +132,7 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
         mOweMeAdapter.setOnItemClickListener(new OweMeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, PersonDebt personDebt, int position) {
-                if(mActionMode != null) {
+                if (mActionMode != null) {
                     myToggleSelection(position, view);
                     return;
                 }
@@ -156,7 +155,7 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
     @Override
     public void showDebts(List<PersonDebt> debts) {
 
-        if(mTextViewEmptyDebts.getVisibility() == View.VISIBLE) {
+        if (mTextViewEmptyDebts.getVisibility() == View.VISIBLE) {
             mTextViewEmptyDebts.setVisibility(View.GONE);
         }
 
@@ -229,18 +228,16 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
         // Called when the user selects a contextual menu item
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.action_delete:
 
-                    if(mOweMeAdapter.getSelectedItemCount() > 0) {
-                        openConfirmDialog();
+            if (item.getItemId() == R.id.action_delete) {
+                if (mOweMeAdapter.getSelectedItemCount() > 0) {
+                    openConfirmDialog();
 
-                    }
-                   // mode.finish();
-                    return false;
-                default:
-                    return false;
+                }
+                // mode.finish();
+                return false;
             }
+            return false;
         }
 
         // Called when the user exits the action mode
@@ -280,7 +277,7 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
         int debtsDeleted = 0;
 
         List<PersonDebt> deletePersonDebts = new ArrayList<>();
-        for(int i = 0; i < mOweMeAdapter.getSelectedItemCount(); i++) {
+        for (int i = 0; i < mOweMeAdapter.getSelectedItemCount(); i++) {
             int position = mOweMeAdapter.getSelectedItems().keyAt(i);
             PersonDebt personDebt = mOweMeAdapter.getPersonDebt(position);
             deletePersonDebts.add(personDebt);
@@ -289,7 +286,7 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
 
         mPresenter.batchDeletePersonDebts(deletePersonDebts, Debt.DEBT_TYPE_OWED);
 
-        if(debtsDeleted == mOweMeAdapter.getSelectedItemCount()) {
+        if (debtsDeleted == mOweMeAdapter.getSelectedItemCount()) {
             ViewUtil.showToast(getActivity(), "Debts deleted successfully");
         }
 

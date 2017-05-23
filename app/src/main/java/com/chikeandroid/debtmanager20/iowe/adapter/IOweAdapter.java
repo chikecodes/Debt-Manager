@@ -23,11 +23,13 @@ import java.util.List;
 
 public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
 
-    private SparseBooleanArray mSelectedItems;
+    private final SparseBooleanArray mSelectedItems;
     private final List<PersonDebt> mPersonDebts;
     private final LayoutInflater mLayoutInflater;
     private RecyclerView mRecyclerView;
-    private Fragment mFragment;
+    private final Fragment mFragment;
+    private OnItemLongClickListener mOnItemLongClickListener;
+    private OnItemClickListener mOnItemClickListener;
 
     public IOweAdapter(Fragment fragment, List<PersonDebt> personDebts) {
         mPersonDebts = personDebts;
@@ -42,9 +44,6 @@ public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
         mRecyclerView = recyclerView;
     }
 
-    // for item click listener
-    private OnItemClickListener mOnItemClickListener;
-
     public interface OnItemClickListener {
         void onItemClick(View view, PersonDebt personDebt, int position);
     }
@@ -52,9 +51,6 @@ public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
     public void setOnItemClickListener(final OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
-
-    // for item long click listener
-    private OnItemLongClickListener mOnItemLongClickListener;
 
     public interface OnItemLongClickListener {
         void onItemClick(View view, PersonDebt personDebt, int position);
@@ -77,7 +73,7 @@ public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if(mOnItemLongClickListener != null) {
+                if (mOnItemLongClickListener != null) {
                     mOnItemLongClickListener.onItemClick(view, personDebt, holder.getAdapterPosition());
                 }
                 return true;
@@ -87,7 +83,7 @@ public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mOnItemClickListener != null) {
+                if (mOnItemClickListener != null) {
                     mOnItemClickListener.onItemClick(view, personDebt, holder.getAdapterPosition());
                 }
             }
@@ -113,8 +109,6 @@ public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public final ListItemDebtBinding mListItemDebtBinding;
-        String mDebtId;
-        int mDebtType;
 
         public ViewHolder(ListItemDebtBinding binding) {
             super(binding.getRoot());
@@ -122,8 +116,6 @@ public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
         }
 
         public void bind(PersonDebt personDebt) {
-            mDebtId = personDebt.getDebt().getId();
-            mDebtType = personDebt.getDebt().getDebtType();
             mListItemDebtBinding.setPersonDebt(personDebt);
 
             Glide.with(mFragment)
@@ -138,7 +130,7 @@ public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
      * For multiple selection
      */
     public void toggleSelection(int position, View view) {
-        if(mSelectedItems.get(position, false)) {
+        if (mSelectedItems.get(position, false)) {
             mSelectedItems.delete(position);
             view.setSelected(false);
         } else {
@@ -157,7 +149,7 @@ public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
 
     public void clearSelections() {
 
-        for(int i = 0; i < getSelectedItemCount(); i++) {
+        for (int i = 0; i < getSelectedItemCount(); i++) {
             int position = getSelectedItems().keyAt(i);
 
             ViewHolder vh = (ViewHolder) mRecyclerView.findViewHolderForAdapterPosition(position);

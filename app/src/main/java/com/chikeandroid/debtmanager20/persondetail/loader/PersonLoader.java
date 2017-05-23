@@ -1,4 +1,4 @@
-package com.chikeandroid.debtmanager20.people.loader;
+package com.chikeandroid.debtmanager20.persondetail.loader;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -12,31 +12,33 @@ import com.chikeandroid.debtmanager20.util.EspressoIdlingResource;
 import java.util.List;
 
 /**
- * Created by Chike on 5/10/2017.
- * Custom {@link android.content.Loader} for a list of {@link Person}, using the
+ * Created by Chike on 5/19/2017.
+ * Custom {@link android.content.Loader} for a list of a {@link Person} {@link com.chikeandroid.debtmanager20.data.Debt}s, using the
  * {@link PersonDebtsRepository} as its source. This Loader is a {@link AsyncTaskLoader} so it queries
  * the data asynchronously.
  */
-public class PeopleLoader extends AsyncTaskLoader<List<Person>> implements PersonDebtsRepository.DebtsRepositoryObserver {
+public class PersonLoader extends AsyncTaskLoader<List<Debt>> implements PersonDebtsRepository.DebtsRepositoryObserver {
 
     private final PersonDebtsRepository mPersonDebtsRepository;
+    private final Person mPerson;
 
-    public PeopleLoader(Context context, @NonNull PersonDebtsRepository personDebtsRepository) {
+    public PersonLoader(Context context, @NonNull PersonDebtsRepository personDebtsRepository, @NonNull Person person) {
         super(context);
         mPersonDebtsRepository = personDebtsRepository;
+        mPerson = person;
     }
 
     @Override
-    public List<Person> loadInBackground() {
+    public List<Debt> loadInBackground() {
 
         // App is busy until further notice
         EspressoIdlingResource.increment();
 
-        return mPersonDebtsRepository.getAllPersonWithDebts();
+        return mPersonDebtsRepository.getPersonDebts(mPerson);
     }
 
     @Override
-    public void deliverResult(List<Person> data) {
+    public void deliverResult(List<Debt> data) {
         if (isReset()) {
             return;
         }
@@ -50,7 +52,7 @@ public class PeopleLoader extends AsyncTaskLoader<List<Person>> implements Perso
     protected void onStartLoading() {
         // Deliver any previously loaded data immediately if available.
         if (mPersonDebtsRepository.cachedPeopleAvailable()) {
-            deliverResult(mPersonDebtsRepository.getAllPersonWithDebts());
+            deliverResult(mPersonDebtsRepository.getPersonDebts(mPerson));
         }
 
         // Begin monitoring the underlying data source
@@ -65,11 +67,12 @@ public class PeopleLoader extends AsyncTaskLoader<List<Person>> implements Perso
 
     @Override
     public void onDebtsChanged(int debtType) {
-        if (debtType == Debt.DEBT_TYPE_OWED || debtType == Debt.DEBT_TYPE_IOWE && isStarted()) {
-            forceLoad();
-
-        }
-        // forceLoad();
+       /* if(debtType == Debt.DEBT_TYPE_OWED || debtType == Debt.DEBT_TYPE_IOWE) {
+            if (isStarted()) {
+                forceLoad();
+            }
+        }*/
+        forceLoad();
     }
 
     @Override

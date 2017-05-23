@@ -44,7 +44,7 @@ public class EditTextPhoneNumberValidator extends EditTextValidator {
         if (ValidationUtil.isEmpty(this)) {
             setErrorMessage(String.format(mContext.getString(R.string.required_field), "Phone number"));
             return false;
-        }else if(!Patterns.PHONE.matcher(getPhoneNumber()).matches()) {
+        }else if (!Patterns.PHONE.matcher(getPhoneNumber()).matches()) {
             setErrorMessage("Invalid phone number");
             return false;
         }

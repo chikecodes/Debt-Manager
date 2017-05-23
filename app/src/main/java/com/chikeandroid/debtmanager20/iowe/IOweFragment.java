@@ -51,8 +51,8 @@ public class IOweFragment extends Fragment implements IOweContract.View {
     private static final String TAG = "IOweFragment";
     private IOweAdapter mIOweAdapter;
     private TextView mTextViewEmptyDebts;
-    private android.view.ActionMode mActionMode;
-    private ActionModeCallback mActionModeCallback = new ActionModeCallback();
+    private ActionMode mActionMode;
+    private final ActionModeCallback mActionModeCallback = new ActionModeCallback();
 
     @Inject
     IOwePresenter mIOwePresenter;
@@ -92,7 +92,7 @@ public class IOweFragment extends Fragment implements IOweContract.View {
 
     @Subscribe
     public void onEvent(MainViewPagerSwipeEvent event) {
-        if(event != null && mActionMode != null) {
+        if (event != null && mActionMode != null) {
             mActionMode.finish();
         }
     }
@@ -126,7 +126,7 @@ public class IOweFragment extends Fragment implements IOweContract.View {
         mIOweAdapter.setOnItemClickListener(new IOweAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, PersonDebt personDebt, int position) {
-                if(mActionMode != null) {
+                if (mActionMode != null) {
                     myToggleSelection(position, view);
                     return;
                 }
@@ -148,7 +148,7 @@ public class IOweFragment extends Fragment implements IOweContract.View {
 
     @Override
     public void showDebts(List<PersonDebt> debts) {
-        if(mTextViewEmptyDebts.getVisibility() == View.VISIBLE) {
+        if (mTextViewEmptyDebts.getVisibility() == View.VISIBLE) {
             mTextViewEmptyDebts.setVisibility(View.GONE);
         }
 
@@ -216,18 +216,15 @@ public class IOweFragment extends Fragment implements IOweContract.View {
         // Called when the user selects a contextual menu item
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.action_delete:
 
-                    if(mIOweAdapter.getSelectedItemCount() > 0) {
-                        openConfirmDialog();
-
-                    }
-                    // mode.finish();
-                    return false;
-                default:
-                    return false;
+            if (item.getItemId() == R.id.action_delete) {
+                if (mIOweAdapter.getSelectedItemCount() > 0) {
+                    openConfirmDialog();
+                }
+                // mode.finish();
+                return false;
             }
+            return false;
         }
 
         // Called when the user exits the action mode
@@ -267,7 +264,7 @@ public class IOweFragment extends Fragment implements IOweContract.View {
         int debtsDeleted = 0;
 
         List<PersonDebt> deletePersonDebts = new ArrayList<>();
-        for(int i = 0; i < mIOweAdapter.getSelectedItemCount(); i++) {
+        for (int i = 0; i < mIOweAdapter.getSelectedItemCount(); i++) {
             int position = mIOweAdapter.getSelectedItems().keyAt(i);
             PersonDebt personDebt = mIOweAdapter.getPersonDebt(position);
             deletePersonDebts.add(personDebt);
@@ -276,7 +273,7 @@ public class IOweFragment extends Fragment implements IOweContract.View {
 
         mPresenter.batchDeletePersonDebts(deletePersonDebts, Debt.DEBT_TYPE_OWED);
 
-        if(debtsDeleted == mIOweAdapter.getSelectedItemCount()) {
+        if (debtsDeleted == mIOweAdapter.getSelectedItemCount()) {
             ViewUtil.showToast(getActivity(), "Debts deleted successfully");
         }
 

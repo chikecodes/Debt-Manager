@@ -23,11 +23,13 @@ import java.util.List;
 
 public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> {
 
-    private SparseBooleanArray mSelectedItems;
+    private final SparseBooleanArray mSelectedItems;
     private final List<PersonDebt> mPersonDebts;
     private final LayoutInflater mLayoutInflater;
     private RecyclerView mRecyclerView;
-    private Fragment mFragment;
+    private final Fragment mFragment;
+    private OnItemClickListener mOnItemClickListener;
+    private OnItemLongClickListener mOnItemLongClickListener;
 
     public OweMeAdapter(Fragment fragment, List<PersonDebt> personDebts) {
         mPersonDebts = personDebts;
@@ -42,9 +44,6 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
         mRecyclerView = recyclerView;
     }
 
-    // for item click listener
-    private OnItemClickListener mOnItemClickListener;
-
     public interface OnItemClickListener {
         void onItemClick(View view, PersonDebt personDebt, int position);
     }
@@ -52,9 +51,6 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
     public void setOnItemClickListener(final OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
-
-    // for item long click listener
-    private OnItemLongClickListener mOnItemLongClickListener;
 
     public interface OnItemLongClickListener {
         void onItemClick(View view, PersonDebt personDebt, int position);
@@ -77,7 +73,7 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if(mOnItemLongClickListener != null) {
+                if (mOnItemLongClickListener != null) {
                     mOnItemLongClickListener.onItemClick(view, personDebt, holder.getAdapterPosition());
                 }
                 return true;
@@ -87,7 +83,7 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mOnItemClickListener != null) {
+                if (mOnItemClickListener != null) {
                     mOnItemClickListener.onItemClick(view, personDebt, holder.getAdapterPosition());
                 }
             }
@@ -119,7 +115,6 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public final ListItemDebtBinding mListItemDebtBinding;
-        String mDebtId;
 
         public ViewHolder(ListItemDebtBinding binding) {
             super(binding.getRoot());
@@ -127,7 +122,6 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
         }
 
         public void bind(PersonDebt personDebt) {
-            mDebtId = personDebt.getDebt().getId();
             mListItemDebtBinding.setPersonDebt(personDebt);
         }
     }
@@ -136,7 +130,7 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
      * For multiple selection
      */
     public void toggleSelection(int position, View view) {
-        if(mSelectedItems.get(position, false)) {
+        if (mSelectedItems.get(position, false)) {
             mSelectedItems.delete(position);
             view.setSelected(false);
         } else {
@@ -155,7 +149,7 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
 
     public void clearSelections() {
 
-        for(int i = 0; i < getSelectedItemCount(); i++) {
+        for (int i = 0; i < getSelectedItemCount(); i++) {
             int position = getSelectedItems().keyAt(i);
 
             ViewHolder vh = (ViewHolder) mRecyclerView.findViewHolderForAdapterPosition(position);

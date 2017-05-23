@@ -21,7 +21,7 @@ public final class ValidationUtil {
 
         boolean isEmpty = StringUtil.isEmpty(value);
 
-        if(isEmpty) {
+        if (isEmpty) {
             if (editText.getVisibility() != View.VISIBLE) {
                 return false;
             }

@@ -23,7 +23,7 @@ import javax.inject.Inject;
 
 public class IOwePresenter implements IOweContract.Presenter, LoaderManager.LoaderCallbacks<List<PersonDebt>> {
 
-    private final static int IOWe_QUERY = 1;
+    private final static int IOWE_QUERY = 1;
 
     @NonNull
     private final IOweContract.View mIOweView;
@@ -53,7 +53,7 @@ public class IOwePresenter implements IOweContract.Presenter, LoaderManager.Load
 
     @Override
     public void start() {
-        mLoaderManager.initLoader(IOWe_QUERY, null, this);
+        mLoaderManager.initLoader(IOWE_QUERY, null, this);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class IOwePresenter implements IOweContract.Presenter, LoaderManager.Load
 
         // set view loading indicator to false
         mCurrentDebts = data;
-        if(mCurrentDebts == null) {
+        if (mCurrentDebts == null) {
             mIOweView.showLoadingDebtsError();
         } else {
             showIOweDebts();
@@ -82,8 +82,8 @@ public class IOwePresenter implements IOweContract.Presenter, LoaderManager.Load
 
     private void showIOweDebts() {
         List<PersonDebt> debtsToShow = new ArrayList<>();
-        if(mCurrentDebts != null) {
-            for(PersonDebt personDebt : mCurrentDebts) {
+        if (mCurrentDebts != null) {
+            for (PersonDebt personDebt : mCurrentDebts) {
                 debtsToShow.add(personDebt);
             }
         }
@@ -91,7 +91,7 @@ public class IOwePresenter implements IOweContract.Presenter, LoaderManager.Load
         processDebts(debtsToShow);
     }
     private void processDebts(List<PersonDebt> debts) {
-        if(debts.isEmpty()) {
+        if (debts.isEmpty()) {
             mIOweView.showEmptyView();
         } else {
             mIOweView.showDebts(debts);
@@ -111,7 +111,7 @@ public class IOwePresenter implements IOweContract.Presenter, LoaderManager.Load
     @Override
     public void batchDeletePersonDebts(@NonNull List<PersonDebt> personDebts, @NonNull int debtType) {
 
-        if(!personDebts.isEmpty()) {
+        if (!personDebts.isEmpty()) {
             mPersonDebtsRepository.batchDelete(personDebts, debtType);
         }
     }

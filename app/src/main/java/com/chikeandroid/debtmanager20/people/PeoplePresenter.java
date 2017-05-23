@@ -6,8 +6,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
 import com.chikeandroid.debtmanager20.data.Person;
-import com.chikeandroid.debtmanager20.data.source.PersonDebtsDataSource;
-import com.chikeandroid.debtmanager20.data.source.PersonDebtsRepository;
 import com.chikeandroid.debtmanager20.people.loader.PeopleLoader;
 import com.chikeandroid.debtmanager20.util.EspressoIdlingResource;
 
@@ -29,9 +27,6 @@ public class PeoplePresenter implements PeopleContract.Presenter, LoaderManager.
     private final PeopleContract.View mPeopleView;
 
     @NonNull
-    private final PersonDebtsDataSource mPersonDebtsRepository;
-
-    @NonNull
     private final LoaderManager mLoaderManager;
 
     private final PeopleLoader mLoader;
@@ -39,11 +34,9 @@ public class PeoplePresenter implements PeopleContract.Presenter, LoaderManager.
     private List<Person> mCurrentPeople;
 
     @Inject
-    PeoplePresenter(PeopleContract.View view, PersonDebtsRepository debtsRepository,
-                    LoaderManager loaderManager, PeopleLoader loader) {
+    PeoplePresenter(PeopleContract.View view, LoaderManager loaderManager, PeopleLoader loader) {
         mLoader = loader;
         mPeopleView = view;
-        mPersonDebtsRepository = debtsRepository;
         mLoaderManager = loaderManager;
     }
 
@@ -73,7 +66,7 @@ public class PeoplePresenter implements PeopleContract.Presenter, LoaderManager.
         }
 
         mCurrentPeople = data;
-        if(mCurrentPeople == null) {
+        if (mCurrentPeople == null) {
             mPeopleView.showLoadingPeopleError();
         } else {
             showPeople();
@@ -82,8 +75,8 @@ public class PeoplePresenter implements PeopleContract.Presenter, LoaderManager.
 
     private void showPeople() {
         List<Person> peopleToShow = new ArrayList<>();
-        if(mCurrentPeople != null) {
-            for(Person person : mCurrentPeople) {
+        if (mCurrentPeople != null) {
+            for (Person person : mCurrentPeople) {
                 peopleToShow.add(person);
             }
         }
@@ -92,7 +85,7 @@ public class PeoplePresenter implements PeopleContract.Presenter, LoaderManager.
     }
 
     private void processPeople(List<Person> people) {
-        if(people.isEmpty()) {
+        if (people.isEmpty()) {
             mPeopleView.showEmptyView();
         } else {
             mPeopleView.showPeople(people);
@@ -106,6 +99,6 @@ public class PeoplePresenter implements PeopleContract.Presenter, LoaderManager.
 
     @Override
     public void stop() {
-
+        //  call presenter stop method.
     }
 }

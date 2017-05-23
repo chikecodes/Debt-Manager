@@ -93,13 +93,6 @@ public class PeopleFragment extends Fragment implements PeopleContract.View {
             }
         });
 
-        mPeopleAdapter.setOnItemLongClickListener(new PeopleAdapter.OnItemLongClickListener() {
-            @Override
-            public void onItemClick(View view, Person person, int position) {
-
-            }
-        });
-
         return peopleFragmentBinding.getRoot();
     }
 
@@ -111,7 +104,7 @@ public class PeopleFragment extends Fragment implements PeopleContract.View {
     @Override
     public void showPeople(List<Person> persons) {
 
-        if(mTextViewEmptyDebts.getVisibility() == View.VISIBLE) {
+        if (mTextViewEmptyDebts.getVisibility() == View.VISIBLE) {
             mTextViewEmptyDebts.setVisibility(View.GONE);
         }
 

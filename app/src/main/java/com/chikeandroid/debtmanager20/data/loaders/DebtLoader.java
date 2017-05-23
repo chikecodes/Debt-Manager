@@ -15,8 +15,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * (@link DebtsRespository} as its source. This Loader is a {@link AsyncTaskLoader} so it queries
  * the data asynchronously.
  */
-public class DebtLoader extends AsyncTaskLoader<PersonDebt> implements PersonDebtsRepository.DebtsRepositoryObserver{
-
+public class DebtLoader extends AsyncTaskLoader<PersonDebt> implements PersonDebtsRepository.DebtsRepositoryObserver {
 
     private final String mDebtId;
     private final int mDebtType;
@@ -40,11 +39,11 @@ public class DebtLoader extends AsyncTaskLoader<PersonDebt> implements PersonDeb
 
     @Override
     public void deliverResult(PersonDebt data) {
-        if(isReset()) {
+        if (isReset()) {
             return;
         }
 
-        if(isStarted()) {
+        if (isStarted()) {
             super.deliverResult(data);
         }
     }
@@ -53,13 +52,13 @@ public class DebtLoader extends AsyncTaskLoader<PersonDebt> implements PersonDeb
     protected void onStartLoading() {
         // Deliver any previously loaded data immediately if available.
         boolean cacheAvailable = false;
-        if(mDebtType == Debt.DEBT_TYPE_IOWE) {
-            if(mDebtsRepository.cachedIOweDebtsAvailable()) {
+        if (mDebtType == Debt.DEBT_TYPE_IOWE) {
+            if (mDebtsRepository.cachedIOweDebtsAvailable()) {
                 deliverResult(mDebtsRepository.getCachedIOweDebt(mDebtId));
             }
             cacheAvailable = mDebtsRepository.cachedIOweDebtsAvailable();
-        }else if(mDebtType == Debt.DEBT_TYPE_OWED) {
-            if(mDebtsRepository.cachedOwedDebtsAvailable()) {
+        }else if (mDebtType == Debt.DEBT_TYPE_OWED) {
+            if (mDebtsRepository.cachedOwedDebtsAvailable()) {
                 deliverResult(mDebtsRepository.getCachedOwedDebt(mDebtId));
             }
             cacheAvailable = mDebtsRepository.cachedOwedDebtsAvailable();
@@ -68,7 +67,7 @@ public class DebtLoader extends AsyncTaskLoader<PersonDebt> implements PersonDeb
         // Begin monitoring the underlying data source
         mDebtsRepository.addContentObserver(this);
 
-        if(takeContentChanged() || !cacheAvailable) {
+        if (takeContentChanged() || !cacheAvailable) {
             // When a change has  been delivered or the repository cache isn't available, we force
             // a load.
             forceLoad();
@@ -88,7 +87,7 @@ public class DebtLoader extends AsyncTaskLoader<PersonDebt> implements PersonDeb
 
     @Override
     public void onDebtsChanged(int debtType) {
-        if(isStarted()) {
+        if (isStarted()) {
             forceLoad();
         }
     }

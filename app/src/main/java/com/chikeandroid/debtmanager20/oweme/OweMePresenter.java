@@ -78,7 +78,7 @@ public class OweMePresenter implements OweMeContract.Presenter, LoaderManager.Lo
 
         // set view loading indicator to false
         mCurrentDebts = data;
-        if(mCurrentDebts == null) {
+        if (mCurrentDebts == null) {
             mOweMeDebtsView.showLoadingDebtsError();
         } else {
             showOweMeDebts();
@@ -87,8 +87,8 @@ public class OweMePresenter implements OweMeContract.Presenter, LoaderManager.Lo
 
     private void showOweMeDebts() {
         List<PersonDebt> debtsToShow = new ArrayList<>();
-        if(mCurrentDebts != null) {
-            for(PersonDebt personDebt : mCurrentDebts) {
+        if (mCurrentDebts != null) {
+            for (PersonDebt personDebt : mCurrentDebts) {
                 debtsToShow.add(personDebt);
             }
         }
@@ -97,7 +97,7 @@ public class OweMePresenter implements OweMeContract.Presenter, LoaderManager.Lo
     }
 
     private void processDebts(List<PersonDebt> debts) {
-        if(debts.isEmpty()) {
+        if (debts.isEmpty()) {
             mOweMeDebtsView.showEmptyView();
         } else {
             mOweMeDebtsView.showDebts(debts);
@@ -112,7 +112,7 @@ public class OweMePresenter implements OweMeContract.Presenter, LoaderManager.Lo
     @Override
     public void batchDeletePersonDebts(@NonNull List<PersonDebt> personDebts, @NonNull int debtType) {
 
-        if(!personDebts.isEmpty()) {
+        if (!personDebts.isEmpty()) {
             mPersonDebtsRepository.batchDelete(personDebts, debtType);
         }
     }

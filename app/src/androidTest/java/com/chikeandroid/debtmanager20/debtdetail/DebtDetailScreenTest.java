@@ -47,7 +47,7 @@ public class DebtDetailScreenTest {
         //onView(withId(R.id.action_edit)).perform(click());
 
         onView(withId(R.id.description1)).check(matches(withText(TestUtil.NAME1)));
-        onView(withId(R.id.tv_comment)).check(matches(withText(TestUtil.NOTE)));
+        onView(withId(R.id.tv_comment)).check(matches(withText(TestUtil.NOTE1)));
 
     }
 

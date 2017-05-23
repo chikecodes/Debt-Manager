@@ -46,7 +46,7 @@ public class AddEditDebtActivity extends SingleFragmentActivity {
         AddEditDebtFragment fragment;
 
         boolean editDebt = false;
-        if(getIntent().hasExtra(AddEditDebtFragment.ARGUMENT_EDIT_DEBT)) {
+        if (getIntent().hasExtra(AddEditDebtFragment.ARGUMENT_EDIT_DEBT)) {
 
             fragment = AddEditDebtFragment.newInstance(getIntent().getExtras());
             editDebt = true;

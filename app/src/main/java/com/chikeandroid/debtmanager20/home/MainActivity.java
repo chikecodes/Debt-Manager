@@ -28,7 +28,7 @@ import org.greenrobot.eventbus.EventBus;
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
-    public static String EXTRA_DEBT_TYPE = "com.chikeandroid.debtmanager20.home.debt_type";
+    public static final String EXTRA_DEBT_TYPE = "com.chikeandroid.debtmanager20.home.debt_type";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,16 +61,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 EventBus.getDefault().post(new MainViewPagerSwipeEvent("Swiped"));
-            }
-
-            // optional
-            @Override
-            public void onPageSelected(int position) { }
-
-            // optional
-            @Override
-            public void onPageScrollStateChanged(int state) { }
-        });
+            } });
 
     }
 
@@ -80,12 +71,10 @@ public class MainActivity extends AppCompatActivity {
 
             ViewUtil.showToast(this, getString(R.string.msg_debt_save_success));
 
-            if(data != null) {
-                if(data.getIntExtra(EXTRA_DEBT_TYPE, -1) == Debt.DEBT_TYPE_IOWE) {
-                    mViewPager.setCurrentItem(1, true);
-                }else if(data.getIntExtra(EXTRA_DEBT_TYPE, -1) == Debt.DEBT_TYPE_OWED) {
-                    mViewPager.setCurrentItem(0, true);
-                }
+            if (data != null && data.getIntExtra(EXTRA_DEBT_TYPE, -1) == Debt.DEBT_TYPE_IOWE) {
+                mViewPager.setCurrentItem(1, true);
+            }else if (data != null && data.getIntExtra(EXTRA_DEBT_TYPE, -1) == Debt.DEBT_TYPE_OWED) {
+                mViewPager.setCurrentItem(0, true);
             }
         }
     }

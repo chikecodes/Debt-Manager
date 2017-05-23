@@ -40,11 +40,11 @@ public class OweMeLoader extends AsyncTaskLoader<List<PersonDebt>> implements Pe
 
     @Override
     public void deliverResult(List<PersonDebt> data) {
-        if(isReset()) {
+        if (isReset()) {
             return;
         }
 
-        if(isStarted()) {
+        if (isStarted()) {
             super.deliverResult(data);
         }
     }
@@ -52,14 +52,14 @@ public class OweMeLoader extends AsyncTaskLoader<List<PersonDebt>> implements Pe
     @Override
     protected void onStartLoading() {
         // Deliver any previously loaded data immediately if available.
-        if(mDebtsRepository.cachedOwedDebtsAvailable()) {
+        if (mDebtsRepository.cachedOwedDebtsAvailable()) {
             deliverResult(mDebtsRepository.getAllPersonDebtsByType(Debt.DEBT_TYPE_OWED));
         }
 
         // Begin monitoring the underlying data source
         mDebtsRepository.addContentObserver(this);
 
-        if(takeContentChanged() || !mDebtsRepository.cachedOwedDebtsAvailable()) {
+        if (takeContentChanged() || !mDebtsRepository.cachedOwedDebtsAvailable()) {
             // When a change has  been delivered or the repository cache isn't available, we force
             // a load.
             forceLoad();
@@ -68,10 +68,8 @@ public class OweMeLoader extends AsyncTaskLoader<List<PersonDebt>> implements Pe
 
     @Override
     public void onDebtsChanged(int debtType) {
-        if(debtType == Debt.DEBT_TYPE_OWED) {
-            if (isStarted()) {
-                forceLoad();
-            }
+        if (debtType == Debt.DEBT_TYPE_OWED && isStarted()) {
+            forceLoad();
         }
     }
 

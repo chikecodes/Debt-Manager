@@ -76,7 +76,7 @@ public class DebtDetailPresenter implements DebtDetailContract.Presenter, Loader
 
     @Override
     public Loader<PersonDebt> onCreateLoader(int id, Bundle args) {
-        if(mDebtId == null) {
+        if (mDebtId == null) {
             return null;
         }
         // can set loading indicator
@@ -85,7 +85,7 @@ public class DebtDetailPresenter implements DebtDetailContract.Presenter, Loader
 
     @Override
     public void onLoadFinished(Loader<PersonDebt> loader, PersonDebt data) {
-        if(data == null) {
+        if (data == null) {
             mDebtDetailView.showMissingDebt();
         }else {
             mDebtDetailView.showPersonDebt(data);

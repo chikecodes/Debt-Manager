@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+                name="Debt"
+                type="com.chikeandroid.debtmanager20.data.Debt"/>
+
+        <import type="com.chikeandroid.debtmanager20.util.TimeUtil"/>
+
+        <import type="com.chikeandroid.debtmanager20.util.StringUtil"/>
+    </data>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selected_row"
+            android:clickable="true"
+            android:minHeight="72dp"
+            android:orientation="horizontal">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bottom_gray_border"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:id="@+id/tv_amount"
+                        android:text='@{StringUtil.commaNumber(Debt.amount)}'
+                        android:textColor="@color/black"
+                        tools:text="$20000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:layout_alignParentStart="true"/>
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/tv_amount">
+
+                    <TextView
+                            android:id="@+id/tv_note"
+                            android:text="@{Debt.note}"
+                            tools:text="Debt note, note, note"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="4dp"
+                            android:textSize="12sp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                            android:layout_alignParentEnd="true"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:text='@{Debt.debtType == 100 ? "I Owe" : "Owe Me"}'
+                        android:textColor="@color/black"
+                        tools:text="Owe me"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_fullname"
+                        android:textSize="16sp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        />
+
+                <TextView
+                        android:id="@+id/tv_due_date"
+                        android:text='@{TimeUtil.millis2String(Debt.dueDate)}'
+                        tools:text="Mar 7, 2017"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal|bottom"
+                        android:padding="4dp"
+                        android:textSize="12sp"
+                        android:visibility="visible"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        android:layout_alignParentEnd="true"
+                        tools:ignore="RelativeOverlap"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>

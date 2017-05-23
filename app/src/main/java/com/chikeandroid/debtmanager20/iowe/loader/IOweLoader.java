@@ -37,11 +37,11 @@ public class IOweLoader extends AsyncTaskLoader<List<PersonDebt>> implements Per
 
     @Override
     public void deliverResult(List<PersonDebt> data) {
-        if(isReset()) {
+        if (isReset()) {
             return;
         }
 
-        if(isStarted()) {
+        if (isStarted()) {
             super.deliverResult(data);
         }
     }
@@ -49,14 +49,14 @@ public class IOweLoader extends AsyncTaskLoader<List<PersonDebt>> implements Per
     @Override
     protected void onStartLoading() {
         // Deliver any previously loaded data immediately if available.
-        if(mDebtsRepository.cachedIOweDebtsAvailable()) {
+        if (mDebtsRepository.cachedIOweDebtsAvailable()) {
             deliverResult(mDebtsRepository.getAllPersonDebtsByType(Debt.DEBT_TYPE_IOWE));
         }
 
         // Begin monitoring the underlying data source
         mDebtsRepository.addContentObserver(this);
 
-        if(takeContentChanged() || !mDebtsRepository.cachedIOweDebtsAvailable()) {
+        if (takeContentChanged() || !mDebtsRepository.cachedIOweDebtsAvailable()) {
             // When a change has  been delivered or the repository cache isn't available, we force
             // a load.
             forceLoad();
@@ -65,10 +65,8 @@ public class IOweLoader extends AsyncTaskLoader<List<PersonDebt>> implements Per
 
     @Override
     public void onDebtsChanged(int debtType) {
-        if(debtType == Debt.DEBT_TYPE_OWED) {
-            if (isStarted()) {
-                forceLoad();
-            }
+        if (debtType == Debt.DEBT_TYPE_OWED && isStarted()) {
+            forceLoad();
         }
     }
 

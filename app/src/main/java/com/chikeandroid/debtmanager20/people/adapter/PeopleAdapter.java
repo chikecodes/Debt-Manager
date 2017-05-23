@@ -24,18 +24,16 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
 
     private final List<Person> mPersons;
     private final LayoutInflater mLayoutInflater;
-    private final Context mContext;
     private final Fragment mFragment;
+    private OnItemClickListener mOnItemClickListener;
+    private OnItemLongClickListener mOnItemLongClickListener;
 
     public PeopleAdapter(Fragment fragment, Context context, List<Person> persons) {
         mPersons = persons;
         mLayoutInflater = LayoutInflater.from(context);
-        mContext = context;
+        // Context context1 = context;
         mFragment = fragment;
     }
-
-    // for item click listener
-    private OnItemClickListener mOnItemClickListener;
 
     public interface OnItemClickListener {
         void onItemClick(View view, Person person, int position);
@@ -44,9 +42,6 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     public void setOnItemClickListener(final OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;
     }
-
-    // for item long click listener
-    private OnItemLongClickListener mOnItemLongClickListener;
 
     public interface OnItemLongClickListener {
         void onItemClick(View view, Person person, int position);
@@ -70,7 +65,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         holder.mListItemDebtBinding.lytParent.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                if(mOnItemLongClickListener != null) {
+                if (mOnItemLongClickListener != null) {
                     mOnItemLongClickListener.onItemClick(view, person, holder.getAdapterPosition());
                 }
                 return true;
@@ -80,7 +75,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         holder.mListItemDebtBinding.lytParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mOnItemClickListener != null) {
+                if (mOnItemClickListener != null) {
                     mOnItemClickListener.onItemClick(view, person, holder.getAdapterPosition());
                 }
             }
@@ -104,7 +99,6 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public final ListItemPersonBinding mListItemDebtBinding;
-        String mPersonId;
 
         public ViewHolder(ListItemPersonBinding binding) {
             super(binding.getRoot());
@@ -112,7 +106,6 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         }
 
         public void bind(Person person) {
-            mPersonId = person.getId();
             mListItemDebtBinding.setPerson(person);
 
             Glide.with(mFragment)

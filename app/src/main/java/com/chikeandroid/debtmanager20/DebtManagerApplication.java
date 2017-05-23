@@ -22,7 +22,7 @@ public class DebtManagerApplication extends Application {
         // no need to include the applicationModule since it requires no constructor argument
         mApplicationComponent = DaggerApplicationComponent.builder().context(getApplicationContext()).build();
 
-        if(BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(this);
         }
 

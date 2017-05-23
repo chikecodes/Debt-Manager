@@ -105,7 +105,7 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
         callButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!StringUtil.isEmpty(mPhoneNumber)) {
+                if (!StringUtil.isEmpty(mPhoneNumber)) {
                     callDebtor();
                 }
             }
@@ -115,7 +115,7 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
         smsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!StringUtil.isEmpty(mPhoneNumber)) {
+                if (!StringUtil.isEmpty(mPhoneNumber)) {
                     smsDebtor();
                 }
             }

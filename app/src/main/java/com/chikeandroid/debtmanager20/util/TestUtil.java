@@ -20,9 +20,17 @@ public final class TestUtil {
     public static final String NOTE1 = "computer money";
     public static final String NOTE2 = "note 2";
     public static final String NOTE3 = "comment 4543";
-    public static final double AMOUNT1 = 6000.545;
+    public static final double AMOUNT1 = 6000;
     public static final double AMOUNT2 = 70000;
     public static final double AMOUNT3 = 9000;
+
+    public final static int CREATED_YEAR = 2017;
+    public final static int CREATED_MONTH = 10;
+    public final static int CREATED_DAY_OF_MONTH = 10;
+
+    public final static int DUE_YEAR = 2017;
+    public final static int DUE_MONTH = 12;
+    public final static int DUE_DAY_OF_MONTH = 15;
 
     private TestUtil() {
     }

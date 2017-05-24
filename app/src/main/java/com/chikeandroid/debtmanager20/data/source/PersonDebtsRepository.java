@@ -319,6 +319,11 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         }
         mCacheIOwe.clear();
 
+        if (mCachePersons == null) {
+            mCachePersons = new LinkedHashMap<>();
+        }
+        mCachePersons.clear();
+
         // update the UI
         // notifyContentObserver();
     }

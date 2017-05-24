@@ -9,7 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.chikeandroid.debtmanager20.data.Debt;
-import com.chikeandroid.debtmanager20.home.MainActivity;
+import com.chikeandroid.debtmanager20.features.home.MainActivity;
 
 import org.hamcrest.Matcher;
 import org.junit.Rule;

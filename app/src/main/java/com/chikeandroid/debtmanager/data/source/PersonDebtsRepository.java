@@ -103,7 +103,7 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
 
     @Override
     public List<Debt> getPersonDebts(@NonNull Person person) {
-        if (mCachePersons != null && mCachePersons.isEmpty() && mCachePersons.get(person.getPhoneNumber()) != null) {
+        if (mCachePersons != null && !mCachePersons.isEmpty() && mCachePersons.get(person.getPhoneNumber()) != null) {
             return mCachePersons.get(person.getPhoneNumber()).getDebts();
         }
         return mDebtsLocalDataSource.getPersonDebts(person);
@@ -397,9 +397,9 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
 
     private void removePersonDebtFromCache(PersonDebt personDebt) {
 
-        if (personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_OWED && mCacheOwed.isEmpty()) {
+        if (personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_OWED && !mCacheOwed.isEmpty()) {
             mCacheOwed.remove(personDebt.getDebt().getId());
-        }else if (personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_IOWE && mCacheIOwe.isEmpty()) {
+        }else if (personDebt.getDebt().getDebtType() == Debt.DEBT_TYPE_IOWE && !mCacheIOwe.isEmpty()) {
             mCacheIOwe.remove(personDebt.getDebt().getId());
         }
 
@@ -445,19 +445,17 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
         mDebtsLocalDataSource.updatePersonDebt(personDebt);
 
         Debt debt = personDebt.getDebt();
-        if (debt.getDebtType() == Debt.DEBT_TYPE_OWED) {
-            mCacheOwed.remove(debt.getId());
-            mCacheOwed.put(debt.getId(), personDebt);
-        }else if (debt.getDebtType() == Debt.DEBT_TYPE_IOWE) {
-            mCacheIOwe.remove(debt.getId());
-            mCacheIOwe.put(debt.getId(), personDebt);
-        }
+        updateDebtCache(personDebt, debt);
 
-        // update person cache
+        updatePersonCacheDebts(personDebt);
+
+        //update the UI
+        notifyContentObserver(personDebt.getDebt().getDebtType());
+    }
+
+    private void updatePersonCacheDebts(@NonNull PersonDebt personDebt) {
         Person personCache = mCachePersons.get(personDebt.getPerson().getPhoneNumber());
-
         String debtId = personDebt.getDebt().getId();
-
         for (Iterator<Debt> iter = personCache.getDebts().iterator(); iter.hasNext();) {
 
             Debt debt1 = iter.next();
@@ -465,20 +463,24 @@ public class PersonDebtsRepository implements PersonDebtsDataSource {
                 iter.remove();
             }
         }
-
         personCache.getDebts().add(personDebt.getDebt());
 
         Person newPerson = new Person(personDebt.getPerson().getId(), personDebt.getPerson().getFullname(),
                 personDebt.getPerson().getPhoneNumber(), personDebt.getPerson().getImageUri());
 
         newPerson.setDebts(personCache.getDebts());
-
         mCachePersons.remove(personDebt.getPerson().getPhoneNumber());
-
         mCachePersons.put(personDebt.getPerson().getPhoneNumber(), newPerson);
+    }
 
-        //update the UI
-        notifyContentObserver(personDebt.getDebt().getDebtType());
+    private void updateDebtCache(@NonNull PersonDebt personDebt, Debt debt) {
+        if (debt.getDebtType() == Debt.DEBT_TYPE_OWED) {
+            mCacheOwed.remove(debt.getId());
+            mCacheOwed.put(debt.getId(), personDebt);
+        }else if (debt.getDebtType() == Debt.DEBT_TYPE_IOWE) {
+            mCacheIOwe.remove(debt.getId());
+            mCacheIOwe.put(debt.getId(), personDebt);
+        }
     }
 
     @Override

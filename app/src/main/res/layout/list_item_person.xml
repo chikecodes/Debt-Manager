@@ -6,7 +6,7 @@
 
         <variable
                 name="Person"
-                type="com.chikeandroid.debtmanager20.data.Person"/>
+                type="com.chikeandroid.debtmanager.data.Person"/>
     </data>
 
     <RelativeLayout

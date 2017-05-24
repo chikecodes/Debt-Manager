@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.chikeandroid.debtmanager20" >
+    package="com.chikeandroid.debtmanager" >
 
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <application
-        android:name=".DebtManagerApplication"
+        android:name="com.chikeandroid.debtmanager.DebtManagerApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".features.home.MainActivity"
+        <activity android:name="com.chikeandroid.debtmanager.features.home.MainActivity"
                   android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
@@ -20,25 +20,25 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".features.addeditdebt.AddEditDebtActivity">
+        <activity android:name="com.chikeandroid.debtmanager.features.addeditdebt.AddEditDebtActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".features.home.MainActivity" />
+                    android:value="com.chikeandroid.debtmanager.features.home.MainActivity" />
         </activity>
-        <activity android:name=".features.persondetail.PersonDetailActivity">
+        <activity android:name="com.chikeandroid.debtmanager.features.persondetail.PersonDetailActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".features.home.MainActivity" />
+                    android:value="com.chikeandroid.debtmanager.features.home.MainActivity" />
         </activity>
         <activity
-                android:name=".features.debtdetail.DebtDetailActivity"
+                android:name="com.chikeandroid.debtmanager.features.debtdetail.DebtDetailActivity"
                 android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".features.home.MainActivity" />
+                    android:value="com.chikeandroid.debtmanager.features.home.MainActivity" />
         </activity>
         <activity
-                android:name=".features.addeditdebt.ContactsActivity"
+                android:name="com.chikeandroid.debtmanager.features.addeditdebt.ContactsActivity"
                 android:label="@string/app_name"/>
     </application>
 

@@ -7,7 +7,7 @@
     <data>
         <variable
                 name="PersonDebt"
-                type="com.chikeandroid.debtmanager20.data.PersonDebt"/>
+                type="com.chikeandroid.debtmanager.data.PersonDebt"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout

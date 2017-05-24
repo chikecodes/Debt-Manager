@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DebtManager2.0</string>
+    <string name="app_name">Debt Manager</string>
     <string name="action_owed_by_me">Owed By Me</string>
     <string name="owed_to_me">Owed To Me</string>
     <string name="action_owed_to_me">Owed To Me</string>

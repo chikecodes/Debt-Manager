@@ -6,11 +6,11 @@
 
         <variable
                 name="Debt"
-                type="com.chikeandroid.debtmanager20.data.Debt"/>
+                type="com.chikeandroid.debtmanager.data.Debt"/>
 
-        <import type="com.chikeandroid.debtmanager20.util.TimeUtil"/>
+        <import type="com.chikeandroid.debtmanager.util.TimeUtil"/>
 
-        <import type="com.chikeandroid.debtmanager20.util.StringUtil"/>
+        <import type="com.chikeandroid.debtmanager.util.StringUtil"/>
     </data>
 
     <LinearLayout

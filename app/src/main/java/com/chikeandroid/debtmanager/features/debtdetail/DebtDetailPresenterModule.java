@@ -1,12 +1,12 @@
 package com.chikeandroid.debtmanager.features.debtdetail;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 
+import com.chikeandroid.debtmanager.features.debtdetail.loaders.DebtLoader;
 import com.chikeandroid.debtmanager.data.source.PersonDebtsRepository;
-import com.chikeandroid.debtmanager.data.loaders.DebtLoader;
 
 import dagger.Module;
 import dagger.Provides;
@@ -24,12 +24,17 @@ public class DebtDetailPresenterModule {
     private final Fragment mContext;
     private final String mDebtId;
     private final int mDebtType;
+    private final LoaderManager mLoaderManager;
 
-    public DebtDetailPresenterModule(DebtDetailContract.View view, @Nullable String debtId, int debtType) {
+    public DebtDetailPresenterModule(DebtDetailContract.View view,
+                                     @NonNull String debtId,
+                                     int debtType,
+                                     @NonNull LoaderManager loaderManager) {
         mView = view;
         mContext = (Fragment) view;
         mDebtId = debtId;
         mDebtType = debtType;
+        mLoaderManager = loaderManager;
     }
 
     @Provides
@@ -39,7 +44,7 @@ public class DebtDetailPresenterModule {
 
     @Provides
     LoaderManager providesLoaderManager() {
-        return mContext.getLoaderManager();
+        return mLoaderManager;
     }
 
     @Provides
@@ -48,7 +53,6 @@ public class DebtDetailPresenterModule {
     }
 
     @Provides
-    @Nullable
     String providesDebtId() {
         return mDebtId;
     }

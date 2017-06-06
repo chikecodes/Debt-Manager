@@ -1,4 +1,4 @@
-package com.chikeandroid.debtmanager.data.loaders;
+package com.chikeandroid.debtmanager.features.debtdetail.loaders;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -53,15 +53,15 @@ public class DebtLoader extends AsyncTaskLoader<PersonDebt> implements PersonDeb
         // Deliver any previously loaded data immediately if available.
         boolean cacheAvailable = false;
         if (mDebtType == Debt.DEBT_TYPE_IOWE) {
-            if (mDebtsRepository.cachedIOweDebtsAvailable()) {
+            if (mDebtsRepository.cachedIOwePersonDebtsAvailable()) {
                 deliverResult(mDebtsRepository.getCachedIOweDebt(mDebtId));
             }
-            cacheAvailable = mDebtsRepository.cachedIOweDebtsAvailable();
+            cacheAvailable = mDebtsRepository.cachedIOwePersonDebtsAvailable();
         }else if (mDebtType == Debt.DEBT_TYPE_OWED) {
-            if (mDebtsRepository.cachedOwedDebtsAvailable()) {
-                deliverResult(mDebtsRepository.getCachedOwedDebt(mDebtId));
+            if (mDebtsRepository.cachedOweMePersonDebtsAvailable()) {
+                deliverResult(mDebtsRepository.getCachedOweMePersonDebt(mDebtId));
             }
-            cacheAvailable = mDebtsRepository.cachedOwedDebtsAvailable();
+            cacheAvailable = mDebtsRepository.cachedOweMePersonDebtsAvailable();
         }
 
         // Begin monitoring the underlying data source

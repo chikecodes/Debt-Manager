@@ -4,27 +4,28 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import java.util.List;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by Chike on 3/23/2017.
- * Immutable model class for a PersonDebt.
+ * Model class for a PersonDebt.
  */
-
-public final class PersonDebt implements Parcelable {
-
-    @NonNull
-    private final Person mPerson;
+public class PersonDebt implements Parcelable {
 
     @NonNull
-    private final Debt mDebt;
+    private Person mPerson;
+
+    @NonNull
+    private Debt mDebt;
 
     public PersonDebt(Person person, Debt debt) {
         checkNotNull(person);
         checkNotNull(debt);
 
-        mPerson = person;
-        mDebt = debt;
+        mPerson = new Person(person);
+        mDebt = new Debt(debt);
     }
 
     @NonNull
@@ -35,6 +36,24 @@ public final class PersonDebt implements Parcelable {
     @NonNull
     public Debt getDebt() {
         return mDebt;
+    }
+
+    public List<Payment> getPayments() {
+        return mDebt.getPayments();
+    }
+
+    public void addPayment(Payment payment) {
+        if (mDebt.getPayments() != null) {
+            mDebt.getPayments().add(payment);
+        }
+    }
+
+    public void setPerson(@NonNull Person person) {
+        mPerson = person;
+    }
+
+    public void setDebt(@NonNull Debt debt) {
+        mDebt = debt;
     }
 
     @Override

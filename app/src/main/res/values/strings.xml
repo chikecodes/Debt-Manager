@@ -12,6 +12,7 @@
         keeping this sample simple and focused.
     </string>
     <string name="due_date">Date due: %1$s</string>
+    <string name="total_debt_amount">Total: %1$s</string>
     <string name="created_date">Created on: %1$s</string>
     <string name="required_field">%1$s is required</string>
     <string name="msg_empty_debt">Cannot save empty debt</string>
@@ -19,7 +20,7 @@
     <string name="delete_dialog_title">Delete %1$s\'s %2$s debt?</string>
     <string name="dialog_delete">Delete</string>
     <string name="dialog_cancel">Cancel</string>
-    <string name="msg_success_message_deleted">Debt was deleted successfully</string>
+    <string name="msg_success_message_debt_deleted">Debt was deleted successfully</string>
     <string name="msg_error_debt">Error saving debt</string>
     <string name="msg_debt_save_success">Debt saved successfully</string>
     <string name="msg_edit_debt_success">Debt edited successfully</string>
@@ -31,4 +32,10 @@
     <string name="title_details">Details</string>
     <string name="debt_detail_image_content_description">User image</string>
     <string name="msg_loading_people_error">Error loading people</string>
+    <string name="title_add_payment">Add Payment</string>
+    <string name="msg_leave_debt_amount_as_it_is">Leave debt amount as it is</string>
+    <string name="msg_increase_debt_amount">Increase debt amount</string>
+    <string name="msg_decrease_debt_amount">Decrease debt amount</string>
+    <string name="msg_success_message_payment_deleted">Payment deleted successfully</string>
+    <string name="title_edit_payment">Edit Payment</string>
 </resources>

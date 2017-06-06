@@ -45,7 +45,7 @@ public class AddEditDebtPresenterTest {
     public void shouldSaveDebtToRepository() {
 
         Person person1 = TestUtil.createPerson("Chike Mgbemena", "07038111534");
-        Debt debt1 = TestUtil.createDebt(person1.getId(), 60000, Debt.DEBT_TYPE_IOWE,
+        Debt debt1 = TestUtil.createDebt(person1.getPhoneNumber(), 60000, Debt.DEBT_TYPE_IOWE,
                 Debt.DEBT_STATUS_ACTIVE, "note 4345");
 
         mAddEditDebtPresenter.saveDebt(person1, debt1);
@@ -72,7 +72,7 @@ public class AddEditDebtPresenterTest {
         mAddEditDebtPresenter = new AddEditDebtPresenter(mDebtsRepository, mAddDebtView, true);
 
         Person person1 = TestUtil.createPerson("Mary Jane", "08023021782");
-        Debt debt1 = TestUtil.createDebt(person1.getId(), 60000, Debt.DEBT_TYPE_IOWE,
+        Debt debt1 = TestUtil.createDebt(person1.getPhoneNumber(), 60000, Debt.DEBT_TYPE_IOWE,
                 Debt.DEBT_STATUS_ACTIVE, "note 4345");
 
         mAddEditDebtPresenter.saveDebt(person1, debt1);

@@ -20,12 +20,14 @@ import java.util.List;
 public class PersonDebtsLoader extends AsyncTaskLoader<List<Debt>> implements PersonDebtsRepository.DebtsRepositoryObserver {
 
     private final PersonDebtsRepository mPersonDebtsRepository;
-    private final Person mPerson;
+    private final String mPersonPhoneNumber;
 
-    public PersonDebtsLoader(Context context, @NonNull PersonDebtsRepository personDebtsRepository, @NonNull Person person) {
+    public PersonDebtsLoader(Context context,
+                             @NonNull PersonDebtsRepository personDebtsRepository,
+                             @NonNull String personPhoneNumber) {
         super(context);
         mPersonDebtsRepository = personDebtsRepository;
-        mPerson = person;
+        mPersonPhoneNumber = personPhoneNumber;
     }
 
     @Override
@@ -34,7 +36,7 @@ public class PersonDebtsLoader extends AsyncTaskLoader<List<Debt>> implements Pe
         // App is busy until further notice
         EspressoIdlingResource.increment();
 
-        return mPersonDebtsRepository.getPersonDebts(mPerson);
+        return mPersonDebtsRepository.getPersonDebts(mPersonPhoneNumber);
     }
 
     @Override
@@ -52,7 +54,7 @@ public class PersonDebtsLoader extends AsyncTaskLoader<List<Debt>> implements Pe
     protected void onStartLoading() {
         // Deliver any previously loaded data immediately if available.
         if (mPersonDebtsRepository.cachedPeopleAvailable()) {
-            deliverResult(mPersonDebtsRepository.getPersonDebts(mPerson));
+            deliverResult(mPersonDebtsRepository.getPersonDebts(mPersonPhoneNumber));
         }
 
         // Begin monitoring the underlying data source

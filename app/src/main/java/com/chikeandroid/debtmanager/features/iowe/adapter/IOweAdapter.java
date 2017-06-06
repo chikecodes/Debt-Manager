@@ -1,5 +1,6 @@
 package com.chikeandroid.debtmanager.features.iowe.adapter;
 
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +21,6 @@ import java.util.List;
  * Created by Chike on 4/25/2017.
  * IOwe RecyclerView Adapter
  */
-
 public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
 
     private final SparseBooleanArray mSelectedItems;
@@ -90,6 +90,10 @@ public class IOweAdapter extends RecyclerView.Adapter<IOweAdapter.ViewHolder> {
         });
 
         holder.itemView.setActivated(mSelectedItems.get(position, false));
+
+        if (System.currentTimeMillis() > personDebt.getDebt().getDueDate()) {
+            holder.mListItemDebtBinding.tvDueDate.setTextColor(Color.RED);
+        }
     }
 
     public void updatePersonDebtListItems(List<PersonDebt> personDebts) {

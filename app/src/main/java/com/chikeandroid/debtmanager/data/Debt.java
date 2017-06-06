@@ -5,11 +5,14 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Chike on 3/14/2017.
- * Immutable model class for a Debt
+ * Model class for a Debt
  */
-public final class Debt implements Parcelable {
+public class Debt implements Parcelable {
 
     public static final int DEBT_TYPE_IOWE = 100;
     public static final int DEBT_TYPE_OWED = 200;
@@ -26,7 +29,7 @@ public final class Debt implements Parcelable {
     private String mNote;
 
     @NonNull
-    private final String mPersonId;
+    private final String mPersonPhoneNumber;
 
     @NonNull
     private long mCreatedDate;
@@ -39,6 +42,9 @@ public final class Debt implements Parcelable {
 
     @NonNull
     private final int mStatus;
+
+    @Nullable
+    private List<Payment> mPayments;
 
     @NonNull
     public String getId() {
@@ -56,8 +62,8 @@ public final class Debt implements Parcelable {
     }
 
     @NonNull
-    public String getPersonId() {
-        return mPersonId;
+    public String getPersonPhoneNumber() {
+        return mPersonPhoneNumber;
     }
 
     @NonNull
@@ -100,11 +106,24 @@ public final class Debt implements Parcelable {
         mDebtType = debtType;
     }
 
+    @Nullable
+    public List<Payment> getPayments() {
+        return mPayments;
+    }
+
+    public void setPayments(@Nullable List<Payment> payments) {
+        mPayments = payments;
+    }
+
+    public void addPayment(Payment payment) {
+        mPayments.add(payment);
+    }
+
     public static class Builder {
 
         // Required parameters
         private final String mId;
-        private final String mPersonId;
+        private final String mPersonPhoneNumber;
         private final long mCreatedDate;
         private final int mDebtType;
         private final int mStatus;
@@ -113,12 +132,13 @@ public final class Debt implements Parcelable {
         // Optional parameters
         private String mNote = "";
         private long mDueDate = 0;
+        private List<Payment> mPayments = new ArrayList<>();
 
-        public Builder(String id, String personId, Double amount, long createdDate, int debtType, int status) {
+        public Builder(String id, String personPhoneNumber, Double amount, long createdDate, int debtType, int status) {
             mId = id;
             mAmount = amount;
             mCreatedDate = createdDate;
-            mPersonId = personId;
+            mPersonPhoneNumber = personPhoneNumber;
             mDebtType = debtType;
             mStatus = status;
         }
@@ -133,6 +153,16 @@ public final class Debt implements Parcelable {
             return this;
         }
 
+        public Builder addPayment(Payment payment) {
+            mPayments.add(payment);
+            return this;
+        }
+
+        public Builder payments(List<Payment> payments) {
+            mPayments = payments;
+            return this;
+        }
+
         public Debt build() {
             return new Debt(this);
         }
@@ -142,66 +172,33 @@ public final class Debt implements Parcelable {
     public Debt(Builder builder) {
 
         mId = builder.mId;
-        mPersonId = builder.mPersonId;
+        mPersonPhoneNumber = builder.mPersonPhoneNumber;
         mCreatedDate = builder.mCreatedDate;
         mDebtType = builder.mDebtType;
         mStatus = builder.mStatus;
         mAmount = builder.mAmount;
         mNote = builder.mNote;
         mDueDate = builder.mDueDate;
+        mPayments = builder.mPayments;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+    public Debt(Debt debt) {
 
-        Debt debt = (Debt) o;
-
-        if (Double.compare(debt.mAmount, mAmount) != 0) {
-            return false;
-        }
-        if (mCreatedDate != debt.mCreatedDate) {
-            return false;
-        }
-        if (mDueDate != debt.mDueDate) {
-            return false;
-        }
-        if (mDebtType != debt.mDebtType) {
-            return false;
-        }
-        if (mStatus != debt.mStatus) {
-            return false;
-        }
-        if (!mId.equals(debt.mId)) { //NOPMD
-            return false;
-        }
-        return mNote != null ? mNote.equals(debt.mNote) : debt.mNote == null && mPersonId.equals(debt.mPersonId); //NOPMD
+        mId = debt.getId();
+        mPersonPhoneNumber = debt.getPersonPhoneNumber();
+        mCreatedDate = debt.getCreatedDate();
+        mDebtType = debt.getDebtType();
+        mStatus = debt.getStatus();
+        mAmount = debt.getAmount();
+        mNote = debt.getNote();
+        mDueDate = debt.getDueDate();
+        mPayments = debt.getPayments();
     }
 
     public boolean isEmpty() {
         return mAmount == 0;
     }
 
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        result = mId.hashCode();
-        temp = Double.doubleToLongBits(mAmount);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (mNote != null ? mNote.hashCode() : 0); //NOPMD
-        result = 31 * result + mPersonId.hashCode();
-        result = 31 * result + (int) (mCreatedDate ^ (mCreatedDate >>> 32));
-        result = 31 * result + (int) (mDueDate ^ (mDueDate >>> 32));
-        result = 31 * result + mDebtType;
-        result = 31 * result + mStatus;
-        return result;
-    }
 
 
     @Override
@@ -214,22 +211,24 @@ public final class Debt implements Parcelable {
         dest.writeString(this.mId);
         dest.writeDouble(this.mAmount);
         dest.writeString(this.mNote);
-        dest.writeString(this.mPersonId);
+        dest.writeString(this.mPersonPhoneNumber);
         dest.writeLong(this.mCreatedDate);
         dest.writeLong(this.mDueDate);
         dest.writeInt(this.mDebtType);
         dest.writeInt(this.mStatus);
+        dest.writeTypedList(this.mPayments);
     }
 
     protected Debt(Parcel in) {
         this.mId = in.readString();
         this.mAmount = in.readDouble();
         this.mNote = in.readString();
-        this.mPersonId = in.readString();
+        this.mPersonPhoneNumber = in.readString();
         this.mCreatedDate = in.readLong();
         this.mDueDate = in.readLong();
         this.mDebtType = in.readInt();
         this.mStatus = in.readInt();
+        this.mPayments = in.createTypedArrayList(Payment.CREATOR);
     }
 
     public static final Parcelable.Creator<Debt> CREATOR = new Parcelable.Creator<Debt>() {
@@ -243,4 +242,40 @@ public final class Debt implements Parcelable {
             return new Debt[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Debt debt = (Debt) o;
+
+        if (Double.compare(debt.mAmount, mAmount) != 0) return false;
+        if (mCreatedDate != debt.mCreatedDate) return false;
+        if (mDueDate != debt.mDueDate) return false;
+        if (mDebtType != debt.mDebtType) return false;
+        if (mStatus != debt.mStatus) return false;
+        if (!mId.equals(debt.mId)) return false;
+        if (mNote != null ? !mNote.equals(debt.mNote) : debt.mNote != null) return false;
+        if (!mPersonPhoneNumber.equals(debt.mPersonPhoneNumber)) return false;
+        return mPayments != null ? mPayments.equals(debt.mPayments) : debt.mPayments == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = mId.hashCode();
+        temp = Double.doubleToLongBits(mAmount);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (mNote != null ? mNote.hashCode() : 0);
+        result = 31 * result + mPersonPhoneNumber.hashCode();
+        result = 31 * result + (int) (mCreatedDate ^ (mCreatedDate >>> 32));
+        result = 31 * result + (int) (mDueDate ^ (mDueDate >>> 32));
+        result = 31 * result + mDebtType;
+        result = 31 * result + mStatus;
+        result = 31 * result + (mPayments != null ? mPayments.hashCode() : 0);
+        return result;
+    }
 }

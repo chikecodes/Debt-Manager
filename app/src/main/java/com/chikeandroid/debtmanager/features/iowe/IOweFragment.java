@@ -24,9 +24,10 @@ import com.chikeandroid.debtmanager.R;
 import com.chikeandroid.debtmanager.data.Debt;
 import com.chikeandroid.debtmanager.data.PersonDebt;
 import com.chikeandroid.debtmanager.databinding.IoweFragmentBinding;
-import com.chikeandroid.debtmanager.features.debtdetail.DebtDetailActivity;
 import com.chikeandroid.debtmanager.event.MainViewPagerSwipeEvent;
+import com.chikeandroid.debtmanager.features.debtdetail.DebtDetailActivity;
 import com.chikeandroid.debtmanager.features.iowe.adapter.IOweAdapter;
+import com.chikeandroid.debtmanager.util.StringUtil;
 import com.chikeandroid.debtmanager.util.TimeUtil;
 import com.chikeandroid.debtmanager.util.ViewUtil;
 
@@ -45,7 +46,6 @@ import javax.inject.Inject;
  * Created by Chike on 3/14/2017.
  * Display a List of {@link PersonDebt}s that user owes.
  */
-
 public class IOweFragment extends Fragment implements IOweContract.View {
 
     private static final String TAG = "IOweFragment";
@@ -53,6 +53,7 @@ public class IOweFragment extends Fragment implements IOweContract.View {
     private TextView mTextViewEmptyDebts;
     private ActionMode mActionMode;
     private final ActionModeCallback mActionModeCallback = new ActionModeCallback();
+    private TextView mTextViewTotalAmount;
 
     @Inject
     IOwePresenter mIOwePresenter;
@@ -123,6 +124,8 @@ public class IOweFragment extends Fragment implements IOweContract.View {
         recyclerViewIowe.setAdapter(mIOweAdapter);
         mTextViewEmptyDebts = ioweFragmentBinding.tvNoDebts;
 
+        mTextViewTotalAmount = ioweFragmentBinding.totalAmountLayout.tvTotalAmount;
+
         mIOweAdapter.setOnItemClickListener(new IOweAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, PersonDebt personDebt, int position) {
@@ -164,12 +167,19 @@ public class IOweFragment extends Fragment implements IOweContract.View {
         });
 
         mIOweAdapter.updatePersonDebtListItems(debts);
+
+        double total = 0;
+        for (PersonDebt personDebt: debts) {
+            total += personDebt.getDebt().getAmount();
+        }
+
+        mTextViewTotalAmount.setText(String.format(getString(R.string.total_debt_amount),
+                StringUtil.commaNumber(total)));
     }
 
     private void myToggleSelection(int position, View view) {
         mIOweAdapter.toggleSelection(position, view);
         String title = mIOweAdapter.getSelectedItemCount() + " selected";
-        Log.d(TAG, "size is : " + mIOweAdapter.getSelectedItemCount());
         mActionMode.setTitle(title);
     }
 
@@ -182,6 +192,8 @@ public class IOweFragment extends Fragment implements IOweContract.View {
     public void showEmptyView() {
         mIOweAdapter.updatePersonDebtListItems(new ArrayList<PersonDebt>());
         mTextViewEmptyDebts.setVisibility(View.VISIBLE);
+        mTextViewTotalAmount.setText(String.format(getString(R.string.total_debt_amount),
+                StringUtil.commaNumber(0)));
     }
 
     @Override

@@ -74,7 +74,7 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
         mPersonDebtsAdapter = new PersonDebtsAdapter(getActivity(), new ArrayList<Debt>(0));
 
         DaggerPersonDetailComponent.builder()
-                .personDetailPresenterModule(new PersonDetailPresenterModule(this, mPerson))
+                .personDetailPresenterModule(new PersonDetailPresenterModule(this, mPerson.getPhoneNumber()))
                 .applicationComponent(((DebtManagerApplication) getActivity().getApplication()).getComponent()).build()
                 .inject(this);
     }

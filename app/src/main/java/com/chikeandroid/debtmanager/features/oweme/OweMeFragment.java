@@ -24,9 +24,10 @@ import com.chikeandroid.debtmanager.R;
 import com.chikeandroid.debtmanager.data.Debt;
 import com.chikeandroid.debtmanager.data.PersonDebt;
 import com.chikeandroid.debtmanager.databinding.OweMeFragmentBinding;
-import com.chikeandroid.debtmanager.features.debtdetail.DebtDetailActivity;
 import com.chikeandroid.debtmanager.event.MainViewPagerSwipeEvent;
+import com.chikeandroid.debtmanager.features.debtdetail.DebtDetailActivity;
 import com.chikeandroid.debtmanager.features.oweme.adapter.OweMeAdapter;
+import com.chikeandroid.debtmanager.util.StringUtil;
 import com.chikeandroid.debtmanager.util.TimeUtil;
 import com.chikeandroid.debtmanager.util.ViewUtil;
 
@@ -52,6 +53,7 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
     private OweMeAdapter mOweMeAdapter;
     private TextView mTextViewEmptyDebts;
     private final ActionModeCallback mActionModeCallback = new ActionModeCallback();
+    private TextView mTextViewTotalAmount;
 
     @Inject
     OweMePresenter mOweMePresenter;
@@ -120,14 +122,15 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        OweMeFragmentBinding binding = DataBindingUtil.inflate(inflater, R.layout.owe_me_fragment, container, false);
-        final View view = binding.getRoot();
+        OweMeFragmentBinding oweMeFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.owe_me_fragment, container, false);
+        final View view = oweMeFragmentBinding.getRoot();
 
-        RecyclerView recyclerView = binding.rvOweme;
+        RecyclerView recyclerView = oweMeFragmentBinding.rvOweme;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(mOweMeAdapter);
-        mTextViewEmptyDebts = binding.tvNoDebts;
+        mTextViewEmptyDebts = oweMeFragmentBinding.tvNoDebts;
 
+        mTextViewTotalAmount = oweMeFragmentBinding.totalAmountLayout.tvTotalAmount;
 
         mOweMeAdapter.setOnItemClickListener(new OweMeAdapter.OnItemClickListener() {
             @Override
@@ -171,12 +174,22 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
         });
 
         mOweMeAdapter.updatePersonDebtListItems(debts);
+
+        double total = 0;
+        for (PersonDebt personDebt: debts) {
+            total += personDebt.getDebt().getAmount();
+        }
+
+        mTextViewTotalAmount.setText(String.format(getString(R.string.total_debt_amount),
+                StringUtil.commaNumber(total)));
     }
 
     @Override
     public void showEmptyView() {
         mOweMeAdapter.updatePersonDebtListItems(new ArrayList<PersonDebt>());
         mTextViewEmptyDebts.setVisibility(View.VISIBLE);
+        mTextViewTotalAmount.setText(String.format(getString(R.string.total_debt_amount),
+                StringUtil.commaNumber(0)));
     }
 
     @Override

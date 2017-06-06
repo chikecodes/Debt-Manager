@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 
-import com.chikeandroid.debtmanager.data.Person;
 import com.chikeandroid.debtmanager.data.source.PersonDebtsRepository;
 import com.chikeandroid.debtmanager.features.persondetail.loader.PersonDebtsLoader;
 
@@ -22,12 +21,12 @@ public class PersonDetailPresenterModule {
 
     private final PersonDetailContract.View mView;
     private final Fragment mContext;
-    private final Person mPerson;
+    private final String mPersonPhoneNumber;
 
-    public PersonDetailPresenterModule(PersonDetailContract.View view, @NonNull Person person) {
+    public PersonDetailPresenterModule(PersonDetailContract.View view, @NonNull String personPhoneNumber) {
         mView = view;
         mContext = (Fragment) view;
-        mPerson = person;
+        mPersonPhoneNumber = personPhoneNumber;
     }
 
     @Provides
@@ -42,11 +41,11 @@ public class PersonDetailPresenterModule {
 
     @Provides
     PersonDebtsLoader providesPersonLoader(Context context, PersonDebtsRepository repository) {
-        return new PersonDebtsLoader(context, repository, mPerson);
+        return new PersonDebtsLoader(context, repository, mPersonPhoneNumber);
     }
 
     @Provides
-    Person providesPerson() {
-        return mPerson;
+    String providesPersonPhoneNumber() {
+        return mPersonPhoneNumber;
     }
 }

@@ -261,25 +261,24 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
         }else if (itemId == R.id.action_save_debt) {
             if (ValidationUtil.isInValid(new EditTextFullNameValidator(mEditTextName, getActivity()),
                     new EditTextPhoneNumberValidator(mEditTextPhoneNumber, getActivity()),
-                    new EditTextIntegerValidator(mEditTextAmount, getActivity())
-            )) {
+                    new EditTextIntegerValidator(mEditTextAmount, getActivity()))) {
 
                 Toast.makeText(getActivity(), "Invalid", Toast.LENGTH_LONG).show();
 
             }else {
 
-                String personId = UUID.randomUUID().toString();
+                String personPhoneNumber = mEditTextPhoneNumber.getText().toString();
                 String debtId = UUID.randomUUID().toString();
                 // update
                 if (mPersonDebt != null) {
-                    personId = mPersonDebt.getPerson().getId();
+                    personPhoneNumber = mPersonDebt.getPerson().getPhoneNumber();
                     debtId = mPersonDebt.getDebt().getId();
                 }
 
-                Person person = new Person(personId, mEditTextName.getText().toString(),
-                        mEditTextPhoneNumber.getText().toString(), mContactImageUri);
+                Person person = new Person(mEditTextName.getText().toString(), personPhoneNumber,
+                        mContactImageUri);
 
-                Debt debt = new Debt.Builder(debtId, person.getId(),
+                Debt debt = new Debt.Builder(debtId, personPhoneNumber,
                         Double.valueOf(mEditTextAmount.getText().toString()), mDebtCreatedAt,
                         mDebtType, Debt.DEBT_STATUS_ACTIVE)
                         .dueDate(mDebtDue)

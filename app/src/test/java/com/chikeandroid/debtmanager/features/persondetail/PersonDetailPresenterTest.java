@@ -52,11 +52,11 @@ public class PersonDetailPresenterTest {
         MockitoAnnotations.initMocks(this);
 
         Person person = TestUtil.createAndGetPerson();
-        mPersonDetailPresenter = new PersonDetailPresenter(mPersonDetailView, mLoaderManager, mPersonDebtsLoader, person);
-        Debt debt1 = TestUtil.createDebt(person.getId(), 757575, Debt.DEBT_TYPE_OWED, Debt.DEBT_STATUS_ACTIVE, "note 123");
-        Debt debt2 = TestUtil.createDebt(person.getId(), 40000, Debt.DEBT_TYPE_IOWE, Debt.DEBT_STATUS_ACTIVE, "note 456");
-        Debt debt3 = TestUtil.createDebt(person.getId(), 5999, Debt.DEBT_TYPE_IOWE, Debt.DEBT_STATUS_ACTIVE, "note 54444");
-        Debt debt4 = TestUtil.createDebt(person.getId(), 39000, Debt.DEBT_TYPE_OWED, Debt.DEBT_STATUS_ACTIVE, "note 666");
+        mPersonDetailPresenter = new PersonDetailPresenter(mPersonDetailView, mLoaderManager, mPersonDebtsLoader, person.getPhoneNumber());
+        Debt debt1 = TestUtil.createDebt(person.getPhoneNumber(), 757575, Debt.DEBT_TYPE_OWED, Debt.DEBT_STATUS_ACTIVE, "note 123");
+        Debt debt2 = TestUtil.createDebt(person.getPhoneNumber(), 40000, Debt.DEBT_TYPE_IOWE, Debt.DEBT_STATUS_ACTIVE, "note 456");
+        Debt debt3 = TestUtil.createDebt(person.getPhoneNumber(), 5999, Debt.DEBT_TYPE_IOWE, Debt.DEBT_STATUS_ACTIVE, "note 54444");
+        Debt debt4 = TestUtil.createDebt(person.getPhoneNumber(), 39000, Debt.DEBT_TYPE_OWED, Debt.DEBT_STATUS_ACTIVE, "note 666");
         mDebts = Lists.newArrayList(debt1, debt2, debt3, debt4);
     }
 

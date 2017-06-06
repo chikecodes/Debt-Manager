@@ -4,9 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.text.TextUtils;
 
 import com.chikeandroid.debtmanager.data.Debt;
-import com.chikeandroid.debtmanager.data.Person;
 import com.chikeandroid.debtmanager.features.persondetail.loader.PersonDebtsLoader;
 
 import java.util.List;
@@ -29,15 +29,17 @@ public class PersonDetailPresenter implements PersonDetailContract.Presenter, Lo
     private final LoaderManager mLoaderManager;
 
     private final PersonDebtsLoader mLoader;
-    private final Person mPerson;
+    private final String mPersonPhoneNumber;
 
     @Inject
-    public PersonDetailPresenter(PersonDetailContract.View view, LoaderManager loaderManager,
-                                 PersonDebtsLoader loader, Person person) {
+    public PersonDetailPresenter(@NonNull PersonDetailContract.View view,
+                                 @NonNull LoaderManager loaderManager,
+                                 @NonNull PersonDebtsLoader loader,
+                                 @NonNull String personPhoneNumber) {
         mPersonDebtsDetailView = view;
         mLoaderManager = loaderManager;
         mLoader = loader;
-        mPerson = person;
+        mPersonPhoneNumber = personPhoneNumber;
     }
 
     @Inject
@@ -57,7 +59,7 @@ public class PersonDetailPresenter implements PersonDetailContract.Presenter, Lo
 
     @Override
     public Loader<List<Debt>> onCreateLoader(int id, Bundle args) {
-        if (mPerson == null) {
+        if (TextUtils.isEmpty(mPersonPhoneNumber)) {
             return null;
         }
         // can set loading indicator
@@ -67,7 +69,7 @@ public class PersonDetailPresenter implements PersonDetailContract.Presenter, Lo
     @Override
     public void onLoadFinished(Loader<List<Debt>> loader, List<Debt> data) {
 
-        if (data.isEmpty()) {
+        if (data == null) {
             mPersonDebtsDetailView.showMissingPersonDebts();
         }else {
             mPersonDebtsDetailView.showPersonDebts(data);

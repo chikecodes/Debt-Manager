@@ -3,8 +3,10 @@ package com.chikeandroid.debtmanager.features.oweme;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.widget.DatePicker;
 
 import com.chikeandroid.debtmanager.DebtManagerApplication;
 import com.chikeandroid.debtmanager.R;
@@ -23,12 +25,15 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
+import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.chikeandroid.debtmanager.util.AndroidTestUtil.createDebt;
@@ -58,6 +63,9 @@ import static com.chikeandroid.debtmanager.util.TestUtil.PHONE_NUMBER3;
  */
 @RunWith(AndroidJUnit4.class)
 public class OweMeScreenTest {
+
+    private double mPaymentAmount = 1000;
+    private String mPaymentComment = "Payment comment 101";
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule =
@@ -202,6 +210,38 @@ public class OweMeScreenTest {
             }
         };
     }*/
+
+    // this should be in debt detail screen
+    @Test
+    public void shouldBeAbleToAddPaymentToDebtAndShowInRecyclerView() {
+
+        createDebt(NAME1, PHONE_NUMBER1, AMOUNT1, NOTE1, Debt.DEBT_TYPE_OWED);
+
+        onView(withText(StringUtil.commaNumber(AMOUNT1))).perform(click());
+
+        onView(withText(NAME1)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.fab_add_payment)).perform(click());
+
+        onView(withId(R.id.et_payment_amount)).perform(typeText(String.valueOf(mPaymentAmount)), closeSoftKeyboard());
+        onView(withId(R.id.et_payment_comment)).perform(typeText(mPaymentComment), closeSoftKeyboard());
+
+        onView(withId(R.id.btn_payment_date_created)).perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(
+                PickerActions.setDate(DUE_YEAR, DUE_MONTH, DUE_DAY_OF_MONTH));
+        onView(withId(android.R.id.button1)).perform(click());
+        onView(withId(R.id.rb_decrease)).perform(click());
+
+        onView(withId(R.id.ib_save_payment)).perform(click());
+
+        onView(withText(StringUtil.commaNumber(mPaymentAmount))).check(matches(isDisplayed()));
+        onView(withText(mPaymentComment)).check(matches(isDisplayed()));
+
+        // make sure debt amount reduced
+        double newDebtAmount = AMOUNT1 - mPaymentAmount;
+        onView(isAssignableFrom(CollapsingToolbarLayout.class)).check(matches(
+                withCollapsingToolbarLayoutTitle(Matchers.<CharSequence>is(StringUtil.commaNumber(newDebtAmount)))));
+    }
 
     @After
     public void unregisterIdlingResource() {

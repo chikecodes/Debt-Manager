@@ -6,10 +6,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+        <include
+                android:id="@+id/total_amount_layout"
+                layout="@layout/total_amount_layout_content"/>
+
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_oweme"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:layout_below="@+id/total_amount_layout"/>
 
         <TextView
                 android:id="@+id/tv_no_debts"

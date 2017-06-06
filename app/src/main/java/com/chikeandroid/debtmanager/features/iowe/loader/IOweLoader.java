@@ -49,14 +49,14 @@ public class IOweLoader extends AsyncTaskLoader<List<PersonDebt>> implements Per
     @Override
     protected void onStartLoading() {
         // Deliver any previously loaded data immediately if available.
-        if (mDebtsRepository.cachedIOweDebtsAvailable()) {
+        if (mDebtsRepository.cachedIOwePersonDebtsAvailable()) {
             deliverResult(mDebtsRepository.getAllPersonDebtsByType(Debt.DEBT_TYPE_IOWE));
         }
 
         // Begin monitoring the underlying data source
         mDebtsRepository.addContentObserver(this);
 
-        if (takeContentChanged() || !mDebtsRepository.cachedIOweDebtsAvailable()) {
+        if (takeContentChanged() || !mDebtsRepository.cachedIOwePersonDebtsAvailable()) {
             // When a change has  been delivered or the repository cache isn't available, we force
             // a load.
             forceLoad();

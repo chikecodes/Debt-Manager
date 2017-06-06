@@ -1,20 +1,16 @@
 package com.chikeandroid.debtmanager.features.debtdetail;
 
-import android.content.Intent;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.chikeandroid.debtmanager.R;
-import com.chikeandroid.debtmanager.util.TestUtil;
+import com.chikeandroid.debtmanager.DebtManagerApplication;
+import com.chikeandroid.debtmanager.features.home.MainActivity;
 
+import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * Created by Chike on 4/29/2017.
@@ -31,11 +27,29 @@ public class DebtDetailScreenTest {
     //private String mDebtId;
 
     @Rule
-    public ActivityTestRule<DebtDetailActivity> mDebtDetailActivityActivityTestRule =
-            new ActivityTestRule<>(DebtDetailActivity.class, true, false);
+    public ActivityTestRule<MainActivity> mActivityTestRule =
+            new ActivityTestRule<MainActivity>(MainActivity.class) {
+
+                /**
+                 * To avoid a long list of debts and the need to scroll through the list to find a
+                 * debt, we call {@link com.chikeandroid.debtmanager.data.source.PersonDebtsDataSource ;#deleteAllPersonDebts()} ()} before each test.
+                 */
+                @Override
+                protected void beforeActivityLaunched() {
+                    super.beforeActivityLaunched();
+
+                    ((DebtManagerApplication) InstrumentationRegistry.getTargetContext()
+                            .getApplicationContext()).getComponent()
+                            .getDebtsRepository().deleteAllPersonDebts();
+                }};
 
 
-    private void loadDebt() {
+    @Before
+    public void registerIdlingResource() {
+        Espresso.registerIdlingResources(mActivityTestRule.getActivity().getCountingIdlingResource());
+    }
+
+    /*private void loadDebt() {
         startActivityWithStubbedDebt();
     }
 
@@ -46,8 +60,8 @@ public class DebtDetailScreenTest {
 
         //onView(withId(R.id.action_edit)).perform(click());
 
-        onView(withId(R.id.description1)).check(matches(withText(TestUtil.NAME1)));
-        onView(withId(R.id.tv_comment)).check(matches(withText(TestUtil.NOTE1)));
+        onView(withId(R.id.description1)).check(matches(withText(NAME1)));
+        onView(withId(R.id.tv_comment)).check(matches(withText(NOTE1)));
 
     }
 
@@ -56,6 +70,6 @@ public class DebtDetailScreenTest {
         Intent startIntent = new Intent();
         startIntent.putExtra(DebtDetailFragment.EXTRA_DEBT_ID, "5t5t");
         mDebtDetailActivityActivityTestRule.launchActivity(startIntent);
-    }
+    }*/
 
 }

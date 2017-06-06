@@ -67,7 +67,6 @@ public class PeopleLoader extends AsyncTaskLoader<List<Person>> implements Perso
     public void onDebtsChanged(int debtType) {
         if (debtType == Debt.DEBT_TYPE_OWED || debtType == Debt.DEBT_TYPE_IOWE && isStarted()) {
             forceLoad();
-
         }
         // forceLoad();
     }

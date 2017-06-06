@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.chikeandroid.debtmanager.base.BasePresenter;
 import com.chikeandroid.debtmanager.base.BaseView;
+import com.chikeandroid.debtmanager.data.Debt;
+import com.chikeandroid.debtmanager.data.Payment;
 import com.chikeandroid.debtmanager.data.PersonDebt;
 
 /**
@@ -16,19 +18,26 @@ public interface DebtDetailContract {
 
         boolean isActive();
 
-        void addPartialPayment();
-
         void showPersonDebt(@NonNull PersonDebt personDebt);
 
         void showMissingDebt();
 
         void showPersonDebtDeleted();
+
+        void showPaymentDeleted();
     }
 
     interface Presenter extends BasePresenter {
 
-        void addAdditionalDebt();
+        void addPartialPayment(@NonNull Payment payment);
+
+        void editPayment(@NonNull Payment payment, @NonNull Debt debt);
 
         void deletePersonDebt(@NonNull PersonDebt personDebt);
+
+        void deletePayment(@NonNull Payment payment);
+
+        void refreshPayments();
+
     }
 }

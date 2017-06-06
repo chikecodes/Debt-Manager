@@ -2,6 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/action_call"
+          android:orderInCategory="100"
+          app:showAsAction="ifRoom"
+          android:icon="@drawable/ic_call_white"
+          android:title="Call"/>
+
+    <item android:id="@+id/action_sms"
+          android:orderInCategory="100"
+          app:showAsAction="ifRoom"
+          android:icon="@drawable/ic_sms_white"
+          android:title="SMS"/>
+
     <item android:id="@+id/action_edit"
           android:orderInCategory="100"
           app:showAsAction="ifRoom"
@@ -13,4 +25,10 @@
           app:showAsAction="ifRoom"
           android:icon="@drawable/ic_delete"
           android:title="Delete"/>
+
+    <item android:id="@+id/action_add_payment"
+          android:orderInCategory="100"
+          app:showAsAction="ifRoom"
+          android:icon="@drawable/ic_delete"
+          android:title="Add Payment"/>
 </menu>

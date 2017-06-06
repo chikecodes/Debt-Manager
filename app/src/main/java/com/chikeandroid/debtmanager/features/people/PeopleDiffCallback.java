@@ -33,8 +33,8 @@ public class PeopleDiffCallback extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return mOldPersonList.get(oldItemPosition).getId().equals(
-                mNewPersonList.get(newItemPosition).getId());
+        return mOldPersonList.get(oldItemPosition).getPhoneNumber().equals(
+                mNewPersonList.get(newItemPosition).getPhoneNumber());
     }
 
 

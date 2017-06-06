@@ -52,14 +52,14 @@ public class OweMeLoader extends AsyncTaskLoader<List<PersonDebt>> implements Pe
     @Override
     protected void onStartLoading() {
         // Deliver any previously loaded data immediately if available.
-        if (mDebtsRepository.cachedOwedDebtsAvailable()) {
+        if (mDebtsRepository.cachedOweMePersonDebtsAvailable()) {
             deliverResult(mDebtsRepository.getAllPersonDebtsByType(Debt.DEBT_TYPE_OWED));
         }
 
         // Begin monitoring the underlying data source
         mDebtsRepository.addContentObserver(this);
 
-        if (takeContentChanged() || !mDebtsRepository.cachedOwedDebtsAvailable()) {
+        if (takeContentChanged() || !mDebtsRepository.cachedOweMePersonDebtsAvailable()) {
             // When a change has  been delivered or the repository cache isn't available, we force
             // a load.
             forceLoad();

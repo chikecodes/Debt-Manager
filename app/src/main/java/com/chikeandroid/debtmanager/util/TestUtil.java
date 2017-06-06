@@ -1,6 +1,7 @@
 package com.chikeandroid.debtmanager.util;
 
 import com.chikeandroid.debtmanager.data.Debt;
+import com.chikeandroid.debtmanager.data.Payment;
 import com.chikeandroid.debtmanager.data.Person;
 
 import java.util.UUID;
@@ -32,23 +33,23 @@ public final class TestUtil {
     public final static int DUE_MONTH = 12;
     public final static int DUE_DAY_OF_MONTH = 15;
 
+    public final static String DEBT_ID = "12334556766";
+
     private TestUtil() {
     }
 
-    public static Debt createDebt(String personId, double amount, int debtType, int debtStatus, String note) {
+    public static Debt createDebt(String personPhoneNumber, double amount, int debtType, int debtStatus, String note) {
 
-        Debt debt = new Debt.Builder(UUID.randomUUID().toString(), personId, amount,
+        return new Debt.Builder(UUID.randomUUID().toString(), personPhoneNumber, amount,
                 System.currentTimeMillis(), debtType, debtStatus)
                 .dueDate(System.currentTimeMillis())
                 .note(note)
                 .build();
-
-        return debt;
     }
 
     public static Person createPerson(String name, String phoneNumber) {
 
-        return new Person(UUID.randomUUID().toString(), name, phoneNumber, "");
+        return new Person(name, phoneNumber, "");
     }
 
     public static Person createAndGetPerson2() {
@@ -65,6 +66,45 @@ public final class TestUtil {
 
     public static Debt createAndGetIOweDebt(String personId) {
         return createDebt(personId, AMOUNT1, Debt.DEBT_TYPE_IOWE, Debt.DEBT_STATUS_ACTIVE, NOTE1);
+    }
+
+    public static Payment createAndGetADebtPayment1(String debtId) {
+
+      return new Payment.Builder()
+                .note("payment note 1")
+                .debtId(debtId)
+                .id("666666")
+                .amount(1000)
+                .dateEntered(System.currentTimeMillis())
+                .personPhoneNumber("070381115347")
+                .action(Payment.PAYMENT_ACTION_DEBT_INCREASE)
+                .build();
+    }
+
+    public static Payment createAndGetADebtPayment2(String debtId) {
+
+      return new Payment.Builder()
+                .note("payment note 2")
+                .debtId(debtId)
+                .id("6464647")
+                .amount(90000)
+                .personPhoneNumber("070381115347")
+                .dateEntered(System.currentTimeMillis())
+                .action(Payment.PAYMENT_ACTION_DEBT_INCREASE)
+                .build();
+    }
+
+    public static Payment createAndGetADebtPayment3(String debtId) {
+
+      return new Payment.Builder()
+                .note("payment note 3")
+                .debtId(debtId)
+                .id("9484333")
+                .amount(600040)
+                .dateEntered(System.currentTimeMillis())
+                .personPhoneNumber("070381115347")
+                .action(Payment.PAYMENT_ACTION_DEBT_INCREASE)
+                .build();
     }
 
 }

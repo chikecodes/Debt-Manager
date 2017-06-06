@@ -1,5 +1,6 @@
 package com.chikeandroid.debtmanager.features.oweme.adapter;
 
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
@@ -90,6 +91,10 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
         });
 
         holder.itemView.setActivated(mSelectedItems.get(position, false));
+
+        if (System.currentTimeMillis() > personDebt.getDebt().getDueDate()) {
+            holder.mListItemDebtBinding.tvDueDate.setTextColor(Color.RED);
+        }
 
         Glide.with(mFragment)
                 .load(personDebt.getPerson().getImageUri())

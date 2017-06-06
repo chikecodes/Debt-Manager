@@ -60,27 +60,27 @@ public class IOwePresenterTest {
 
         mIOwePresenter = new IOwePresenter(mIOweView, mRepository, mLoaderManager, mIOweLoader);
 
-        Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534",
+        Person person1 = new Person("Chike Mgbemena", "07038111534",
                 "image_uri");
-        Debt debt1 = new Debt.Builder(UUID.randomUUID().toString(), person1.getId(), 5000.87,
+        Debt debt1 = new Debt.Builder(UUID.randomUUID().toString(), person1.getPhoneNumber(), 5000.87,
                 System.currentTimeMillis(), Debt.DEBT_TYPE_IOWE, Debt.DEBT_STATUS_PARTIAL)
                 .dueDate(System.currentTimeMillis())
                 .note("school fees")
                 .build();
         PersonDebt personDebt1 = new PersonDebt(person1, debt1);
 
-        Person person2 = new Person(UUID.randomUUID().toString(), "Chinedu Mandu", "08047541254",
+        Person person2 = new Person("Chinedu Mandu", "08047541254",
                 "image_uri");
-        Debt debt2 = new Debt.Builder(UUID.randomUUID().toString(), person2.getId(), 87000.00,
+        Debt debt2 = new Debt.Builder(UUID.randomUUID().toString(), person2.getPhoneNumber(), 87000.00,
                 System.currentTimeMillis(), Debt.DEBT_TYPE_IOWE, Debt.DEBT_STATUS_PARTIAL)
                 .dueDate(System.currentTimeMillis())
                 .note("note 2")
                 .build();
         PersonDebt personDebt2 = new PersonDebt(person2, debt2);
 
-        Person person3 = new Person(UUID.randomUUID().toString(), "Mary Jane", "040125789653",
+        Person person3 = new Person("Mary Jane", "040125789653",
                 "image_uri");
-        Debt debt3 = new Debt.Builder(UUID.randomUUID().toString(), person3.getId(), 443420044.23,
+        Debt debt3 = new Debt.Builder(UUID.randomUUID().toString(), person3.getPhoneNumber(), 443420044.23,
                 System.currentTimeMillis(), Debt.DEBT_TYPE_IOWE,
                 Debt.DEBT_STATUS_PARTIAL)
                 .dueDate(System.currentTimeMillis())

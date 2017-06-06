@@ -18,7 +18,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -55,9 +54,9 @@ public class PeoplePresenterTest {
         MockitoAnnotations.initMocks(this);
 
         mPeoplePresenter = new PeoplePresenter(mPeopleView, mLoaderManager, mPeopleLoader);
-        Person person1 = new Person(UUID.randomUUID().toString(), "Chike Mgbemena", "07038111534", "image_uri");
-        Person person2 = new Person(UUID.randomUUID().toString(), "Chinedu Mandu", "08047541254", "image_uri");
-        Person person3 = new Person(UUID.randomUUID().toString(), "Mary Jane", "040125789653", "image_uri");
+        Person person1 = new Person("Chike Mgbemena", "07038111534", "image_uri");
+        Person person2 = new Person("Chinedu Mandu", "08047541254", "image_uri");
+        Person person3 = new Person("Mary Jane", "040125789653", "image_uri");
         mPersons = Lists.newArrayList(person1, person2, person3);
     }
 

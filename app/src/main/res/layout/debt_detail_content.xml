@@ -4,11 +4,13 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
                 name="PersonDebt"
                 type="com.chikeandroid.debtmanager.data.PersonDebt"/>
 
         <import type="com.chikeandroid.debtmanager.util.TimeUtil"/>
+
         <import type="com.chikeandroid.debtmanager.util.StringUtil"/>
     </data>
 
@@ -125,7 +127,7 @@
                                 android:contentDescription="@string/date_icon_content_description"/>
 
                         <TextView
-                                android:id="@+id/description1"
+                                android:id="@+id/tv_date_created"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="@dimen/spacing_medium"
@@ -152,7 +154,7 @@
                                 android:contentDescription="@string/date_icon_content_description"/>
 
                         <TextView
-                                android:id="@+id/description2"
+                                android:id="@+id/tv_date_due"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="@dimen/spacing_medium"
@@ -163,32 +165,68 @@
 
                     </LinearLayout>
 
-                    <Button
-                            android:id="@+id/btn_call"
-                            style="@style/buttonStyle"
-                            android:drawableLeft="@drawable/ic_call_white"
-                            android:drawableStart="@drawable/ic_call_white"
-                            android:text='@{"Call " + PersonDebt.getPerson.phoneNumber}'
+                    <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            tools:text="Call +23470381115347"
-                            android:layout_margin="10dp"/>
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="5dp"
+                            tools:ignore="UseCompoundDrawables">
 
-                    <Button
-                            android:id="@+id/btn_sms"
-                            style="@style/buttonStyle"
-                            android:layout_marginTop="@dimen/spacing_large"
-                            android:drawableLeft="@drawable/ic_sms_white"
-                            android:drawableStart="@drawable/ic_sms_white"
-                            android:text='@{"SMS " + PersonDebt.getPerson.phoneNumber}'
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            tools:text="Call +23470381115347"
-                            android:layout_margin="10dp"/>
+                        <ImageView
+                                android:layout_width="@dimen/spacing_mlarge"
+                                android:layout_height="@dimen/spacing_mlarge"
+                                android:layout_margin="@dimen/spacing_middle"
+                                android:src="@drawable/ic_phone_pri_dark"
+                                android:contentDescription="@string/date_icon_content_description"/>
+
+                        <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/spacing_medium"
+                                android:text='@{PersonDebt.getPerson.phoneNumber}'
+                                tools:text="0703811153"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                                android:textColor="@color/material_grey_600"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
+
+            <LinearLayout
+                    android:id="@+id/cv_payments"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_medium"
+                        android:layout_marginLeft="@dimen/spacing_large"
+                        android:layout_marginRight="@dimen/spacing_large"
+                        android:layout_marginTop="@dimen/spacing_large"
+                        android:text="Payments"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:textColor="@color/material_grey_800"/>
+
+                <include
+                        android:id="@+id/total_amount_layout"
+                        layout="@layout/total_amount_layout_content"/>
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/grey_soft"/>
+
+                <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_payments"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+            </LinearLayout>
+
 
         </LinearLayout>
 

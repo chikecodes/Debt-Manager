@@ -1,8 +1,5 @@
 # Debt-Manager
-A personal app to store people that owes or you owe money to. "Mo Money Mo Problems" - The Notorious B.I.G.
-
-# Debt-Manager-V2
-An Android app to store details of people that owe and you owe money.
+A personal app to store people that owes you money or you owe money to. "Mo Money Mo Problems" - The Notorious B.I.G.
 
 ![alt text](screenshots/screenshot1.png "I owe screen list")
 

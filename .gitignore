@@ -61,4 +61,8 @@ freeline_project_description.json
 ### Android Patch ###
 gen-external-apklibs
 
+## Fabric
+app/fabric.properties
+app/src/main/assets/project.properties
+
 # End of https://www.gitignore.io/api/android

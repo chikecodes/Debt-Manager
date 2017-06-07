@@ -120,15 +120,24 @@ public class Person implements Parcelable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Person person = (Person) o;
 
-        if (!mFullname.equals(person.mFullname)) return false;
-        if (!mPhoneNumber.equals(person.mPhoneNumber)) return false;
-        if (mImageUri != null ? !mImageUri.equals(person.mImageUri) : person.mImageUri != null)
+        if (!mFullname.equals(person.mFullname)) {
             return false;
+        }
+        if (!mPhoneNumber.equals(person.mPhoneNumber)) {
+            return false;
+        }
+        if (mImageUri != null ? !mImageUri.equals(person.mImageUri) : person.mImageUri != null) {
+            return false;
+        }
         return mDebts != null ? mDebts.equals(person.mDebts) : person.mDebts == null;
 
     }

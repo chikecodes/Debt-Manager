@@ -34,8 +34,11 @@ import static com.chikeandroid.debtmanager.util.TestUtil.NOTE1;
 /**
  * Created by Chike on 5/24/2017.
  */
+private class AndroidTestUtil {
 
-public class AndroidTestUtil {
+    private AndroidTestUtil() {
+
+    }
 
     public static Matcher<Object> withCollapsingToolbarLayoutTitle(final Matcher<CharSequence> textMatcher) {
         return new BoundedMatcher<Object, CollapsingToolbarLayout>(CollapsingToolbarLayout.class) {

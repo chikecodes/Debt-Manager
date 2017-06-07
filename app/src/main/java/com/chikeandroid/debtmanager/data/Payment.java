@@ -200,17 +200,33 @@ public class Payment implements Parcelable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Payment payment = (Payment) o;
 
-        if (Double.compare(payment.mAmount, mAmount) != 0) return false;
-        if (mDateEntered != payment.mDateEntered) return false;
-        if (mAction != payment.mAction) return false;
-        if (!mId.equals(payment.mId)) return false;
-        if (!mDebtId.equals(payment.mDebtId)) return false;
-        if (!mNote.equals(payment.mNote)) return false;
+        if (Double.compare(payment.mAmount, mAmount) != 0) {
+            return false;
+        }
+        if (mDateEntered != payment.mDateEntered) {
+            return false;
+        }
+        if (mAction != payment.mAction) {
+            return false;
+        }
+        if (!mId.equals(payment.mId)) {
+            return false;
+        }
+        if (!mDebtId.equals(payment.mDebtId)) {
+            return false;
+        }
+        if (!mNote.equals(payment.mNote)) {
+            return false;
+        }
         return mPersonPhoneNo.equals(payment.mPersonPhoneNo);
 
     }

@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.AsyncTaskLoader;
 
 import com.chikeandroid.debtmanager.data.Debt;
-import com.chikeandroid.debtmanager.data.Person;
 import com.chikeandroid.debtmanager.data.source.PersonDebtsRepository;
 import com.chikeandroid.debtmanager.util.EspressoIdlingResource;
 
@@ -13,7 +12,7 @@ import java.util.List;
 
 /**
  * Created by Chike on 5/19/2017.
- * Custom {@link android.content.Loader} for a list of a {@link Person} {@link com.chikeandroid.debtmanager.data.Debt}s, using the
+ * Custom Loader that loads a list of a Person Debts, using the
  * {@link PersonDebtsRepository} as its source. This Loader is a {@link AsyncTaskLoader} so it queries
  * the data asynchronously.
  */

@@ -14,105 +14,115 @@
         <import type="com.chikeandroid.debtmanager.util.StringUtil"/>
     </data>
 
-    <LinearLayout
+    <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/selected_row"
-            android:clickable="true"
-            android:minHeight="72dp"
-            android:orientation="horizontal">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_user"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"/>
-
+            android:background="@drawable/selected_row">
 
         <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bottom_gray_border"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:minHeight="72dp"
+                android:orientation="horizontal">
 
-            <RelativeLayout
+            <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_user"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+
+            <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                <TextView
-                        android:id="@+id/tv_amount"
-                        android:text='@{StringUtil.commaNumber(PersonDebt.debt.amount)}'
-                        android:textColor="@color/black"
-                        tools:text="$20000"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="16sp"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:layout_alignParentStart="true"/>
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bottom_gray_border"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
 
                 <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_toEndOf="@+id/tv_amount">
+                        android:layout_height="wrap_content">
 
                     <TextView
-                            android:id="@+id/tv_note"
-                            android:text="@{PersonDebt.debt.note}"
-                            tools:text="Debt note, note, note"
+                            android:id="@+id/tv_amount"
+                            android:text='@{StringUtil.commaNumber(PersonDebt.debt.amount)}'
+                            android:textColor="@color/black"
+                            tools:text="$20000"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="4dp"
-                            android:textSize="12sp"
-                            android:maxLines="1"
+                            android:textSize="16sp"
                             android:ellipsize="end"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                            android:layout_alignParentEnd="true"
-                           android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
+                            android:maxLines="1"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:layout_alignParentStart="true"/>
+
+                    <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@+id/tv_amount">
+
+                        <TextView
+                                android:id="@+id/tv_note"
+                                android:text="@{PersonDebt.debt.note}"
+                                tools:text="Debt note, note, note"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="4dp"
+                                android:textSize="12sp"
+                                android:maxLines="1"
+                                android:ellipsize="end"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
+
+                    </RelativeLayout>
 
                 </RelativeLayout>
 
-            </RelativeLayout>
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-            <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    <TextView
+                            android:text='@{PersonDebt.person.fullname}'
+                            android:textColor="@color/black"
+                            tools:text="Chike Mgbemena"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tv_fullname"
+                            android:textSize="16sp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            />
 
-                <TextView
-                        android:text='@{PersonDebt.person.fullname}'
-                        android:textColor="@color/black"
-                        tools:text="Chike Mgbemena"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tv_fullname"
-                        android:textSize="16sp"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        />
+                    <TextView
+                            android:id="@+id/tv_due_date"
+                            android:text='@{TimeUtil.millis2String(PersonDebt.debt.dueDate)}'
+                            tools:text="Mar 7, 2017"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal|bottom"
+                            android:padding="4dp"
+                            android:textSize="12sp"
+                            android:visibility="visible"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                            tools:ignore="RelativeOverlap"/>
 
-                <TextView
-                        android:id="@+id/tv_due_date"
-                        android:text='@{TimeUtil.millis2String(PersonDebt.debt.dueDate)}'
-                        tools:text="Mar 7, 2017"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal|bottom"
-                        android:padding="4dp"
-                        android:textSize="12sp"
-                        android:visibility="visible"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                        android:layout_alignParentEnd="true"
-                       android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                        tools:ignore="RelativeOverlap"/>
+                </RelativeLayout>
+            </LinearLayout>
 
-            </RelativeLayout>
+
         </LinearLayout>
 
-    </LinearLayout>
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"/>
+
+    </FrameLayout>
 
 </layout>

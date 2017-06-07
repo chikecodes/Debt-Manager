@@ -24,6 +24,7 @@ import com.chikeandroid.debtmanager.databinding.FragmentPersonDetailBinding;
 import com.chikeandroid.debtmanager.features.debtdetail.DebtDetailActivity;
 import com.chikeandroid.debtmanager.features.persondetail.adapter.PersonDebtsAdapter;
 import com.chikeandroid.debtmanager.util.TimeUtil;
+import com.chikeandroid.debtmanager.util.widget.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -100,6 +101,7 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
         RecyclerView recyclerView = mFragmentPersonDetailBinding.rvPersonDebts;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(mPersonDebtsAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
 
         mPersonDebtsAdapter.setOnItemClickListener(new PersonDebtsAdapter.OnItemClickListener() {
             @Override

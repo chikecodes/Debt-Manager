@@ -22,7 +22,7 @@ public class Debt implements Parcelable {
     @NonNull
     private final String mId;
 
-    @Nullable
+    @NonNull
     private double mAmount;
 
     @Nullable
@@ -31,16 +31,12 @@ public class Debt implements Parcelable {
     @NonNull
     private final String mPersonPhoneNumber;
 
-    @NonNull
     private long mCreatedDate;
 
-    @Nullable
     private long mDueDate;
 
-    @NonNull
     private int mDebtType;
 
-    @NonNull
     private final int mStatus;
 
     @Nullable
@@ -66,27 +62,23 @@ public class Debt implements Parcelable {
         return mPersonPhoneNumber;
     }
 
-    @NonNull
     public long getCreatedDate() {
         return mCreatedDate;
     }
 
-    @Nullable
     public long getDueDate() {
         return mDueDate;
     }
 
-    @NonNull
     public int getDebtType() {
         return mDebtType;
     }
 
-    @NonNull
     public int getStatus() {
         return mStatus;
     }
 
-    public void setAmount(@Nullable double amount) {
+    public void setAmount(@NonNull double amount) {
         mAmount = amount;
     }
 
@@ -94,15 +86,15 @@ public class Debt implements Parcelable {
         mNote = note;
     }
 
-    public void setCreatedDate(@NonNull long createdDate) {
+    public void setCreatedDate(long createdDate) {
         mCreatedDate = createdDate;
     }
 
-    public void setDueDate(@Nullable long dueDate) {
+    public void setDueDate(long dueDate) {
         mDueDate = dueDate;
     }
 
-    public void setDebtType(@NonNull int debtType) {
+    public void setDebtType(int debtType) {
         mDebtType = debtType;
     }
 
@@ -116,7 +108,9 @@ public class Debt implements Parcelable {
     }
 
     public void addPayment(Payment payment) {
-        mPayments.add(payment);
+        if (mPayments != null) {
+            mPayments.add(payment);
+        }
     }
 
     public static class Builder {
@@ -134,7 +128,7 @@ public class Debt implements Parcelable {
         private long mDueDate = 0;
         private List<Payment> mPayments = new ArrayList<>();
 
-        public Builder(String id, String personPhoneNumber, Double amount, long createdDate, int debtType, int status) {
+        public Builder(String id, String personPhoneNumber, double amount, long createdDate, int debtType, int status) {
             mId = id;
             mAmount = amount;
             mCreatedDate = createdDate;
@@ -245,21 +239,40 @@ public class Debt implements Parcelable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Debt debt = (Debt) o;
 
-        if (Double.compare(debt.mAmount, mAmount) != 0) return false;
-        if (mCreatedDate != debt.mCreatedDate) return false;
-        if (mDueDate != debt.mDueDate) return false;
-        if (mDebtType != debt.mDebtType) return false;
-        if (mStatus != debt.mStatus) return false;
-        if (!mId.equals(debt.mId)) return false;
-        if (mNote != null ? !mNote.equals(debt.mNote) : debt.mNote != null) return false;
-        if (!mPersonPhoneNumber.equals(debt.mPersonPhoneNumber)) return false;
+        if (Double.compare(debt.mAmount, mAmount) != 0) {
+            return false;
+        }
+        if (mCreatedDate != debt.mCreatedDate) {
+            return false;
+        }
+        if (mDueDate != debt.mDueDate) {
+            return false;
+        }
+        if (mDebtType != debt.mDebtType) {
+            return false;
+        }
+        if (mStatus != debt.mStatus) {
+            return false;
+        }
+        if (!mId.equals(debt.mId)) {
+            return false;
+        }
+        if (mNote != null ? !mNote.equals(debt.mNote) : debt.mNote != null) {
+            return false;
+        }
+        if (!mPersonPhoneNumber.equals(debt.mPersonPhoneNumber)) {
+            return false;
+        }
         return mPayments != null ? mPayments.equals(debt.mPayments) : debt.mPayments == null;
-
     }
 
     @Override

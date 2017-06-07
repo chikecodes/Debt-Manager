@@ -312,13 +312,13 @@ public class DebtsRepositoryTest {
         mDebtsRepository.savePersonDebt(debt, person);
 
         Payment payment = new Payment.Builder()
-                .note("payment note")
+                .note("payment note 101")
                 .debtId(debt.getId())
                 .id("666666")
                 .amount(1000)
                 .dateEntered(System.currentTimeMillis())
                 .action(Payment.PAYMENT_ACTION_DEBT_INCREASE)
-                .personPhoneNumber("070381115344")
+                .personPhoneNumber("0703811153464")
                 .build();
 
         mDebtsRepository.savePayment(payment);
@@ -329,7 +329,7 @@ public class DebtsRepositoryTest {
         // verify if debt amount increased
         Debt updatedDebt = mDebtsRepository.getDebt(debt.getId());
         double newDebtAmount = updatedDebt.getAmount();
-        assertTrue(newDebtAmount == debt.getAmount() + payment.getAmount());
+        assertTrue(Math.abs(newDebtAmount - (debt.getAmount() + payment.getAmount())) < .0000001);
     }
 
     @Test
@@ -340,13 +340,13 @@ public class DebtsRepositoryTest {
         mDebtsRepository.savePersonDebt(debt, person);
 
         Payment payment = new Payment.Builder()
-                .note("payment note")
+                .note("payment note 666")
                 .debtId(debt.getId())
                 .id("666666")
                 .amount(1000)
                 .dateEntered(System.currentTimeMillis())
                 .action(Payment.PAYMENT_ACTION_DEBT_DECREASE)
-                .personPhoneNumber("070381115344")
+                .personPhoneNumber("170381115344")
                 .build();
 
         mDebtsRepository.savePayment(payment);
@@ -357,7 +357,7 @@ public class DebtsRepositoryTest {
         // verify if debt amount decreased
         Debt updatedDebt = mDebtsRepository.getDebt(debt.getId());
         double newDebtAmount = updatedDebt.getAmount();
-        assertTrue(newDebtAmount == debt.getAmount() - payment.getAmount());
+        assertTrue(Math.abs(newDebtAmount - (debt.getAmount() - payment.getAmount())) < .0000001);
     }
 
     @Test
@@ -368,13 +368,13 @@ public class DebtsRepositoryTest {
         mDebtsRepository.savePersonDebt(debt, person);
 
         Payment payment = new Payment.Builder()
-                .note("payment note")
+                .note("payment note 419")
                 .debtId(debt.getId())
                 .id("666666")
                 .amount(1000)
                 .dateEntered(System.currentTimeMillis())
                 .action(Payment.PAYMENT_ACTION_DEBT_DONT_CHANGE)
-                .personPhoneNumber("070381115344")
+                .personPhoneNumber("070381115244")
                 .build();
 
         mDebtsRepository.savePayment(payment);
@@ -439,7 +439,7 @@ public class DebtsRepositoryTest {
                 .dateEntered(System.currentTimeMillis())
                 .note("updated note")
                 .debtId(debt.getId())
-                .personPhoneNumber("070381115344")
+                .personPhoneNumber("070381515344")
                 .build();
 
         mDebtsRepository.editPayment(updatedPayment, debt);
@@ -468,7 +468,7 @@ public class DebtsRepositoryTest {
                 .dateEntered(System.currentTimeMillis())
                 .debtId(debt.getId())
                 .note("updated note")
-                .personPhoneNumber("070381115344")
+                .personPhoneNumber("0703911153445")
                 .build();
 
         mDebtsRepository.editPayment(updatedPayment, debt);
@@ -483,7 +483,7 @@ public class DebtsRepositoryTest {
         // verify if debt amount increased
         Debt newDebt = mDebtsRepository.getDebt(debt.getId());
         double newDebtAmount = newDebt.getAmount();
-        assertTrue(newDebtAmount == (debt.getAmount() + updatedPayment.getAmount()));
+        assertTrue(Math.abs(newDebtAmount - (debt.getAmount() + updatedPayment.getAmount())) < .0000001);
     }
 
     @Test
@@ -494,13 +494,13 @@ public class DebtsRepositoryTest {
         mDebtsRepository.savePersonDebt(debt, person);
 
         Payment payment = new Payment.Builder()
-                .note("payment note")
+                .note("payment note 232")
                 .debtId(debt.getId())
                 .id("666")
                 .amount(1000)
                 .dateEntered(System.currentTimeMillis())
                 .action(Payment.PAYMENT_ACTION_DEBT_INCREASE)
-                .personPhoneNumber("070381115344")
+                .personPhoneNumber("0703811153440")
                 .build();
 
         mDebtsRepository.savePayment(payment);

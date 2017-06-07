@@ -1,6 +1,7 @@
 package com.chikeandroid.debtmanager.features.persondetail.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -74,6 +75,10 @@ public class PersonDebtsAdapter extends RecyclerView.Adapter<PersonDebtsAdapter.
                 }
             }
         });
+
+        if (System.currentTimeMillis() > debt.getDueDate()) {
+            holder.mListItemPersonDebtBinding.tvDueDate.setTextColor(Color.RED);
+        }
     }
 
     public void updatePersonDebtListItems(List<Debt> debts) {

@@ -64,9 +64,6 @@ import static com.chikeandroid.debtmanager.util.TestUtil.PHONE_NUMBER3;
 @RunWith(AndroidJUnit4.class)
 public class OweMeScreenTest {
 
-    private double mPaymentAmount = 1000;
-    private String mPaymentComment = "Payment comment 101";
-
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule =
             new ActivityTestRule<MainActivity>(MainActivity.class) {
@@ -223,8 +220,10 @@ public class OweMeScreenTest {
 
         onView(withId(R.id.fab_add_payment)).perform(click());
 
-        onView(withId(R.id.et_payment_amount)).perform(typeText(String.valueOf(mPaymentAmount)), closeSoftKeyboard());
-        onView(withId(R.id.et_payment_comment)).perform(typeText(mPaymentComment), closeSoftKeyboard());
+        double paymentAmount = 1000;
+        onView(withId(R.id.et_payment_amount)).perform(typeText(String.valueOf(paymentAmount)), closeSoftKeyboard());
+        String paymentComment = "Payment comment 101";
+        onView(withId(R.id.et_payment_comment)).perform(typeText(paymentComment), closeSoftKeyboard());
 
         onView(withId(R.id.btn_payment_date_created)).perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(
@@ -234,11 +233,11 @@ public class OweMeScreenTest {
 
         onView(withId(R.id.ib_save_payment)).perform(click());
 
-        onView(withText(StringUtil.commaNumber(mPaymentAmount))).check(matches(isDisplayed()));
-        onView(withText(mPaymentComment)).check(matches(isDisplayed()));
+        onView(withText(StringUtil.commaNumber(paymentAmount))).check(matches(isDisplayed()));
+        onView(withText(paymentComment)).check(matches(isDisplayed()));
 
         // make sure debt amount reduced
-        double newDebtAmount = AMOUNT1 - mPaymentAmount;
+        double newDebtAmount = AMOUNT1 - paymentAmount;
         onView(isAssignableFrom(CollapsingToolbarLayout.class)).check(matches(
                 withCollapsingToolbarLayoutTitle(Matchers.<CharSequence>is(StringUtil.commaNumber(newDebtAmount)))));
     }

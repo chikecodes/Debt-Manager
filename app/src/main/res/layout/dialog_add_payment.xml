@@ -156,10 +156,11 @@
                     android:layout_marginTop="@dimen/spacing_large">
 
                 <RadioButton
-                        android:id="@+id/rb_leave"
+                        android:id="@+id/rb_decrease"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/msg_leave_debt_amount_as_it_is"/>
+                        android:text="@string/msg_decrease_debt_amount"
+                        android:checked="true"/>
 
                 <RadioButton
                         android:id="@+id/rb_increase"
@@ -168,11 +169,11 @@
                         android:text="@string/msg_increase_debt_amount"/>
 
                 <RadioButton
-                        android:id="@+id/rb_decrease"
+                        android:id="@+id/rb_leave"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/msg_decrease_debt_amount"
-                        android:checked="true"/>
+                        android:text="@string/msg_leave_debt_amount_as_it_is"/>
+
             </RadioGroup>
 
         </LinearLayout>

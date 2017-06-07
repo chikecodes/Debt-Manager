@@ -49,14 +49,6 @@ import static com.chikeandroid.debtmanager.util.TestUtil.PHONE_NUMBER3;
 @RunWith(AndroidJUnit4.class)
 public class IOweScreenTest {
 
-    private final static int CREATED_YEAR = 2017;
-    private final static int CREATED_MONTH = 10;
-    private final static int CREATED_DAY_OF_MONTH = 10;
-
-    private final static int DUE_YEAR = 2017;
-    private final static int DUE_MONTH = 12;
-    private final static int DUE_DAY_OF_MONTH = 15;
-
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule =
             new ActivityTestRule<MainActivity>(MainActivity.class) {

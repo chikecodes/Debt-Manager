@@ -13,19 +13,15 @@
         <import type="com.chikeandroid.debtmanager.util.StringUtil"/>
     </data>
 
-    <com.balysv.materialripple.MaterialRippleLayout
-            android:id="@+id/lyt_parent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
     <android.support.constraint.ConstraintLayout
             android:orientation="horizontal"
+            android:id="@+id/lyt_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:minHeight="60dp"
             android:gravity="center_vertical"
-            android:background="@drawable/bottom_gray_border">
+            android:background="?android:attr/selectableItemBackground">
 
         <ImageView
                 android:id="@+id/iv_icon"
@@ -94,8 +90,5 @@
                 android:layout_marginTop="16dp"/>
 
     </android.support.constraint.ConstraintLayout>
-
-    </com.balysv.materialripple.MaterialRippleLayout>
-
 
 </layout>

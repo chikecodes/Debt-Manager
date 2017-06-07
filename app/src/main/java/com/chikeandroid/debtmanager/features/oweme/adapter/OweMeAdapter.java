@@ -17,6 +17,7 @@ import com.chikeandroid.debtmanager.features.oweme.OweMeDiffCallback;
 
 import java.util.List;
 
+
 /**
  * Created by Chike on 4/25/2017.
  * OweMe RecyclerView Adapter

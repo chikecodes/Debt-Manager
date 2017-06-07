@@ -50,6 +50,7 @@ import com.chikeandroid.debtmanager.util.TimeUtil;
 import com.chikeandroid.debtmanager.util.ValidationUtil;
 import com.chikeandroid.debtmanager.util.ViewUtil;
 import com.chikeandroid.debtmanager.util.validator.EditTextIntegerValidator;
+import com.chikeandroid.debtmanager.util.widget.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -199,6 +200,7 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
         RecyclerView recyclerView = mFragmentDebtDetailBinding.debtDetailContent.rvPayments;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(mPaymentAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
 
         mPaymentAdapter.setOnItemClickListener(new PaymentAdapter.OnItemClickListener() {
             @Override
@@ -257,6 +259,9 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
                 break;
             case R.id.action_sms:
                 smsDebtor();
+                break;
+            case R.id.action_add_payment:
+                openAddPaymentDialog();
                 break;
             default:
         }

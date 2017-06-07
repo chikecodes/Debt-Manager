@@ -7,11 +7,17 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:fitsSystemWindows">true</item>
         <item name="windowActionModeOverlay">true</item>
-
+        <item name="actionModeStyle">@style/LStyled.ActionMode</item>
     </style>
+
     <style name="AppTheme.NoActionBar_StatusBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+    <style name="LStyled.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="background">@color/colorPrimaryDark</item>
+        <item name="titleTextStyle">@style/LStyled.ActionMode.Title</item>
     </style>
 </resources>

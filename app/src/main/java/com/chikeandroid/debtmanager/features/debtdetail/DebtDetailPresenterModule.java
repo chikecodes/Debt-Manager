@@ -2,11 +2,10 @@ package com.chikeandroid.debtmanager.features.debtdetail;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 
-import com.chikeandroid.debtmanager.features.debtdetail.loaders.DebtLoader;
 import com.chikeandroid.debtmanager.data.source.PersonDebtsRepository;
+import com.chikeandroid.debtmanager.features.debtdetail.loaders.DebtLoader;
 
 import dagger.Module;
 import dagger.Provides;
@@ -21,7 +20,6 @@ import dagger.Provides;
 public class DebtDetailPresenterModule {
 
     private final DebtDetailContract.View mView;
-    private final Fragment mContext;
     private final String mDebtId;
     private final int mDebtType;
     private final LoaderManager mLoaderManager;
@@ -31,7 +29,6 @@ public class DebtDetailPresenterModule {
                                      int debtType,
                                      @NonNull LoaderManager loaderManager) {
         mView = view;
-        mContext = (Fragment) view;
         mDebtId = debtId;
         mDebtType = debtType;
         mLoaderManager = loaderManager;

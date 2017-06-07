@@ -446,7 +446,7 @@ public class DebtsLocalDataSourceTest {
                 .amount(1000)
                 .dateEntered(System.currentTimeMillis())
                 .action(Payment.PAYMENT_ACTION_DEBT_INCREASE)
-                .personPhoneNumber("070381115344")
+                .personPhoneNumber("070381415344")
                 .build();
         mDebtsLocalDataSource.savePayment(payment2);
 
@@ -482,7 +482,7 @@ public class DebtsLocalDataSourceTest {
                 .amount(5656565)
                 .dateEntered(System.currentTimeMillis())
                 .action(Payment.PAYMENT_ACTION_DEBT_INCREASE)
-                .personPhoneNumber("070381115344")
+                .personPhoneNumber("072381115344")
                 .build();
         mDebtsLocalDataSource.savePayment(payment);
 
@@ -492,7 +492,7 @@ public class DebtsLocalDataSourceTest {
         // verify if debt amount increased
         Debt newDebt = mDebtsLocalDataSource.getDebt(debt.getId());
         double newDebtAmount = newDebt.getAmount();
-        assertTrue(newDebtAmount == (debt.getAmount() + payment.getAmount()));
+        assertTrue(Math.abs(newDebtAmount - (debt.getAmount() + payment.getAmount())) < .0000001);
     }
 
     @Test
@@ -526,7 +526,7 @@ public class DebtsLocalDataSourceTest {
                 .dateEntered(System.currentTimeMillis())
                 .debtId(debt.getId())
                 .note("updated note")
-                .personPhoneNumber("070381115344")
+                .personPhoneNumber("070681115344")
                 .build();
 
         mDebtsLocalDataSource.editPayment(updatedPayment, debt);
@@ -539,7 +539,7 @@ public class DebtsLocalDataSourceTest {
         // verify if debt amount increased
         Debt newDebt = mDebtsLocalDataSource.getDebt(debt.getId());
         double newDebtAmount = newDebt.getAmount();
-        assertTrue(newDebtAmount == (debt.getAmount() + updatedPayment.getAmount()));
+        assertTrue(Math.abs(newDebtAmount - (debt.getAmount() + updatedPayment.getAmount())) < .0000001);
     }
 
     @Test
@@ -556,7 +556,7 @@ public class DebtsLocalDataSourceTest {
                 .amount(1000)
                 .dateEntered(System.currentTimeMillis())
                 .action(Payment.PAYMENT_ACTION_DEBT_INCREASE)
-                .personPhoneNumber("070381115344")
+                .personPhoneNumber("070381215344")
                 .build();
         mDebtsLocalDataSource.savePayment(payment);
 

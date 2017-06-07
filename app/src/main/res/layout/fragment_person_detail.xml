@@ -32,7 +32,6 @@
                     app:expandedTitleMarginStart="15dp"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-
                     <ImageView
                             android:id="@+id/image"
                             android:layout_width="match_parent"
@@ -59,8 +58,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/grey_bg"
                 android:clipToPadding="false"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:layout_marginTop="@dimen/spacing_large">
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_person_debts"

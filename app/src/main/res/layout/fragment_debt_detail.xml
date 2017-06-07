@@ -53,15 +53,6 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab_add_payment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
-                android:src="@drawable/ic_add"
-                app:layout_anchor="@id/app_bar_layout"
-                app:layout_anchorGravity="bottom|end" />
-
         <android.support.v4.widget.NestedScrollView
                 android:id="@+id/scroll"
                 android:layout_width="match_parent"
@@ -76,6 +67,15 @@
                     bind:PersonDebt="@{PersonDebt}"/>
 
         </android.support.v4.widget.NestedScrollView>
+
+        <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_add_payment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fab_margin"
+                android:src="@drawable/ic_add"
+                app:layout_anchor="@id/app_bar_layout"
+                app:layout_anchorGravity="bottom|end" />
 
     </android.support.design.widget.CoordinatorLayout>
 

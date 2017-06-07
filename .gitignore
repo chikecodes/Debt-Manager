@@ -64,4 +64,7 @@ gen-external-apklibs
 app/fabric.properties
 app/src/main/assets/project.properties
 
+## Keystore
+keystore.properties
+
 # End of https://www.gitignore.io/api/android

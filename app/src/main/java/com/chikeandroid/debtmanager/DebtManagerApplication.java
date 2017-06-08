@@ -3,8 +3,8 @@ package com.chikeandroid.debtmanager;
 import android.app.Application;
 import android.os.StrictMode;
 
-import com.facebook.stetho.Stetho;
 import com.crashlytics.android.Crashlytics;
+
 import io.fabric.sdk.android.Fabric;
 
 
@@ -25,9 +25,9 @@ public class DebtManagerApplication extends Application {
         // no need to include the applicationModule since it requires no constructor argument
         mApplicationComponent = DaggerApplicationComponent.builder().context(getApplicationContext()).build();
 
-        if (BuildConfig.DEBUG) {
+      /*  if (BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(this);
-        }
+        }*/
 
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()

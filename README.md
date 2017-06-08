@@ -5,13 +5,9 @@ A personal app to store people that owe you money or you owe money to. :notebook
 
 You can download it from Google Play Store https://play.google.com/store/apps/details?id=com.chikeandroid.debtmanager
 
-![alt text](screenshots/screenshot1.png "I owe screen list")
+![alt text](screenshots/screenshot1.png "I owe screen list") ![alt text](screenshots/screenshot4.png "Debt detail")
 
-![alt text](screenshots/screenshot4.png "Debt detail")
-
-![alt text](screenshots/screenshot2.png "People screen")
-
-![alt text](screenshots/screenshot3.png "Add debt screen")
+![alt text](screenshots/screenshot2.png "People screen") ![alt text](screenshots/screenshot3.png "Add debt screen")
 
 ### Contents:
 

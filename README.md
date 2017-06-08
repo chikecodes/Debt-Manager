@@ -1,5 +1,5 @@
 # Debt-Manager
-A personal app to store people that owes you money or you owe money to. 
+A personal app to store people that owes you money or you owe money to. :notebook: :moneybag:
 
 "Mo Money Mo Problems" - The Notorious B.I.G. :sunglasses:
 

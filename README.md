@@ -1,7 +1,7 @@
 # Debt-Manager
 A personal app to store people that owes you money or you owe money to. "Mo Money Mo Problems" - The Notorious B.I.G.
 
-![alt text](screenshots/google-play-store-download.png)(https://play.google.com/store/apps/details?id=com.chikeandroid.debtmanager)
+You can download it from Google Play Store https://play.google.com/store/apps/details?id=com.chikeandroid.debtmanager
 
 ![alt text](screenshots/screenshot1.png "I owe screen list")
 

@@ -25,14 +25,14 @@ task clean(type: Delete) {
 ext {
     // Sdk and tools
     minSdkVersion = 16
-    targetSdkVersion = "android-O"
-    compileSdkVersion = "android-O"
-    buildToolsVersion = "26.0.0-rc1"
+    targetSdkVersion = 25
+    compileSdkVersion = 25
+    buildToolsVersion = "25.0.2"
 
     // App dependencies
     supportLibraryVersion = "25.3.1"
     junitVersion = "4.12"
-    guavaVersion = "20.0"
+    guavaVersion = "19.0"
     mockitoVersion = '1.10.19'
     powerMockito = '1.6.2'
     hamcrestVersion = '1.3'

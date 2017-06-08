@@ -156,6 +156,10 @@ dependencies {
     // Glide
     compile "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar')
+
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true;
+    }
 }
 
 apply from: '/code_quality_tools/quality.gradle'

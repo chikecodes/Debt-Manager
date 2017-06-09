@@ -1,7 +1,7 @@
 # Debt-Manager
 A personal app to store people that owe you money or you owe money to. :notebook: :moneybag:
 
-"Mo Money Mo Problems" - The Notorious B.I.G. :sunglasses:
+:musical_note: "Mo Money Mo Problems" - The Notorious B.I.G. :sunglasses:
 
 [![Get it on Google Play](http://i.imgur.com/7sq06lr.png)](https://play.google.com/store/apps/details?id=com.chikeandroid.debtmanager) 
 

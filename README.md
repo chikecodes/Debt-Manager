@@ -3,7 +3,7 @@ A personal app to store people that owe you money or you owe money to. :notebook
 
 "Mo Money Mo Problems" - The Notorious B.I.G. :sunglasses:
 
-You can download it from Google Play Store https://play.google.com/store/apps/details?id=com.chikeandroid.debtmanager
+[![Get it on Google Play](http://i.imgur.com/7sq06lr.png)](https://play.google.com/store/apps/details?id=com.chikeandroid.debtmanager) 
 
 ![alt text](screenshots/screenshot1.png "I owe screen list") ![alt text](screenshots/screenshot4.png "Debt detail")
 

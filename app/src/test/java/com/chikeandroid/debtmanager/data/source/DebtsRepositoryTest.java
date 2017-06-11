@@ -239,7 +239,6 @@ public class DebtsRepositoryTest {
         mDebtsRepository.updatePersonDebt(personDebt);
 
         verify(mDebtsLocalDataSource).updatePersonDebt(eq(personDebt));
-
         PersonDebt personDebt1 = mDebtsRepository.getPersonDebt(debt1.getId(), Debt.DEBT_TYPE_OWED);
 
         assertEquals(personDebt1, personDebt);

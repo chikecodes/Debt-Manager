@@ -1,0 +1,13 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+            android:shortcutId="add_debt"
+            android:enabled="true"
+            android:shortcutShortLabel="@string/add_debt_short_label"
+            android:icon="@drawable/app_shortcut_icon_add_debt">
+        <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.chikeandroid.debtmanager"
+                android:targetClass="com.chikeandroid.debtmanager.features.addeditdebt.AddEditDebtActivity" />
+    </shortcut>
+    <!-- Specify more shortcuts here. -->
+</shortcuts>

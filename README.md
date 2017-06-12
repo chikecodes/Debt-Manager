@@ -34,7 +34,6 @@ A personal app to store people that owe you money or you owe money to. :notebook
 * Added constraint layout! (See list_item_payment.xml)
 
 ### Roadmap
- * App shortcuts
  * Add currencies 
  * Password or fingerprint protection 
  * Add reminder 

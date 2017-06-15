@@ -40,6 +40,8 @@ A personal app to store people that owe you money or you owe money to. :notebook
  * Share debt detail
  * Search debtor
  * Remote backup 
+ * RxJava
+ * RetroLambda
 
 ## How can I thank you?
 

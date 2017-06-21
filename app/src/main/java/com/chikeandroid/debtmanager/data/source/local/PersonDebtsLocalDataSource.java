@@ -41,7 +41,7 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
 
     /**
      * Get all PersonDebts by debt type
-     * @param debtType the type of debt
+     * @param debtType is the type of debt
      * @return a List<PersonDebt>
      */
     @Override
@@ -688,9 +688,9 @@ public class PersonDebtsLocalDataSource implements PersonDebtsDataSource {
         db.delete(DebtsEntry.TABLE_NAME, DebtsEntry.COLUMN_ENTRY_ID + DebtsDbHelper.WHERE_EQUAL_TO, new String[]{debtId});
 
         // delete person if he has only one debt
-        String personPhonenNumber = personDebt.getPerson().getPhoneNumber();
-        if (personHasNoDebts(personPhonenNumber)) {
-            deletePerson(personPhonenNumber);
+        String personPhoneNumber = personDebt.getPerson().getPhoneNumber();
+        if (personHasNoDebts(personPhoneNumber)) {
+            deletePerson(personPhoneNumber);
         }
 
         if (debtHasPayments(debtId)) {

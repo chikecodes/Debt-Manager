@@ -45,5 +45,6 @@ ext {
     eventbusVersion = '3.0.0'
     materialRippleVersion = '1.0.2'
     glideVersion = '3.7.0'
+    retrolambdaPluginVersion = "3.6.1"
 
 }

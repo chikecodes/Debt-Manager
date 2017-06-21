@@ -18,6 +18,7 @@ A personal app to store people that owe you money or you owe money to. :notebook
 * Android Databinding 
 * EventBus 
 * Fabric (Crashlytics)
+* Retrolambda
 
 ##### Static analysis:
 * PMD (https://pmd.github.io/ - check file quality.gradle)
@@ -41,7 +42,6 @@ A personal app to store people that owe you money or you owe money to. :notebook
  * Search debtor
  * Remote backup 
  * RxJava
- * RetroLambda
 
 ## How can I thank you?
 

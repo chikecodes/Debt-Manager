@@ -2,7 +2,6 @@ package com.chikeandroid.debtmanager.features.oweme;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -36,7 +35,6 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -72,7 +70,7 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mOweMeAdapter = new OweMeAdapter(this, new ArrayList<PersonDebt>(0));
+        mOweMeAdapter = new OweMeAdapter(this, new ArrayList<>(0));
     }
 
     @Override
@@ -132,24 +130,18 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
 
         mTextViewTotalAmount = oweMeFragmentBinding.totalAmountLayout.tvTotalAmount;
 
-        mOweMeAdapter.setOnItemClickListener(new OweMeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, PersonDebt personDebt, int position) {
-                if (mActionMode != null) {
-                    myToggleSelection(position, view);
-                    return;
-                }
-                DebtDetailActivity.start(getActivity(), personDebt.getDebt().getId(),
-                        personDebt.getDebt().getDebtType());
+        mOweMeAdapter.setOnItemClickListener((view1, personDebt, position) -> {
+            if (mActionMode != null) {
+                myToggleSelection(position, view1);
+                return;
             }
+            DebtDetailActivity.start(getActivity(), personDebt.getDebt().getId(),
+                    personDebt.getDebt().getDebtType());
         });
 
-        mOweMeAdapter.setOnItemLongClickListener(new OweMeAdapter.OnItemLongClickListener() {
-            @Override
-            public void onItemClick(View view, PersonDebt personDebt, int position) {
-                mActionMode = getActivity().startActionMode(mActionModeCallback);
-                myToggleSelection(position, view);
-            }
+        mOweMeAdapter.setOnItemLongClickListener((view12, personDebt, position) -> {
+            mActionMode = getActivity().startActionMode(mActionModeCallback);
+            myToggleSelection(position, view12);
         });
 
         return view;
@@ -162,15 +154,12 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
             mTextViewEmptyDebts.setVisibility(View.GONE);
         }
 
-        Collections.sort(debts, new Comparator<PersonDebt>() {
-            @Override
-            public int compare(PersonDebt personDebt1, PersonDebt personDebt2) {
+        Collections.sort(debts, (personDebt1, personDebt2) -> {
 
-                Date personDebt1CreatedDate = TimeUtil.millis2Date(personDebt1.getDebt().getCreatedDate());
-                Date personDebt2CreatedDate = TimeUtil.millis2Date(personDebt2.getDebt().getCreatedDate());
+            Date personDebt1CreatedDate = TimeUtil.millis2Date(personDebt1.getDebt().getCreatedDate());
+            Date personDebt2CreatedDate = TimeUtil.millis2Date(personDebt2.getDebt().getCreatedDate());
 
-                return personDebt2CreatedDate.compareTo(personDebt1CreatedDate);
-            }
+            return personDebt2CreatedDate.compareTo(personDebt1CreatedDate);
         });
 
         mOweMeAdapter.updatePersonDebtListItems(debts);
@@ -186,7 +175,7 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
 
     @Override
     public void showEmptyView() {
-        mOweMeAdapter.updatePersonDebtListItems(new ArrayList<PersonDebt>());
+        mOweMeAdapter.updatePersonDebtListItems(new ArrayList<>());
         mTextViewEmptyDebts.setVisibility(View.VISIBLE);
         mTextViewTotalAmount.setText(String.format(getString(R.string.total_debt_amount),
                 StringUtil.commaNumber(0)));
@@ -265,19 +254,8 @@ public class OweMeFragment extends Fragment implements OweMeContract.View {
     private void openConfirmDialog() {
         AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setMessage("Are you sure you want to delete?")
-                .setPositiveButton(getString(R.string.dialog_delete), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        batchDelete();
-
-                    }
-                })
-                .setNegativeButton(getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                }).create();
+                .setPositiveButton(getString(R.string.dialog_delete), (dialogInterface, i) -> batchDelete())
+                .setNegativeButton(getString(R.string.dialog_cancel), (dialogInterface, i) -> dialogInterface.dismiss()).create();
 
         dialog.show();
     }

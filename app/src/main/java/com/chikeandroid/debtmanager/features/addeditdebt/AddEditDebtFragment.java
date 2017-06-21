@@ -10,7 +10,6 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -26,7 +25,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -54,7 +52,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by Chike on 3/16/2017.
- * Add debt screen .
+ * Add debt screen
  */
 public class AddEditDebtFragment extends Fragment implements AddEditDebtContract.View {
 
@@ -132,24 +130,15 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
         mDebtDue = System.currentTimeMillis();
 
         mButtonDateCreated = mFragmentAddDebtBinding.btnDateCreated;
-        mButtonDateCreated.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDatePickerDialog(mButtonDateCreated.getId(), mDebtCreatedAt);
-            }
-        });
+        mButtonDateCreated.setOnClickListener(view -> showDatePickerDialog(mButtonDateCreated.getId(),
+                mDebtCreatedAt));
         mImageViewDebtor = mFragmentAddDebtBinding.ivDebtor;
         mEditTextComment = mFragmentAddDebtBinding.etComment;
         mEditTextAmount = mFragmentAddDebtBinding.etAmount;
         mEditTextName = mFragmentAddDebtBinding.etFullName;
         mEditTextPhoneNumber = mFragmentAddDebtBinding.etPhoneNumber;
         mButtonDateDue = mFragmentAddDebtBinding.btnDateDue;
-        mButtonDateDue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDatePickerDialog(mButtonDateDue.getId(), mDebtDue);
-            }
-        });
+        mButtonDateDue.setOnClickListener(view -> showDatePickerDialog(mButtonDateDue.getId(), mDebtDue));
 
         String currentDateString = TimeUtil.millis2String(System.currentTimeMillis());
 
@@ -158,27 +147,21 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
 
         RadioGroup radioGroupDebtType = mFragmentAddDebtBinding.rgDebtType;
         mDebtType = Debt.DEBT_TYPE_OWED;
-        radioGroupDebtType.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int checkedId) {
+        radioGroupDebtType.setOnCheckedChangeListener((radioGroup, checkedId) -> {
 
-                if (checkedId == R.id.rb_owed_by_me) {
-                    mDebtType = Debt.DEBT_TYPE_IOWE;
-                }else if (checkedId == R.id.rb_owed_to_me) {
-                    mDebtType = Debt.DEBT_TYPE_OWED;
-                }
+            if (checkedId == R.id.rb_owed_by_me) {
+                mDebtType = Debt.DEBT_TYPE_IOWE;
+            }else if (checkedId == R.id.rb_owed_to_me) {
+                mDebtType = Debt.DEBT_TYPE_OWED;
             }
         });
 
         ImageButton imageButtonContacts = mFragmentAddDebtBinding.ibContacts;
-        imageButtonContacts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        imageButtonContacts.setOnClickListener(view -> {
 
-                if (checkPermission(Manifest.permission.READ_CONTACTS)) {
-                    Intent pickContactIntent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
-                    startActivityForResult(pickContactIntent, REQUEST_CONTACT);
-                }
+            if (checkPermission(Manifest.permission.READ_CONTACTS)) {
+                Intent pickContactIntent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+                startActivityForResult(pickContactIntent, REQUEST_CONTACT);
             }
         });
     }
@@ -384,25 +367,22 @@ public class AddEditDebtFragment extends Fragment implements AddEditDebtContract
         int month = mCalendar.get(Calendar.MONTH);
         int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                mCalendar.set(Calendar.YEAR, year);
-                mCalendar.set(Calendar.MONTH, monthOfYear);
-                mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view, year1, monthOfYear, dayOfMonth1) -> {
+            mCalendar.set(Calendar.YEAR, year1);
+            mCalendar.set(Calendar.MONTH, monthOfYear);
+            mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth1);
 
-                String dateString = TimeUtil.millis2String(mCalendar.getTimeInMillis());
+            String dateString = TimeUtil.millis2String(mCalendar.getTimeInMillis());
 
-                if (buttonId == mButtonDateDue.getId()) {
-                    mButtonDateDue.setText(String.format(getString(R.string.due_date), dateString));
-                    mDebtDue = mCalendar.getTimeInMillis();
+            if (buttonId == mButtonDateDue.getId()) {
+                mButtonDateDue.setText(String.format(getString(R.string.due_date), dateString));
+                mDebtDue = mCalendar.getTimeInMillis();
 
-                }else if (buttonId == mButtonDateCreated.getId()) {
-                    mButtonDateCreated.setText(String.format(getString(R.string.created_date), dateString));
-                    mDebtCreatedAt = mCalendar.getTimeInMillis();
-                }
-
+            }else if (buttonId == mButtonDateCreated.getId()) {
+                mButtonDateCreated.setText(String.format(getString(R.string.created_date), dateString));
+                mDebtCreatedAt = mCalendar.getTimeInMillis();
             }
+
         }, year, month, dayOfMonth);
 
         datePickerDialog.show();

@@ -2,7 +2,6 @@ package com.chikeandroid.debtmanager.features.iowe;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,7 +34,6 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -71,7 +68,6 @@ public class IOweFragment extends Fragment implements IOweContract.View {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d(TAG, "onActivityCreated()");
         DaggerIOweComponent.builder()
                 .iOwePresenterModule(new IOwePresenterModule(this))
                 .applicationComponent(((DebtManagerApplication) getActivity().getApplication()).getComponent())
@@ -102,7 +98,7 @@ public class IOweFragment extends Fragment implements IOweContract.View {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mIOweAdapter = new IOweAdapter(this, new ArrayList<PersonDebt>(0));
+        mIOweAdapter = new IOweAdapter(this, new ArrayList<>(0));
     }
 
     @Override
@@ -126,24 +122,18 @@ public class IOweFragment extends Fragment implements IOweContract.View {
 
         mTextViewTotalAmount = ioweFragmentBinding.totalAmountLayout.tvTotalAmount;
 
-        mIOweAdapter.setOnItemClickListener(new IOweAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, PersonDebt personDebt, int position) {
-                if (mActionMode != null) {
-                    myToggleSelection(position, view);
-                    return;
-                }
-                DebtDetailActivity.start(getActivity(), personDebt.getDebt().getId(),
-                        personDebt.getDebt().getDebtType());
+        mIOweAdapter.setOnItemClickListener((view12, personDebt, position) -> {
+            if (mActionMode != null) {
+                myToggleSelection(position, view12);
+                return;
             }
+            DebtDetailActivity.start(getActivity(), personDebt.getDebt().getId(),
+                    personDebt.getDebt().getDebtType());
         });
 
-        mIOweAdapter.setOnItemLongClickListener(new IOweAdapter.OnItemLongClickListener() {
-            @Override
-            public void onItemClick(View view, PersonDebt personDebt, int position) {
-                mActionMode = getActivity().startActionMode(mActionModeCallback);
-                myToggleSelection(position, view);
-            }
+        mIOweAdapter.setOnItemLongClickListener((view1, personDebt, position) -> {
+            mActionMode = getActivity().startActionMode(mActionModeCallback);
+            myToggleSelection(position, view1);
         });
 
         return view;
@@ -155,15 +145,12 @@ public class IOweFragment extends Fragment implements IOweContract.View {
             mTextViewEmptyDebts.setVisibility(View.GONE);
         }
 
-        Collections.sort(debts, new Comparator<PersonDebt>() {
-            @Override
-            public int compare(PersonDebt personDebt1, PersonDebt personDebt2) {
+        Collections.sort(debts, (personDebt1, personDebt2) -> {
 
-                Date personDebt1CreatedDate = TimeUtil.millis2Date(personDebt1.getDebt().getCreatedDate());
-                Date personDebt2CreatedDate = TimeUtil.millis2Date(personDebt2.getDebt().getCreatedDate());
+            Date personDebt1CreatedDate = TimeUtil.millis2Date(personDebt1.getDebt().getCreatedDate());
+            Date personDebt2CreatedDate = TimeUtil.millis2Date(personDebt2.getDebt().getCreatedDate());
 
-                return personDebt2CreatedDate.compareTo(personDebt1CreatedDate);
-            }
+            return personDebt2CreatedDate.compareTo(personDebt1CreatedDate);
         });
 
         mIOweAdapter.updatePersonDebtListItems(debts);
@@ -251,19 +238,8 @@ public class IOweFragment extends Fragment implements IOweContract.View {
     private void openConfirmDialog() {
         AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setMessage("Are you sure you want to delete?")
-                .setPositiveButton(getString(R.string.dialog_delete), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        batchDelete();
-
-                    }
-                })
-                .setNegativeButton(getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                }).create();
+                .setPositiveButton(getString(R.string.dialog_delete), (dialogInterface, i) -> batchDelete())
+                .setNegativeButton(getString(R.string.dialog_cancel), (dialogInterface, i) -> dialogInterface.dismiss()).create();
 
         dialog.show();
     }

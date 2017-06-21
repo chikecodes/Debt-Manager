@@ -72,22 +72,16 @@ public class OweMeAdapter extends RecyclerView.Adapter<OweMeAdapter.ViewHolder> 
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final PersonDebt personDebt = mPersonDebts.get(position);
         holder.bind(personDebt);
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                if (mOnItemLongClickListener != null) {
-                    mOnItemLongClickListener.onItemClick(view, personDebt, holder.getAdapterPosition());
-                }
-                return true;
+        holder.itemView.setOnLongClickListener(view -> {
+            if (mOnItemLongClickListener != null) {
+                mOnItemLongClickListener.onItemClick(view, personDebt, holder.getAdapterPosition());
             }
+            return true;
         });
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemClick(view, personDebt, holder.getAdapterPosition());
-                }
+        holder.itemView.setOnClickListener(view -> {
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onItemClick(view, personDebt, holder.getAdapterPosition());
             }
         });
 

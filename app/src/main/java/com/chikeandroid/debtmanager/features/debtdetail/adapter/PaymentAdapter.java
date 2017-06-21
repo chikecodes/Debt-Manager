@@ -41,9 +41,9 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
         void onItemClick(View view, Payment payment, int position);
     }
 
-    public void setOnItemLongClickListener(final OnItemLongClickListener mOnItemLongClickListener) {
+    /*public void setOnItemLongClickListener(final OnItemLongClickListener mOnItemLongClickListener) {
         this.mOnItemLongClickListener = mOnItemLongClickListener;
-    }
+    }*/
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -55,22 +55,16 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Payment payment = mPayments.get(position);
         holder.bind(payment);
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                if (mOnItemLongClickListener != null) {
-                    mOnItemLongClickListener.onItemClick(view, payment, holder.getAdapterPosition());
-                }
-                return true;
+        holder.itemView.setOnLongClickListener(view -> {
+            if (mOnItemLongClickListener != null) {
+                mOnItemLongClickListener.onItemClick(view, payment, holder.getAdapterPosition());
             }
+            return true;
         });
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemClick(view, payment, holder.getAdapterPosition());
-                }
+        holder.itemView.setOnClickListener(view -> {
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onItemClick(view, payment, holder.getAdapterPosition());
             }
         });
     }

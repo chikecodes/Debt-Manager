@@ -28,7 +28,6 @@ import com.chikeandroid.debtmanager.util.widget.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -72,7 +71,7 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
             mPerson = getArguments().getParcelable(ARG_PERSON);
         }
 
-        mPersonDebtsAdapter = new PersonDebtsAdapter(getActivity(), new ArrayList<Debt>(0));
+        mPersonDebtsAdapter = new PersonDebtsAdapter(getActivity(), new ArrayList<>(0));
 
         DaggerPersonDetailComponent.builder()
                 .personDetailPresenterModule(new PersonDetailPresenterModule(this, mPerson.getPhoneNumber()))
@@ -103,13 +102,8 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
         recyclerView.setAdapter(mPersonDebtsAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
 
-        mPersonDebtsAdapter.setOnItemClickListener(new PersonDebtsAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, Debt debt, int position) {
-                DebtDetailActivity.start(getActivity(), debt.getId(),
-                        debt.getDebtType());
-            }
-        });
+        mPersonDebtsAdapter.setOnItemClickListener((view1, debt, position) -> DebtDetailActivity.start(getActivity(), debt.getId(),
+                debt.getDebtType()));
 
         setUpToolbar();
 
@@ -147,15 +141,12 @@ public class PersonDetailFragment extends Fragment implements PersonDetailContra
                 .dontAnimate()
                 .into(mFragmentPersonDetailBinding.image);
 
-        Collections.sort(debts, new Comparator<Debt>() {
-            @Override
-            public int compare(Debt debt1, Debt debt2) {
+        Collections.sort(debts, (debt1, debt2) -> {
 
-                Date personDebt1CreatedDate = TimeUtil.millis2Date(debt1.getCreatedDate());
-                Date personDebt2CreatedDate = TimeUtil.millis2Date(debt2.getCreatedDate());
+            Date personDebt1CreatedDate = TimeUtil.millis2Date(debt1.getCreatedDate());
+            Date personDebt2CreatedDate = TimeUtil.millis2Date(debt2.getCreatedDate());
 
-                return personDebt2CreatedDate.compareTo(personDebt1CreatedDate);
-            }
+            return personDebt2CreatedDate.compareTo(personDebt1CreatedDate);
         });
 
         mPersonDebtsAdapter.updatePersonDebtListItems(debts);

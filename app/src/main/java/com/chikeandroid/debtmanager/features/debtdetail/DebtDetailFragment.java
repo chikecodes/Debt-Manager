@@ -3,13 +3,11 @@ package com.chikeandroid.debtmanager.features.debtdetail;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -28,7 +26,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -55,7 +52,6 @@ import com.chikeandroid.debtmanager.util.widget.DividerItemDecoration;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -110,7 +106,7 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mPaymentAdapter = new PaymentAdapter(getActivity(), new ArrayList<Payment>(0));
+        mPaymentAdapter = new PaymentAdapter(getActivity(), new ArrayList<>(0));
     }
 
     @Override
@@ -140,12 +136,7 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
         mFragmentDebtDetailBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_debt_detail, container, false);
 
         FloatingActionButton fab = mFragmentDebtDetailBinding.fabAddPayment;
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openAddPaymentDialog();
-            }
-        });
+        fab.setOnClickListener(view -> openAddPaymentDialog());
         mCollapsingToolbarLayout = mFragmentDebtDetailBinding.collapsingToolbar;
         mTextViewTotalAmount = mFragmentDebtDetailBinding.debtDetailContent.totalAmountLayout.tvTotalAmount;
 
@@ -169,25 +160,17 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
         ImageView imageViewClosePaymentDialog = mDialogAddEditPaymentBinding.ivCloseAddPaymentDialog;
         mEditTextPaymentAmount = mDialogAddEditPaymentBinding.etPaymentAmount;
         mEditTextPaymentComment = mDialogAddEditPaymentBinding.etPaymentComment;
-        imageViewClosePaymentDialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAddEditPaymentDialog.dismiss();
-            }
-        });
+        imageViewClosePaymentDialog.setOnClickListener(v -> mAddEditPaymentDialog.dismiss());
 
         RadioGroup radioGroupAction = mDialogAddEditPaymentBinding.rgAction;
         mPaymentAction = Payment.PAYMENT_ACTION_DEBT_DECREASE;
-        radioGroupAction.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int checkedId) {
-                if (checkedId == R.id.rb_leave) {
-                    mPaymentAction = Payment.PAYMENT_ACTION_DEBT_DONT_CHANGE;
-                }else if (checkedId == R.id.rb_increase) {
-                    mPaymentAction = Payment.PAYMENT_ACTION_DEBT_INCREASE;
-                }else if (checkedId == R.id.rb_decrease) {
-                    mPaymentAction = Payment.PAYMENT_ACTION_DEBT_DECREASE;
-                }
+        radioGroupAction.setOnCheckedChangeListener((radioGroup, checkedId) -> {
+            if (checkedId == R.id.rb_leave) {
+                mPaymentAction = Payment.PAYMENT_ACTION_DEBT_DONT_CHANGE;
+            }else if (checkedId == R.id.rb_increase) {
+                mPaymentAction = Payment.PAYMENT_ACTION_DEBT_INCREASE;
+            }else if (checkedId == R.id.rb_decrease) {
+                mPaymentAction = Payment.PAYMENT_ACTION_DEBT_DECREASE;
             }
         });
 
@@ -202,12 +185,7 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
         recyclerView.setAdapter(mPaymentAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
 
-        mPaymentAdapter.setOnItemClickListener(new PaymentAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, Payment payment, int position) {
-                openEditPaymentDialog(payment);
-            }
-        });
+        mPaymentAdapter.setOnItemClickListener((view, payment, position) -> openEditPaymentDialog(payment));
     }
 
     private void setUpToolbar() {
@@ -240,18 +218,8 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
                         mPersonDebt.getPerson().getFullname(), StringUtil.commaNumber(mPersonDebt.getDebt().getAmount()));
                 new AlertDialog.Builder(getContext())
                         .setMessage(message)
-                        .setPositiveButton(getString(R.string.dialog_delete), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                mPresenter.deletePersonDebt(mPersonDebt);
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        })
+                        .setPositiveButton(getString(R.string.dialog_delete), (dialogInterface, i) -> mPresenter.deletePersonDebt(mPersonDebt))
+                        .setNegativeButton(getString(R.string.dialog_cancel), (dialogInterface, i) -> dialogInterface.dismiss())
                         .show();
                 break;
             case R.id.action_call:
@@ -300,34 +268,26 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
         buttonDateEntered.setText(String.format(getString(R.string.created_date),
                 TimeUtil.millis2String(System.currentTimeMillis())));
 
-        buttonDateEntered.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDatePickerDialog(System.currentTimeMillis(), buttonDateEntered);
-            }
-        });
+        buttonDateEntered.setOnClickListener(view -> showDatePickerDialog(System.currentTimeMillis(), buttonDateEntered));
 
-        mImageButtonSavePayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (ValidationUtil.isInValid(new EditTextIntegerValidator(mEditTextPaymentAmount, getActivity()))) {
-                    Toast.makeText(getActivity(), "Invalid", Toast.LENGTH_LONG).show();
-                } else {
-                    Payment payment = new Payment.Builder()
-                            .action(mPaymentAction)
-                            .dateEntered(mPaymentDateEntered)
-                            .note(mEditTextPaymentComment.getText().toString())
-                            .debtId(mDebtId)
-                            .amount(Double.valueOf(mEditTextPaymentAmount.getText().toString()))
-                            .id(UUID.randomUUID().toString())
-                            .personPhoneNumber(mPhoneNumber)
-                            .build();
+        mImageButtonSavePayment.setOnClickListener(view -> {
+            if (ValidationUtil.isInValid(new EditTextIntegerValidator(mEditTextPaymentAmount, getActivity()))) {
+                Toast.makeText(getActivity(), "Invalid", Toast.LENGTH_LONG).show();
+            } else {
+                Payment payment = new Payment.Builder()
+                        .action(mPaymentAction)
+                        .dateEntered(mPaymentDateEntered)
+                        .note(mEditTextPaymentComment.getText().toString())
+                        .debtId(mDebtId)
+                        .amount(Double.valueOf(mEditTextPaymentAmount.getText().toString()))
+                        .id(UUID.randomUUID().toString())
+                        .personPhoneNumber(mPhoneNumber)
+                        .build();
 
-                    mPresenter.addPartialPayment(payment);
-                    // ViewUtil.showToast(getActivity(), "Payment saved successfully");
-                    Toast.makeText(getActivity(), "Payment saved successfully", Toast.LENGTH_LONG).show();
-                    mAddEditPaymentDialog.dismiss();
-                }
+                mPresenter.addPartialPayment(payment);
+                // ViewUtil.showToast(getActivity(), "Payment saved successfully");
+                Toast.makeText(getActivity(), "Payment saved successfully", Toast.LENGTH_LONG).show();
+                mAddEditPaymentDialog.dismiss();
             }
         });
 
@@ -359,59 +319,37 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
         buttonDateEntered.setText(String.format(getString(R.string.created_date),
                 TimeUtil.millis2String(mPaymentDateEntered)));
 
-        buttonDateEntered.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDatePickerDialog(mPaymentDateEntered, buttonDateEntered);
+        buttonDateEntered.setOnClickListener(view -> showDatePickerDialog(mPaymentDateEntered, buttonDateEntered));
+
+        mImageButtonSavePayment.setOnClickListener(view -> {
+            if (ValidationUtil.isInValid(new EditTextIntegerValidator(mEditTextPaymentAmount, getActivity()))) {
+                Toast.makeText(getActivity(), "Invalid", Toast.LENGTH_LONG).show();
+            } else {
+                Payment updatedPayment = new Payment.Builder()
+                        .action(mPaymentAction)
+                        .dateEntered(mPaymentDateEntered)
+                        .note(mEditTextPaymentComment.getText().toString())
+                        .debtId(mDebtId)
+                        .amount(Double.valueOf(mEditTextPaymentAmount.getText().toString()))
+                        .id(payment.getId())
+                        .personPhoneNumber(mPhoneNumber)
+                        .build();
+
+                mPresenter.editPayment(updatedPayment, mPersonDebt.getDebt());
+                ViewUtil.showToast(getActivity(), "Payment edited successfully");
+
+                mAddEditPaymentDialog.dismiss();
             }
         });
 
-        mImageButtonSavePayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (ValidationUtil.isInValid(new EditTextIntegerValidator(mEditTextPaymentAmount, getActivity()))) {
-                    Toast.makeText(getActivity(), "Invalid", Toast.LENGTH_LONG).show();
-                } else {
-                    Payment updatedPayment = new Payment.Builder()
-                            .action(mPaymentAction)
-                            .dateEntered(mPaymentDateEntered)
-                            .note(mEditTextPaymentComment.getText().toString())
-                            .debtId(mDebtId)
-                            .amount(Double.valueOf(mEditTextPaymentAmount.getText().toString()))
-                            .id(payment.getId())
-                            .personPhoneNumber(mPhoneNumber)
-                            .build();
-
-                    mPresenter.editPayment(updatedPayment, mPersonDebt.getDebt());
-                    ViewUtil.showToast(getActivity(), "Payment edited successfully");
-
+        mImageButtonDeletePayment.setOnClickListener(view -> new AlertDialog.Builder(getContext())
+                .setMessage("Are you sure?")
+                .setPositiveButton(getString(R.string.dialog_delete), (dialogInterface, i) -> {
+                    mPresenter.deletePayment(payment);
                     mAddEditPaymentDialog.dismiss();
-                }
-            }
-        });
-
-        mImageButtonDeletePayment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                new AlertDialog.Builder(getContext())
-                        .setMessage("Are you sure?")
-                        .setPositiveButton(getString(R.string.dialog_delete), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                mPresenter.deletePayment(payment);
-                                mAddEditPaymentDialog.dismiss();
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .show();
-            }
-        });
+                })
+                .setNegativeButton(getString(R.string.dialog_cancel), (dialogInterface, i) -> dialogInterface.dismiss())
+                .show());
 
         mAddEditPaymentDialog.show();
     }
@@ -464,20 +402,17 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
         int month = calendar.get(Calendar.MONTH);
         int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view, year1, monthOfYear, dayOfMonth1) -> {
 
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, monthOfYear);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            calendar.set(Calendar.YEAR, year1);
+            calendar.set(Calendar.MONTH, monthOfYear);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth1);
 
-                String dateString = TimeUtil.millis2String(calendar.getTimeInMillis());
-                button.setText(String.format(getString(R.string.created_date), dateString));
+            String dateString = TimeUtil.millis2String(calendar.getTimeInMillis());
+            button.setText(String.format(getString(R.string.created_date), dateString));
 
-                mPaymentDateEntered = calendar.getTimeInMillis();
+            mPaymentDateEntered = calendar.getTimeInMillis();
 
-            }
         }, year, month, dayOfMonth);
 
         datePickerDialog.show();
@@ -500,15 +435,12 @@ public class DebtDetailFragment extends Fragment implements DebtDetailContract.V
     }
 
     private void showPayments(List<Payment> payments) {
-        Collections.sort(payments, new Comparator<Payment>() {
-            @Override
-            public int compare(Payment payment, Payment payment2) {
+        Collections.sort(payments, (payment, payment2) -> {
 
-                Date payment1CreatedDate = TimeUtil.millis2Date(payment.getDateEntered());
-                Date payment2CreatedDate = TimeUtil.millis2Date(payment.getDateEntered());
+            Date payment1CreatedDate = TimeUtil.millis2Date(payment.getDateEntered());
+            Date payment2CreatedDate = TimeUtil.millis2Date(payment2.getDateEntered());
 
-                return payment2CreatedDate.compareTo(payment1CreatedDate);
-            }
+            return payment2CreatedDate.compareTo(payment1CreatedDate);
         });
 
         mPaymentAdapter.updatePaymentListItems(payments);

@@ -43,9 +43,9 @@ public class PersonDebtsAdapter extends RecyclerView.Adapter<PersonDebtsAdapter.
         void onItemClick(View view, Debt debt, int position);
     }
 
-    public void setOnItemLongClickListener(final OnItemLongClickListener mOnItemLongClickListener) {
+   /* public void setOnItemLongClickListener(final OnItemLongClickListener mOnItemLongClickListener) {
         this.mOnItemLongClickListener = mOnItemLongClickListener;
-    }
+    }*/
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -57,22 +57,16 @@ public class PersonDebtsAdapter extends RecyclerView.Adapter<PersonDebtsAdapter.
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Debt debt = mDebts.get(position);
         holder.bind(debt);
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                if (mOnItemLongClickListener != null) {
-                    mOnItemLongClickListener.onItemClick(view, debt, holder.getAdapterPosition());
-                }
-                return true;
+        holder.itemView.setOnLongClickListener(view -> {
+            if (mOnItemLongClickListener != null) {
+                mOnItemLongClickListener.onItemClick(view, debt, holder.getAdapterPosition());
             }
+            return true;
         });
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemClick(view, debt, holder.getAdapterPosition());
-                }
+        holder.itemView.setOnClickListener(view -> {
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onItemClick(view, debt, holder.getAdapterPosition());
             }
         });
 

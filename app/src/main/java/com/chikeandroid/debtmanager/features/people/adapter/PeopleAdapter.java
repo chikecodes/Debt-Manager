@@ -62,22 +62,16 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         final Person person = mPersons.get(position);
         holder.bind(person);
 
-        holder.mListItemDebtBinding.lytParent.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                if (mOnItemLongClickListener != null) {
-                    mOnItemLongClickListener.onItemClick(view, person, holder.getAdapterPosition());
-                }
-                return true;
+        holder.mListItemDebtBinding.lytParent.setOnLongClickListener(view -> {
+            if (mOnItemLongClickListener != null) {
+                mOnItemLongClickListener.onItemClick(view, person, holder.getAdapterPosition());
             }
+            return true;
         });
 
-        holder.mListItemDebtBinding.lytParent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemClick(view, person, holder.getAdapterPosition());
-                }
+        holder.mListItemDebtBinding.lytParent.setOnClickListener(view -> {
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onItemClick(view, person, holder.getAdapterPosition());
             }
         });
     }

@@ -11,13 +11,12 @@ import android.support.test.espresso.IdlingResource;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.chikeandroid.debtmanager.R;
-import com.chikeandroid.debtmanager.features.addeditdebt.AddEditDebtActivity;
 import com.chikeandroid.debtmanager.data.Debt;
 import com.chikeandroid.debtmanager.databinding.ActivityMainBinding;
 import com.chikeandroid.debtmanager.event.MainViewPagerSwipeEvent;
+import com.chikeandroid.debtmanager.features.addeditdebt.AddEditDebtActivity;
 import com.chikeandroid.debtmanager.features.home.adapter.HomeFragmentPagerAdapter;
 import com.chikeandroid.debtmanager.util.EspressoIdlingResource;
 import com.chikeandroid.debtmanager.util.ViewUtil;
@@ -47,13 +46,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
         FloatingActionButton fab = binding.fabMain;
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                AddEditDebtActivity.start(MainActivity.this, AddEditDebtActivity.REQUEST_ADD_DEBT);
-            }
-        });
+        fab.setOnClickListener(view -> AddEditDebtActivity.start(MainActivity.this, AddEditDebtActivity.REQUEST_ADD_DEBT));
 
         mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 

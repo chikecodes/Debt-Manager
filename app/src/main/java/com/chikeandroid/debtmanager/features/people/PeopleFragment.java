@@ -22,7 +22,6 @@ import com.chikeandroid.debtmanager.util.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -63,7 +62,7 @@ public class PeopleFragment extends Fragment implements PeopleContract.View {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mPeopleAdapter = new PeopleAdapter(this, getActivity(), new ArrayList<Person>(0));
+        mPeopleAdapter = new PeopleAdapter(this, getActivity(), new ArrayList<>(0));
     }
 
     @Override
@@ -86,12 +85,7 @@ public class PeopleFragment extends Fragment implements PeopleContract.View {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(mPeopleAdapter);
 
-        mPeopleAdapter.setOnItemClickListener(new PeopleAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, Person person, int position) {
-                PersonDetailActivity.start(getActivity(), person);
-            }
-        });
+        mPeopleAdapter.setOnItemClickListener((view, person, position) -> PersonDetailActivity.start(getActivity(), person));
 
         return peopleFragmentBinding.getRoot();
     }
@@ -108,20 +102,14 @@ public class PeopleFragment extends Fragment implements PeopleContract.View {
             mTextViewEmptyDebts.setVisibility(View.GONE);
         }
 
-        Collections.sort(persons, new Comparator<Person>() {
-            @Override
-            public int compare(Person person1, Person person2) {
-
-                return person1.getFullname().compareTo(person2.getFullname());
-            }
-        });
+        Collections.sort(persons, (person1, person2) -> person1.getFullname().compareTo(person2.getFullname()));
 
         mPeopleAdapter.updatePersonListItems(persons);
     }
 
     @Override
     public void showEmptyView() {
-        mPeopleAdapter.updatePersonListItems(new ArrayList<Person>());
+        mPeopleAdapter.updatePersonListItems(new ArrayList<>());
         mTextViewEmptyDebts.setVisibility(View.VISIBLE);
     }
 

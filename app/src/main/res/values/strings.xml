@@ -38,4 +38,5 @@
     <string name="msg_decrease_debt_amount">Decrease debt amount</string>
     <string name="msg_success_message_payment_deleted">Payment deleted successfully</string>
     <string name="title_edit_payment">Edit Payment</string>
+    <string name="add_debt_short_label">Add debt</string>
 </resources>

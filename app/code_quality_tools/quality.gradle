@@ -2,7 +2,7 @@ apply plugin: 'checkstyle'
 apply plugin: 'pmd'
 apply plugin: 'findbugs'
 
-task checkstyle(type: Checkstyle, dependsOn: "assembleDebug") {
+task checkstyle(type: Checkstyle) {
     description 'Checks if the code meets standards'
     group 'verification'
 
@@ -15,7 +15,7 @@ task checkstyle(type: Checkstyle, dependsOn: "assembleDebug") {
     ignoreFailures = false
 }
 
-task pmd(type: Pmd, dependsOn: "assembleDebug") {
+task pmd(type: Pmd) {
     description 'Run PMD'
     group 'verification'
 
@@ -51,4 +51,13 @@ task findbugs(type: FindBugs) {
     }
 
     ignoreFailures = true
+}
+
+// Add the static analysis tasks into the check task of gradle. Lint is already included by default.
+if (project.hasProperty("check")) {
+    check.doLast {
+        project.tasks.getByName('checkstyle').execute()
+        project.tasks.getByName('pmd').execute()
+        project.tasks.getByName('findbugs').execute()
+    }
 }

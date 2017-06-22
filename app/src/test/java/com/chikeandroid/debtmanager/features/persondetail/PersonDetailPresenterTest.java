@@ -72,7 +72,7 @@ public class PersonDetailPresenterTest {
     @Test
     public void shouldBeAbleToLoadPersonDebtsFromRepositoryAndShowEmptyViewIfNotAvailable() {
 
-        mPersonDetailPresenter.onLoadFinished(mock(Loader.class), new ArrayList<Debt>());
+        mPersonDetailPresenter.onLoadFinished(mock(Loader.class), new ArrayList<>());
 
         verify(mPersonDetailView).showMissingPersonDebts();
     }

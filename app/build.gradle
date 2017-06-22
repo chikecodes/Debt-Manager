@@ -46,6 +46,8 @@ android {
         debug {
             minifyEnabled false
             useProguard false
+            debuggable true
+            applicationIdSuffix '.develop'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
         }
@@ -134,7 +136,10 @@ dependencies {
     testCompile "org.powermock:powermock-api-mockito:$rootProject.ext.powerMockito"
 
     // Stetho
-    debugCompile "com.facebook.stetho:stetho:$rootProject.ext.stethoVersion"
+    debugCompile("com.facebook.stetho:stetho:$rootProject.ext.stethoVersion") {
+        exclude module: 'jsr305'
+    }
+
     // Force usage of dependencies in the test app, since it is internally used by the runner module.
     androidTestCompile 'com.android.support:support-annotations:' + rootProject.supportLibraryVersion
     androidTestCompile 'com.android.support:recyclerview-v7:' + rootProject.supportLibraryVersion

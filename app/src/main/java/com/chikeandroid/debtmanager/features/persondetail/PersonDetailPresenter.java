@@ -69,7 +69,7 @@ public class PersonDetailPresenter implements PersonDetailContract.Presenter, Lo
     @Override
     public void onLoadFinished(Loader<List<Debt>> loader, List<Debt> data) {
 
-        if (data == null) {
+        if (data.isEmpty()) {
             mPersonDebtsDetailView.showMissingPersonDebts();
         }else {
             mPersonDebtsDetailView.showPersonDebts(data);

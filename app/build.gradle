@@ -32,7 +32,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         // Fetch fabric api key from relevant properties file and place it in android manifest.
-        def projectPropertiesFile = file("src/main/assets/project.properties")
+        def projectPropertiesFile = file("src/main/assets/project.properties.sample")
         def projectProperties = new Properties()
         projectProperties.load(new FileInputStream(projectPropertiesFile))
         manifestPlaceholders = [fabric_api_key: projectProperties['fabricApiKey']]

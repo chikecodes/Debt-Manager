@@ -176,4 +176,4 @@ dependencies {
     }
 }
 
-apply from: '/code_quality_tools/quality.gradle'
+apply from: file("code_quality_tools/quality.gradle")

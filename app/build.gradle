@@ -32,7 +32,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         // Fetch fabric api key from relevant properties file and place it in android manifest.
-        def projectPropertiesFile = file("src/main/assets/project.properties.sample")
+        def projectPropertiesFile = file("src/main/assets/project.properties")
         def projectProperties = new Properties()
         projectProperties.load(new FileInputStream(projectPropertiesFile))
         manifestPlaceholders = [fabric_api_key: projectProperties['fabricApiKey']]
@@ -174,6 +174,15 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
     }
+
+    // reactive
+    compile "io.reactivex.rxjava2:rxjava:$rootProject.rxjava2Version"
+    compile "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
+
+    compile "com.squareup.sqlbrite:sqlbrite:$rootProject.sqlbriteVersion"
+
+    // Rx lint is a single lint check that checks if an rxjava subscriber is handling the onError() callback.
+    debugCompile "nl.littlerobots.rxlint:rxlint:$rootProject.rxLintVersion"
 }
 
 apply from: file("code_quality_tools/quality.gradle")

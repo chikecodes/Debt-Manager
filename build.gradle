@@ -46,5 +46,9 @@ ext {
     materialRippleVersion = '1.0.2'
     glideVersion = '3.7.0'
     retrolambdaPluginVersion = "3.6.1"
+    rxjava2Version = '2.0.6'
+    rxandroidVersion = '2.0.1'
+    sqlbriteVersion = '1.1.2'
+    rxLintVersion = '1.2'
 
 }
